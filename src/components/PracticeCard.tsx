@@ -37,9 +37,17 @@ const PracticeCard = ({ word, level, soundLetter, position }: PracticeCardProps)
     );
   };
 
+  const phoneticMap: Record<string, string> = {
+    'B': 'buh', 'P': 'puh', 'D': 'duh', 'T': 'tuh', 'K': 'kuh', 'G': 'guh',
+    'F': 'fff', 'V': 'vvv', 'S': 'sss', 'Z': 'zzz', 'H': 'hhh',
+    'M': 'mmm', 'N': 'nnn', 'L': 'lll', 'R': 'rrr', 'W': 'wuh', 'Y': 'yuh',
+    'J': 'juh', 'CH': 'chuh', 'SH': 'shh', 'TH': 'thh',
+  };
+
   const speakSound = () => {
-    const utterance = new SpeechSynthesisUtterance(soundLetter.toLowerCase());
-    utterance.rate = 0.6;
+    const phonetic = phoneticMap[soundLetter.toUpperCase()] || soundLetter.toLowerCase();
+    const utterance = new SpeechSynthesisUtterance(phonetic);
+    utterance.rate = 0.5;
     utterance.pitch = 1.0;
     speechSynthesis.speak(utterance);
   };
