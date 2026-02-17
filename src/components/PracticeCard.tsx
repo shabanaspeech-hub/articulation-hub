@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { WordItem, PracticeLevel } from "@/data/soundsData";
-import { Volume2 } from "lucide-react";
+import { Volume2, Mic } from "lucide-react";
 
 interface PracticeCardProps {
   word: WordItem;
@@ -37,6 +37,13 @@ const PracticeCard = ({ word, level, soundLetter, position }: PracticeCardProps)
     );
   };
 
+  const speakSound = () => {
+    const utterance = new SpeechSynthesisUtterance(soundLetter.toLowerCase());
+    utterance.rate = 0.6;
+    utterance.pitch = 1.0;
+    speechSynthesis.speak(utterance);
+  };
+
   const speakWord = () => {
     const utterance = new SpeechSynthesisUtterance(getDisplayText());
     utterance.rate = 0.8;
@@ -53,15 +60,27 @@ const PracticeCard = ({ word, level, soundLetter, position }: PracticeCardProps)
       transition={{ duration: 0.3 }}
       className="practice-card flex flex-col items-center gap-6"
     >
-      {/* Emoji/Image Display */}
+      {/* Sound Voice Button - Say the sound first */}
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={speakSound}
+        className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent text-accent-foreground font-fredoka text-lg shadow-md hover:shadow-lg transition-shadow"
+        aria-label={`Say the ${soundLetter} sound`}
+      >
+        <Mic className="w-5 h-5" />
+        Say "{soundLetter.toUpperCase()}"
+      </motion.button>
+
+      {/* Emoji/Image Display - BIGGER */}
       <motion.div
-        whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
+        whileHover={{ scale: 1.05, rotate: [0, -3, 3, 0] }}
         className="relative"
       >
-        <div className="w-32 h-32 md:w-40 md:h-40 rounded-3xl bg-gradient-to-br from-muted to-secondary flex items-center justify-center shadow-lg">
-          <span className="text-7xl md:text-8xl">{word.image}</span>
+        <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-gradient-to-br from-muted to-secondary flex items-center justify-center shadow-lg">
+          <span className="text-[6rem] md:text-[8rem] leading-none">{word.image}</span>
         </div>
-        <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-primary/20 blur-lg" />
+        <div className="absolute -bottom-3 -right-3 w-12 h-12 rounded-full bg-primary/20 blur-xl" />
       </motion.div>
 
       {/* Text Display */}
@@ -73,7 +92,7 @@ const PracticeCard = ({ word, level, soundLetter, position }: PracticeCardProps)
           exit={{ opacity: 0, y: -10 }}
           className="text-center"
         >
-          <h2 className="font-fredoka text-3xl md:text-4xl font-bold text-foreground leading-tight">
+          <h2 className="font-fredoka text-3xl md:text-5xl font-bold text-foreground leading-tight">
             {highlightSound(getDisplayText())}
           </h2>
           {level !== "words" && (
@@ -84,7 +103,7 @@ const PracticeCard = ({ word, level, soundLetter, position }: PracticeCardProps)
         </motion.div>
       </AnimatePresence>
 
-      {/* Audio Button */}
+      {/* Audio Button - Hear the word */}
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
