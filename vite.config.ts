@@ -20,8 +20,8 @@ export default defineConfig(({ mode }) => ({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "icon-192.png", "icon-512.png"],
       manifest: {
-        name: "Articulation Station - Speech Therapy",
-        short_name: "Articulation Station",
+        name: "Articulation Hub - Speech Therapy",
+        short_name: "Articulation Hub",
         description: "Practice speech sounds with pictures, words, phrases, and sentences. Made by Speech Language Therapist Shabana Tariq.",
         theme_color: "#2db8a4",
         background_color: "#faf6f0",

@@ -24,7 +24,7 @@ const Index = () => {
             </div>
             
             <h1 className="font-fredoka text-4xl md:text-6xl font-bold text-foreground mb-4">
-              Articulation<span className="text-primary"> Station</span>
+              Articulation<span className="text-primary"> Hub</span>
             </h1>
             
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-nunito">
