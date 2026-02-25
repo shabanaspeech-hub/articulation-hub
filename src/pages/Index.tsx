@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import { soundsData } from "@/data/soundsData";
 import SoundCard from "@/components/SoundCard";
-import { Sparkles, Volume2 } from "lucide-react";
+import { Volume2 } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const Index = () => {
   return (
@@ -18,8 +19,9 @@ const Index = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
+            <img src={logo} alt="Spectra Speech Logo" className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-4 object-contain" />
+            
             <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-4">
-              <Sparkles className="w-4 h-4" />
               <span className="text-sm font-semibold font-nunito">By Speech Language Therapist Shabana Tariq</span>
             </div>
             
