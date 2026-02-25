@@ -68,28 +68,23 @@ const PracticeCard = ({ word, level, soundLetter, position }: PracticeCardProps)
       transition={{ duration: 0.3 }}
       className="practice-card flex flex-col items-center gap-6"
     >
-      {/* Sound Voice Button - Say the sound first */}
+      {/* Emoji/Image Display - Tap to hear the word */}
       <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={speakSound}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent text-accent-foreground font-fredoka text-lg shadow-md hover:shadow-lg transition-shadow"
-        aria-label={`Say the ${soundLetter} sound`}
-      >
-        <Mic className="w-5 h-5" />
-        Say "{soundLetter.toUpperCase()}"
-      </motion.button>
-
-      {/* Emoji/Image Display - BIGGER */}
-      <motion.div
         whileHover={{ scale: 1.05, rotate: [0, -3, 3, 0] }}
-        className="relative"
+        whileTap={{ scale: 0.9 }}
+        onClick={speakWord}
+        className="relative cursor-pointer"
+        aria-label={`Tap to hear ${getDisplayText()}`}
       >
         <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-gradient-to-br from-muted to-secondary flex items-center justify-center shadow-lg">
           <span className="text-[6rem] md:text-[8rem] leading-none">{word.image}</span>
         </div>
+        {/* Small speaker icon overlay */}
+        <div className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md">
+          <Volume2 className="w-5 h-5" />
+        </div>
         <div className="absolute -bottom-3 -right-3 w-12 h-12 rounded-full bg-primary/20 blur-xl" />
-      </motion.div>
+      </motion.button>
 
       {/* Text Display */}
       <AnimatePresence mode="wait">
@@ -111,15 +106,16 @@ const PracticeCard = ({ word, level, soundLetter, position }: PracticeCardProps)
         </motion.div>
       </AnimatePresence>
 
-      {/* Audio Button - Hear the word */}
+      {/* Say Sound Button */}
       <motion.button
         whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={speakWord}
-        className="w-14 h-14 rounded-full gradient-primary text-primary-foreground flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow"
-        aria-label="Listen to pronunciation"
+        whileTap={{ scale: 0.9 }}
+        onClick={speakSound}
+        className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent text-accent-foreground font-fredoka text-lg shadow-md hover:shadow-lg transition-shadow"
+        aria-label={`Say the ${soundLetter} sound`}
       >
-        <Volume2 className="w-6 h-6" />
+        <Mic className="w-5 h-5" />
+        Say "{soundLetter.toUpperCase()}"
       </motion.button>
 
       {/* Position indicator */}
