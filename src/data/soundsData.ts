@@ -21,7 +21,9 @@ export interface SoundData {
   };
 }
 
-export const soundsData: SoundData[] = [
+const soundOrder = ['p', 'b', 'm', 'h', 'w', 'y', 'd', 'n', 't', 'k', 'g', 'f', 'v', 'ch', 'j', 'l', 'r', 's', 'z', 'sh', 'th'];
+
+const unsortedSoundsData: SoundData[] = [
   {
     id: 'b',
     sound: 'B',
@@ -968,6 +970,12 @@ export const soundsData: SoundData[] = [
     },
   },
 ];
+
+export const soundsData = unsortedSoundsData.sort((a, b) => {
+  const indexA = soundOrder.indexOf(a.id);
+  const indexB = soundOrder.indexOf(b.id);
+  return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+});
 
 export const getSoundById = (id: string): SoundData | undefined => {
   return soundsData.find(sound => sound.id === id);
