@@ -57,9 +57,12 @@ const Index = () => {
       </main>
 
       {/* Footer */}
-      <footer className="container py-8 text-center">
+      <footer className="container py-8 text-center space-y-2">
         <p className="text-sm text-muted-foreground font-nunito">
           🎯 Tap any sound card to start practicing • Use headphones for best experience
+        </p>
+        <p className="text-xs text-muted-foreground/70 font-nunito">
+          Made by Speech Language Therapist <span className="font-semibold text-primary">Shabana Tariq</span>
         </p>
       </footer>
     </div>
