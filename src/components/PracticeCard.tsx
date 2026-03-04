@@ -1,16 +1,21 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { WordItem, PracticeLevel } from "@/data/soundsData";
+import { WordItem, PracticeLevel, SyllableItem } from "@/data/soundsData";
 import { Volume2, Mic } from "lucide-react";
 
 interface PracticeCardProps {
-  word: WordItem;
+  word?: WordItem;
+  syllable?: SyllableItem;
   level: PracticeLevel;
   soundLetter: string;
   position: string;
 }
 
-const PracticeCard = ({ word, level, soundLetter, position }: PracticeCardProps) => {
+const PracticeCard = ({ word, syllable, level, soundLetter, position }: PracticeCardProps) => {
+  const isSyllableLevel = level === "cv" || level === "cvcv";
+
   const getDisplayText = () => {
+    if (isSyllableLevel && syllable) return syllable.display;
+    if (!word) return "";
     switch (level) {
       case "words":
         return word.word;
@@ -18,6 +23,8 @@ const PracticeCard = ({ word, level, soundLetter, position }: PracticeCardProps)
         return word.phrase;
       case "sentences":
         return word.sentence;
+      default:
+        return "";
     }
   };
 
@@ -53,8 +60,9 @@ const PracticeCard = ({ word, level, soundLetter, position }: PracticeCardProps)
   };
 
   const speakWord = () => {
-    const utterance = new SpeechSynthesisUtterance(getDisplayText());
-    utterance.rate = 0.8;
+    const text = getDisplayText();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = isSyllableLevel ? 0.6 : 0.8;
     utterance.pitch = 1.1;
     speechSynthesis.speak(utterance);
   };
@@ -68,23 +76,42 @@ const PracticeCard = ({ word, level, soundLetter, position }: PracticeCardProps)
       transition={{ duration: 0.3 }}
       className="practice-card flex flex-col items-center gap-6"
     >
-      {/* Emoji/Image Display - Tap to hear the word */}
-      <motion.button
-        whileHover={{ scale: 1.05, rotate: [0, -3, 3, 0] }}
-        whileTap={{ scale: 0.9 }}
-        onClick={speakWord}
-        className="relative cursor-pointer"
-        aria-label={`Tap to hear ${getDisplayText()}`}
-      >
-        <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-gradient-to-br from-muted to-secondary flex items-center justify-center shadow-lg">
-          <span className="text-[6rem] md:text-[8rem] leading-none">{word.image}</span>
-        </div>
-        {/* Small speaker icon overlay */}
-        <div className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md">
-          <Volume2 className="w-5 h-5" />
-        </div>
-        <div className="absolute -bottom-3 -right-3 w-12 h-12 rounded-full bg-primary/20 blur-xl" />
-      </motion.button>
+      {/* Syllable mode: big text bubble instead of image */}
+      {isSyllableLevel && syllable ? (
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={speakWord}
+          className="relative cursor-pointer"
+          aria-label={`Tap to hear ${syllable.display}`}
+        >
+          <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-gradient-to-br from-primary/20 to-accent/30 flex items-center justify-center shadow-lg border-4 border-primary/20">
+            <span className="font-fredoka text-5xl md:text-7xl font-bold text-primary">
+              {syllable.display}
+            </span>
+          </div>
+          <div className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md">
+            <Volume2 className="w-5 h-5" />
+          </div>
+        </motion.button>
+      ) : word ? (
+        /* Word/Phrase/Sentence mode: image with tap-to-hear */
+        <motion.button
+          whileHover={{ scale: 1.05, rotate: [0, -3, 3, 0] }}
+          whileTap={{ scale: 0.9 }}
+          onClick={speakWord}
+          className="relative cursor-pointer"
+          aria-label={`Tap to hear ${getDisplayText()}`}
+        >
+          <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-gradient-to-br from-muted to-secondary flex items-center justify-center shadow-lg">
+            <span className="text-[6rem] md:text-[8rem] leading-none">{word.image}</span>
+          </div>
+          <div className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md">
+            <Volume2 className="w-5 h-5" />
+          </div>
+          <div className="absolute -bottom-3 -right-3 w-12 h-12 rounded-full bg-primary/20 blur-xl" />
+        </motion.button>
+      ) : null}
 
       {/* Text Display */}
       <AnimatePresence mode="wait">
@@ -95,13 +122,21 @@ const PracticeCard = ({ word, level, soundLetter, position }: PracticeCardProps)
           exit={{ opacity: 0, y: -10 }}
           className="text-center"
         >
-          <h2 className="font-fredoka text-3xl md:text-5xl font-bold text-foreground leading-tight">
-            {highlightSound(getDisplayText())}
-          </h2>
-          {level !== "words" && (
-            <p className="text-lg text-muted-foreground mt-2 font-nunito">
-              {word.word}
+          {isSyllableLevel ? (
+            <p className="font-nunito text-lg text-muted-foreground">
+              {level === "cv" ? "Consonant-Vowel" : "Consonant-Vowel-Consonant-Vowel"}
             </p>
+          ) : (
+            <>
+              <h2 className="font-fredoka text-3xl md:text-5xl font-bold text-foreground leading-tight">
+                {highlightSound(getDisplayText())}
+              </h2>
+              {level !== "words" && word && (
+                <p className="text-lg text-muted-foreground mt-2 font-nunito">
+                  {word.word}
+                </p>
+              )}
+            </>
           )}
         </motion.div>
       </AnimatePresence>
@@ -118,10 +153,12 @@ const PracticeCard = ({ word, level, soundLetter, position }: PracticeCardProps)
         Say "{soundLetter.toUpperCase()}"
       </motion.button>
 
-      {/* Position indicator */}
-      <div className="text-sm text-muted-foreground font-nunito capitalize">
-        {position} position
-      </div>
+      {/* Position indicator - only for word levels */}
+      {!isSyllableLevel && (
+        <div className="text-sm text-muted-foreground font-nunito capitalize">
+          {position} position
+        </div>
+      )}
     </motion.div>
   );
 };
