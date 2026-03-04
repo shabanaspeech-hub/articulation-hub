@@ -46,9 +46,9 @@ const PracticeCard = ({ word, syllable, level, soundLetter, position }: Practice
 
   const phoneticMap: Record<string, string> = {
     'B': 'buh', 'P': 'puh', 'D': 'duh', 'T': 'tuh', 'K': 'kuh', 'G': 'guh',
-    'F': 'fff', 'V': 'vvv', 'S': 'sss', 'Z': 'zzz', 'H': 'hhh',
-    'M': 'mmm', 'N': 'nnn', 'L': 'lll', 'R': 'rrr', 'W': 'wuh', 'Y': 'yuh',
-    'J': 'juh', 'CH': 'chuh', 'SH': 'shh', 'TH': 'thh',
+    'F': 'ffff', 'V': 'vvvv', 'S': 'ssss', 'Z': 'zzzz', 'H': 'huh',
+    'M': 'mmmm', 'N': 'nnnn', 'L': 'llll', 'R': 'rrrr', 'W': 'wuh', 'Y': 'yuh',
+    'J': 'juh', 'CH': 'chuh', 'SH': 'shhhh', 'TH': 'thhhh',
   };
 
   const speakSound = () => {
