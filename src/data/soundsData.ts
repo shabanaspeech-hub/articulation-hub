@@ -1,5 +1,31 @@
 export type Position = 'initial' | 'medial' | 'final';
-export type PracticeLevel = 'words' | 'phrases' | 'sentences';
+export type PracticeLevel = 'cv' | 'cvcv' | 'words' | 'phrases' | 'sentences';
+
+export interface SyllableItem {
+  syllable: string;
+  display: string;
+}
+
+const vowels = ['a', 'i', 'oo', 'e', 'o'];
+const vowelEmojis: Record<string, string> = {
+  'a': '😀', 'i': '😊', 'oo': '😮', 'e': '😄', 'o': '🫢',
+};
+
+export const generateCV = (sound: string): SyllableItem[] => {
+  const s = sound.toLowerCase();
+  return vowels.map(v => ({
+    syllable: `${s}${v}`,
+    display: `${s}${v}`,
+  }));
+};
+
+export const generateCVCV = (sound: string): SyllableItem[] => {
+  const s = sound.toLowerCase();
+  return vowels.map(v => ({
+    syllable: `${s}${v}${s}${v}`,
+    display: `${s}${v}${s}${v}`,
+  }));
+};
 
 export interface WordItem {
   word: string;

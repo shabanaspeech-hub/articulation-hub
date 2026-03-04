@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Home } from "lucide-react";
-import { getSoundById, Position, PracticeLevel, WordItem } from "@/data/soundsData";
+import { getSoundById, Position, PracticeLevel, WordItem, generateCV, generateCVCV, SyllableItem } from "@/data/soundsData";
 import { Button } from "@/components/ui/button";
 import PositionSelector from "@/components/PositionSelector";
 import LevelSelector from "@/components/LevelSelector";
@@ -17,15 +17,26 @@ const SoundDetail = () => {
   const sound = getSoundById(soundId || "");
   
   const [position, setPosition] = useState<Position>("initial");
-  const [level, setLevel] = useState<PracticeLevel>("words");
+  const [level, setLevel] = useState<PracticeLevel>("cv");
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const isSyllableLevel = level === "cv" || level === "cvcv";
+
+  const syllables = useMemo(() => {
+    if (!sound) return [];
+    if (level === "cv") return generateCV(sound.sound);
+    if (level === "cvcv") return generateCVCV(sound.sound);
+    return [];
+  }, [sound, level]);
 
   const words = useMemo(() => {
     if (!sound) return [];
     return sound.words[position];
   }, [sound, position]);
 
-  const currentWord = words[currentIndex];
+  const totalItems = isSyllableLevel ? syllables.length : words.length;
+  const currentWord = isSyllableLevel ? null : words[currentIndex];
+  const currentSyllable = isSyllableLevel ? syllables[currentIndex] : null;
 
   const handlePositionChange = useCallback((newPosition: Position) => {
     setPosition(newPosition);
@@ -34,13 +45,14 @@ const SoundDetail = () => {
 
   const handleLevelChange = useCallback((newLevel: PracticeLevel) => {
     setLevel(newLevel);
+    setCurrentIndex(0);
   }, []);
 
   const handleNext = useCallback(() => {
-    if (currentIndex < words.length - 1) {
+    if (currentIndex < totalItems - 1) {
       setCurrentIndex(prev => prev + 1);
     }
-  }, [currentIndex, words.length]);
+  }, [currentIndex, totalItems]);
 
   const handlePrevious = useCallback(() => {
     if (currentIndex > 0) {
@@ -49,9 +61,9 @@ const SoundDetail = () => {
   }, [currentIndex]);
 
   const handleShuffle = useCallback(() => {
-    const randomIndex = Math.floor(Math.random() * words.length);
+    const randomIndex = Math.floor(Math.random() * totalItems);
     setCurrentIndex(randomIndex);
-  }, [words.length]);
+  }, [totalItems]);
 
   if (!sound) {
     return (
@@ -122,23 +134,34 @@ const SoundDetail = () => {
         </div>
       </header>
 
-      {/* Position Selector */}
-      <div className="container py-4">
-        <PositionSelector
-          selectedPosition={position}
-          onPositionChange={handlePositionChange}
-        />
-      </div>
+      {/* Position Selector - only show for word-level and above */}
+      {!isSyllableLevel && (
+        <div className="container py-4">
+          <PositionSelector
+            selectedPosition={position}
+            onPositionChange={handlePositionChange}
+          />
+        </div>
+      )}
 
       {/* Level Selector */}
-      <div className="container pb-4">
+      <div className="container pb-4 pt-2">
         <LevelSelector selectedLevel={level} onLevelChange={handleLevelChange} />
       </div>
 
       {/* Main Practice Area */}
       <main className="flex-1 container flex flex-col items-center justify-center py-8">
         <AnimatePresence mode="wait">
-          {currentWord && (
+          {isSyllableLevel && currentSyllable && (
+            <PracticeCard
+              key={`syllable-${level}-${currentIndex}`}
+              syllable={currentSyllable}
+              level={level}
+              soundLetter={sound.sound}
+              position={position}
+            />
+          )}
+          {!isSyllableLevel && currentWord && (
             <PracticeCard
               key={`${position}-${currentIndex}`}
               word={currentWord}
@@ -153,14 +176,14 @@ const SoundDetail = () => {
       {/* Bottom Controls */}
       <div className="sticky bottom-0 bg-background/80 backdrop-blur-lg border-t border-border">
         <div className="container py-4 space-y-4">
-          <ProgressBar current={currentIndex} total={words.length} />
+          <ProgressBar current={currentIndex} total={totalItems} />
           
           <NavigationControls
             onPrevious={handlePrevious}
             onNext={handleNext}
             onShuffle={handleShuffle}
             hasPrevious={currentIndex > 0}
-            hasNext={currentIndex < words.length - 1}
+            hasNext={currentIndex < totalItems - 1}
           />
         </div>
       </div>
