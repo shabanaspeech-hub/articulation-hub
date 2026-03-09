@@ -1,15 +1,19 @@
 export type Position = 'initial' | 'medial' | 'final';
 export type PracticeLevel = 'cv' | 'cvcv' | 'words' | 'phrases' | 'sentences';
+export type MotorSpeechLevel = 'sound-movement' | 'cv' | 'vc' | 'cvcv' | 'cvc' | 'motor-sequencing' | 'words' | 'phrases' | 'sentences';
 
 export interface SyllableItem {
   syllable: string;
   display: string;
 }
 
+export interface CVCItem {
+  word: string;
+  display: string;
+  image: string;
+}
+
 const vowels = ['a', 'i', 'oo', 'e', 'o'];
-const vowelEmojis: Record<string, string> = {
-  'a': '😀', 'i': '😊', 'oo': '😮', 'e': '😄', 'o': '🫢',
-};
 
 export const generateCV = (sound: string): SyllableItem[] => {
   const s = sound.toLowerCase();
@@ -26,6 +30,67 @@ export const generateCVCV = (sound: string): SyllableItem[] => {
     display: `${s}${v}${s}${v}`,
   }));
 };
+
+export const generateVC = (sound: string): SyllableItem[] => {
+  const s = sound.toLowerCase();
+  return vowels.map(v => ({
+    syllable: `${v}${s}`,
+    display: `${v}${s}`,
+  }));
+};
+
+// CVC words for early motor sounds
+export const cvcWords: Record<string, CVCItem[]> = {
+  P: [
+    { word: "pop", display: "pop", image: "🫧" },
+    { word: "pup", display: "pup", image: "🐶" },
+    { word: "pip", display: "pip", image: "🌱" },
+    { word: "pep", display: "pep", image: "⚡" },
+    { word: "pap", display: "pap", image: "👴" },
+  ],
+  B: [
+    { word: "bob", display: "bob", image: "🎈" },
+    { word: "bib", display: "bib", image: "👶" },
+    { word: "bub", display: "bub", image: "🫧" },
+    { word: "bat", display: "bat", image: "🦇" },
+    { word: "bed", display: "bed", image: "🛏️" },
+  ],
+  M: [
+    { word: "mom", display: "mom", image: "👩" },
+    { word: "mop", display: "mop", image: "🧹" },
+    { word: "map", display: "map", image: "🗺️" },
+    { word: "mat", display: "mat", image: "🟫" },
+    { word: "mud", display: "mud", image: "🟤" },
+  ],
+  T: [
+    { word: "tot", display: "tot", image: "👶" },
+    { word: "tap", display: "tap", image: "🚰" },
+    { word: "top", display: "top", image: "🔝" },
+    { word: "tub", display: "tub", image: "🛁" },
+    { word: "ten", display: "ten", image: "🔟" },
+  ],
+  D: [
+    { word: "dad", display: "dad", image: "👨" },
+    { word: "dip", display: "dip", image: "🫕" },
+    { word: "dot", display: "dot", image: "⚫" },
+    { word: "dug", display: "dug", image: "🕳️" },
+    { word: "den", display: "den", image: "🏠" },
+  ],
+  N: [
+    { word: "nap", display: "nap", image: "😴" },
+    { word: "net", display: "net", image: "🥅" },
+    { word: "nod", display: "nod", image: "😊" },
+    { word: "nut", display: "nut", image: "🥜" },
+    { word: "nip", display: "nip", image: "✂️" },
+  ],
+};
+
+export const getCVCWords = (sound: string): CVCItem[] => {
+  return cvcWords[sound.toUpperCase()] || [];
+};
+
+// Early motor sounds for Motor Speech mode
+export const earlyMotorSounds = ['p', 'b', 'm', 't', 'd', 'n'];
 
 export interface WordItem {
   word: string;

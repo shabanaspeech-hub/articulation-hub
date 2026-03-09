@@ -1,20 +1,22 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { WordItem, PracticeLevel, SyllableItem } from "@/data/soundsData";
+import { WordItem, PracticeLevel, SyllableItem, CVCItem } from "@/data/soundsData";
 import { Volume2, Mic } from "lucide-react";
 
 interface PracticeCardProps {
   word?: WordItem;
   syllable?: SyllableItem;
+  cvcItem?: CVCItem;
   level: PracticeLevel;
   soundLetter: string;
   position: string;
 }
 
-const PracticeCard = ({ word, syllable, level, soundLetter, position }: PracticeCardProps) => {
+const PracticeCard = ({ word, syllable, cvcItem, level, soundLetter, position }: PracticeCardProps) => {
   const isSyllableLevel = level === "cv" || level === "cvcv";
 
   const getDisplayText = () => {
     if (isSyllableLevel && syllable) return syllable.display;
+    if (cvcItem) return cvcItem.display;
     if (!word) return "";
     switch (level) {
       case "words":
@@ -89,6 +91,23 @@ const PracticeCard = ({ word, syllable, level, soundLetter, position }: Practice
             <span className="font-fredoka text-5xl md:text-7xl font-bold text-primary">
               {syllable.display}
             </span>
+          </div>
+          <div className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md">
+            <Volume2 className="w-5 h-5" />
+          </div>
+        </motion.button>
+      ) : cvcItem ? (
+        /* CVC word mode */
+        <motion.button
+          whileHover={{ scale: 1.05, rotate: [0, -3, 3, 0] }}
+          whileTap={{ scale: 0.9 }}
+          onClick={speakWord}
+          className="relative cursor-pointer"
+          aria-label={`Tap to hear ${cvcItem.display}`}
+        >
+          <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-gradient-to-br from-accent/20 to-primary/20 flex flex-col items-center justify-center shadow-lg border-4 border-primary/20">
+            <span className="text-[5rem] md:text-[6rem] leading-none">{cvcItem.image}</span>
+            <span className="font-fredoka text-2xl font-bold text-primary mt-2">{cvcItem.display}</span>
           </div>
           <div className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md">
             <Volume2 className="w-5 h-5" />
