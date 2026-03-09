@@ -1,10 +1,18 @@
 import { motion } from "framer-motion";
-import { soundsData } from "@/data/soundsData";
+import { soundsData, earlyMotorSounds } from "@/data/soundsData";
 import SoundCard from "@/components/SoundCard";
+import ModeToggle from "@/components/ModeToggle";
+import { useAppMode } from "@/contexts/AppModeContext";
 import { Volume2 } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 const Index = () => {
+  const { mode } = useAppMode();
+
+  const displayedSounds = mode === "motor-speech"
+    ? soundsData.filter(s => earlyMotorSounds.includes(s.id))
+    : soundsData;
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -30,8 +38,9 @@ const Index = () => {
             </h1>
             
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-nunito">
-              Practice speech sounds with pictures, words, phrases, and sentences. 
-              Tap a sound to get started!
+              {mode === "motor-speech" 
+                ? "Motor Speech / Apraxia therapy with structured progression and slow pacing."
+                : "Practice speech sounds with pictures, words, phrases, and sentences. Tap a sound to get started!"}
             </p>
 
             <motion.div
@@ -42,17 +51,22 @@ const Index = () => {
             >
               <Volume2 className="w-5 h-5 text-primary" />
               <span className="font-nunito text-foreground">
-                <strong className="font-fredoka">{soundsData.length}</strong> sounds to practice
+                <strong className="font-fredoka">{displayedSounds.length}</strong> sounds to practice
               </span>
             </motion.div>
           </motion.div>
         </div>
       </header>
 
+      {/* Mode Toggle */}
+      <div className="container py-6">
+        <ModeToggle />
+      </div>
+
       {/* Sound Grid */}
       <main className="container py-8 md:py-12">
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-4 md:gap-6">
-          {soundsData.map((sound, index) => (
+          {displayedSounds.map((sound, index) => (
             <SoundCard key={sound.id} sound={sound} index={index} />
           ))}
         </div>

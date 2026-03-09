@@ -2,40 +2,74 @@ import { useState, useCallback, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Home } from "lucide-react";
-import { getSoundById, Position, PracticeLevel, WordItem, generateCV, generateCVCV, SyllableItem } from "@/data/soundsData";
+import { getSoundById, Position, PracticeLevel, MotorSpeechLevel, generateCV, generateCVCV, generateVC, getCVCWords, SyllableItem } from "@/data/soundsData";
 import { Button } from "@/components/ui/button";
 import PositionSelector from "@/components/PositionSelector";
 import LevelSelector from "@/components/LevelSelector";
+import MotorSpeechLevelSelector from "@/components/MotorSpeechLevelSelector";
 import PracticeCard from "@/components/PracticeCard";
 import ProgressBar from "@/components/ProgressBar";
 import NavigationControls from "@/components/NavigationControls";
+import SoundMovementCard from "@/components/SoundMovementCard";
+import MotorSequencingCard from "@/components/MotorSequencingCard";
+import SpeechMotorPathway from "@/components/SpeechMotorPathway";
+import { useAppMode } from "@/contexts/AppModeContext";
+import { generateSequences } from "@/components/MotorSequencingCard";
 
 const SoundDetail = () => {
   const { soundId } = useParams<{ soundId: string }>();
   const navigate = useNavigate();
+  const { mode } = useAppMode();
   
   const sound = getSoundById(soundId || "");
   
   const [position, setPosition] = useState<Position>("initial");
-  const [level, setLevel] = useState<PracticeLevel>("cv");
+  const [articulationLevel, setArticulationLevel] = useState<PracticeLevel>("cv");
+  const [motorLevel, setMotorLevel] = useState<MotorSpeechLevel>("sound-movement");
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showPathway, setShowPathway] = useState(false);
 
-  const isSyllableLevel = level === "cv" || level === "cvcv";
+  const isMotorMode = mode === "motor-speech";
+  const activeLevel = isMotorMode ? motorLevel : articulationLevel;
+
+  const isSyllableLevel = activeLevel === "cv" || activeLevel === "cvcv" || activeLevel === "vc";
+  const isSoundMovement = activeLevel === "sound-movement";
+  const isMotorSequencing = activeLevel === "motor-sequencing";
+  const isCVC = activeLevel === "cvc";
+  const isWordLevel = activeLevel === "words" || activeLevel === "phrases" || activeLevel === "sentences";
 
   const syllables = useMemo(() => {
     if (!sound) return [];
-    if (level === "cv") return generateCV(sound.sound);
-    if (level === "cvcv") return generateCVCV(sound.sound);
+    if (activeLevel === "cv") return generateCV(sound.sound);
+    if (activeLevel === "cvcv") return generateCVCV(sound.sound);
+    if (activeLevel === "vc") return generateVC(sound.sound);
     return [];
-  }, [sound, level]);
+  }, [sound, activeLevel]);
+
+  const cvcItems = useMemo(() => {
+    if (!sound || !isCVC) return [];
+    return getCVCWords(sound.sound);
+  }, [sound, isCVC]);
+
+  const sequenceCount = useMemo(() => {
+    if (!sound || !isMotorSequencing) return 0;
+    return generateSequences(sound.sound).length;
+  }, [sound, isMotorSequencing]);
 
   const words = useMemo(() => {
     if (!sound) return [];
     return sound.words[position];
   }, [sound, position]);
 
-  const totalItems = isSyllableLevel ? syllables.length : words.length;
-  const currentWord = isSyllableLevel ? null : words[currentIndex];
+  const totalItems = useMemo(() => {
+    if (isSoundMovement) return 1;
+    if (isSyllableLevel) return syllables.length;
+    if (isCVC) return cvcItems.length;
+    if (isMotorSequencing) return sequenceCount;
+    return words.length;
+  }, [isSoundMovement, isSyllableLevel, isCVC, isMotorSequencing, syllables, cvcItems, sequenceCount, words]);
+
+  const currentWord = isWordLevel ? words[currentIndex] : null;
   const currentSyllable = isSyllableLevel ? syllables[currentIndex] : null;
 
   const handlePositionChange = useCallback((newPosition: Position) => {
@@ -43,8 +77,13 @@ const SoundDetail = () => {
     setCurrentIndex(0);
   }, []);
 
-  const handleLevelChange = useCallback((newLevel: PracticeLevel) => {
-    setLevel(newLevel);
+  const handleArticulationLevelChange = useCallback((newLevel: PracticeLevel) => {
+    setArticulationLevel(newLevel);
+    setCurrentIndex(0);
+  }, []);
+
+  const handleMotorLevelChange = useCallback((newLevel: MotorSpeechLevel) => {
+    setMotorLevel(newLevel);
     setCurrentIndex(0);
   }, []);
 
@@ -93,20 +132,13 @@ const SoundDetail = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => navigate("/")}
-                  className="rounded-xl"
-                >
+                <Button variant="ghost" size="icon" onClick={() => navigate("/")} className="rounded-xl">
                   <ArrowLeft className="w-5 h-5" />
                 </Button>
               </motion.div>
               
               <div className="flex items-center gap-3">
-                <div
-                  className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colorClasses[sound.color]} flex items-center justify-center shadow-md`}
-                >
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colorClasses[sound.color]} flex items-center justify-center shadow-md`}>
                   <span className="text-2xl">{sound.icon}</span>
                 </div>
                 <div>
@@ -114,58 +146,114 @@ const SoundDetail = () => {
                     {sound.displayName}
                   </h1>
                   <p className="text-sm text-muted-foreground">
-                    Practice the "{sound.sound}" sound
+                    {isMotorMode ? "Motor Speech Mode" : `Practice the "${sound.sound}" sound`}
                   </p>
                 </div>
               </div>
             </div>
 
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => navigate("/")}
-                className="rounded-xl"
-              >
-                <Home className="w-5 h-5" />
-              </Button>
-            </motion.div>
+            <div className="flex items-center gap-2">
+              {isMotorMode && (
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    variant={showPathway ? "default" : "outline"}
+                    size="icon"
+                    onClick={() => setShowPathway(!showPathway)}
+                    className="rounded-xl"
+                    title="Speech Motor Pathway"
+                  >
+                    🗺️
+                  </Button>
+                </motion.div>
+              )}
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button variant="outline" size="icon" onClick={() => navigate("/")} className="rounded-xl">
+                  <Home className="w-5 h-5" />
+                </Button>
+              </motion.div>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Position Selector - only show for word-level and above */}
-      {!isSyllableLevel && (
+      {/* Pathway Sidebar */}
+      <AnimatePresence>
+        {showPathway && isMotorMode && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden bg-card border-b border-border"
+          >
+            <div className="container py-2">
+              <SpeechMotorPathway
+                currentLevel={motorLevel}
+                onLevelChange={(level) => {
+                  handleMotorLevelChange(level);
+                  setShowPathway(false);
+                }}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Position Selector - only for word levels */}
+      {isWordLevel && (
         <div className="container py-4">
-          <PositionSelector
-            selectedPosition={position}
-            onPositionChange={handlePositionChange}
-          />
+          <PositionSelector selectedPosition={position} onPositionChange={handlePositionChange} />
         </div>
       )}
 
       {/* Level Selector */}
       <div className="container pb-4 pt-2">
-        <LevelSelector selectedLevel={level} onLevelChange={handleLevelChange} />
+        {isMotorMode ? (
+          <MotorSpeechLevelSelector selectedLevel={motorLevel} onLevelChange={handleMotorLevelChange} />
+        ) : (
+          <LevelSelector selectedLevel={articulationLevel} onLevelChange={handleArticulationLevelChange} />
+        )}
       </div>
 
       {/* Main Practice Area */}
       <main className="flex-1 container flex flex-col items-center justify-center py-8">
         <AnimatePresence mode="wait">
+          {isSoundMovement && (
+            <SoundMovementCard
+              key={`movement-${sound.sound}`}
+              sound={sound.sound}
+              currentIndex={currentIndex}
+            />
+          )}
           {isSyllableLevel && currentSyllable && (
             <PracticeCard
-              key={`syllable-${level}-${currentIndex}`}
+              key={`syllable-${activeLevel}-${currentIndex}`}
               syllable={currentSyllable}
-              level={level}
+              level={activeLevel as PracticeLevel}
               soundLetter={sound.sound}
               position={position}
             />
           )}
-          {!isSyllableLevel && currentWord && (
+          {isCVC && cvcItems[currentIndex] && (
+            <PracticeCard
+              key={`cvc-${currentIndex}`}
+              cvcItem={cvcItems[currentIndex]}
+              level={"words" as PracticeLevel}
+              soundLetter={sound.sound}
+              position={position}
+            />
+          )}
+          {isMotorSequencing && (
+            <MotorSequencingCard
+              key={`seq-${currentIndex}`}
+              sound={sound.sound}
+              currentIndex={currentIndex}
+            />
+          )}
+          {isWordLevel && currentWord && (
             <PracticeCard
               key={`${position}-${currentIndex}`}
               word={currentWord}
-              level={level}
+              level={activeLevel as PracticeLevel}
               soundLetter={sound.sound}
               position={position}
             />
@@ -174,19 +262,20 @@ const SoundDetail = () => {
       </main>
 
       {/* Bottom Controls */}
-      <div className="sticky bottom-0 bg-background/80 backdrop-blur-lg border-t border-border">
-        <div className="container py-4 space-y-4">
-          <ProgressBar current={currentIndex} total={totalItems} />
-          
-          <NavigationControls
-            onPrevious={handlePrevious}
-            onNext={handleNext}
-            onShuffle={handleShuffle}
-            hasPrevious={currentIndex > 0}
-            hasNext={currentIndex < totalItems - 1}
-          />
+      {!isSoundMovement && totalItems > 0 && (
+        <div className="sticky bottom-0 bg-background/80 backdrop-blur-lg border-t border-border">
+          <div className="container py-4 space-y-4">
+            <ProgressBar current={currentIndex} total={totalItems} />
+            <NavigationControls
+              onPrevious={handlePrevious}
+              onNext={handleNext}
+              onShuffle={handleShuffle}
+              hasPrevious={currentIndex > 0}
+              hasNext={currentIndex < totalItems - 1}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
