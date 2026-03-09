@@ -1,10 +1,11 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { WordItem, PracticeLevel, SyllableItem } from "@/data/soundsData";
+import { WordItem, PracticeLevel, SyllableItem, CVCItem } from "@/data/soundsData";
 import { Volume2, Mic } from "lucide-react";
 
 interface PracticeCardProps {
   word?: WordItem;
   syllable?: SyllableItem;
+  cvcItem?: CVCItem;
   level: PracticeLevel;
   soundLetter: string;
   position: string;
