@@ -11,11 +11,12 @@ interface PracticeCardProps {
   position: string;
 }
 
-const PracticeCard = ({ word, syllable, level, soundLetter, position }: PracticeCardProps) => {
+const PracticeCard = ({ word, syllable, cvcItem, level, soundLetter, position }: PracticeCardProps) => {
   const isSyllableLevel = level === "cv" || level === "cvcv";
 
   const getDisplayText = () => {
     if (isSyllableLevel && syllable) return syllable.display;
+    if (cvcItem) return cvcItem.display;
     if (!word) return "";
     switch (level) {
       case "words":
