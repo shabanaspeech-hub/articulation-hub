@@ -229,6 +229,7 @@ const SoundDetail = () => {
               key={`syllable-${activeLevel}-${currentIndex}`}
               syllable={currentSyllable}
               level={activeLevel as PracticeLevel}
+              activeLevel={activeLevel}
               soundLetter={sound.sound}
               position={position}
             />
