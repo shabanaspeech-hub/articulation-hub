@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { WordItem, PracticeLevel, SyllableItem, CVCItem } from "@/data/soundsData";
+import { WordItem, PracticeLevel, SyllableItem, CVCItem, getSyllablePhonetic } from "@/data/soundsData";
 import { Volume2, Mic } from "lucide-react";
 
 interface PracticeCardProps {
