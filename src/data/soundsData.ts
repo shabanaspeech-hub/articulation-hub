@@ -15,6 +15,38 @@ export interface CVCItem {
 
 const vowels = ['a', 'i', 'oo', 'e', 'o'];
 
+// Phonetic pronunciation map for speech synthesis (avoids "pi" → "pie")
+const syllablePhoneticMap: Record<string, string> = {
+  'pa': 'pah', 'pi': 'pee', 'poo': 'pooh', 'pe': 'peh', 'po': 'poh',
+  'ba': 'bah', 'bi': 'bee', 'boo': 'booh', 'be': 'beh', 'bo': 'boh',
+  'ma': 'mah', 'mi': 'mee', 'moo': 'mooh', 'me': 'meh', 'mo': 'moh',
+  'ta': 'tah', 'ti': 'tee', 'too': 'tooh', 'te': 'teh', 'to': 'toh',
+  'da': 'dah', 'di': 'dee', 'doo': 'dooh', 'de': 'deh', 'do': 'doh',
+  'na': 'nah', 'ni': 'nee', 'noo': 'nooh', 'ne': 'neh', 'no': 'noh',
+  'ka': 'kah', 'ki': 'kee', 'koo': 'kooh', 'ke': 'keh', 'ko': 'koh',
+  'ga': 'gah', 'gi': 'gee', 'goo': 'gooh', 'ge': 'geh', 'go': 'goh',
+  'fa': 'fah', 'fi': 'fee', 'foo': 'fooh', 'fe': 'feh', 'fo': 'foh',
+  'va': 'vah', 'vi': 'vee', 'voo': 'vooh', 've': 'veh', 'vo': 'voh',
+  'sa': 'sah', 'si': 'see', 'soo': 'sooh', 'se': 'seh', 'so': 'soh',
+  'za': 'zah', 'zi': 'zee', 'zoo': 'zooh', 'ze': 'zeh', 'zo': 'zoh',
+  'ha': 'hah', 'hi': 'hee', 'hoo': 'hooh', 'he': 'heh', 'ho': 'hoh',
+  'wa': 'wah', 'wi': 'wee', 'woo': 'wooh', 'we': 'weh', 'wo': 'woh',
+  'ya': 'yah', 'yi': 'yee', 'yoo': 'yooh', 'ye': 'yeh', 'yo': 'yoh',
+  'la': 'lah', 'li': 'lee', 'loo': 'looh', 'le': 'leh', 'lo': 'loh',
+  'ra': 'rah', 'ri': 'ree', 'roo': 'rooh', 're': 'reh', 'ro': 'roh',
+  'ja': 'jah', 'ji': 'jee', 'joo': 'jooh', 'je': 'jeh', 'jo': 'joh',
+  'cha': 'chah', 'chi': 'chee', 'choo': 'chooh', 'che': 'cheh', 'cho': 'choh',
+  'sha': 'shah', 'shi': 'shee', 'shoo': 'shooh', 'she': 'sheh', 'sho': 'shoh',
+  'tha': 'thah', 'thi': 'thee', 'thoo': 'thooh', 'the': 'theh', 'tho': 'thoh',
+  // VC phonetics
+  'ap': 'ahp', 'ab': 'ahb', 'am': 'ahm', 'op': 'ohp', 'ob': 'ohb', 'om': 'ohm',
+  'ip': 'eep', 'ib': 'eeb', 'up': 'uhp', 'ub': 'uhb',
+};
+
+export const getSyllablePhonetic = (display: string): string => {
+  return syllablePhoneticMap[display.toLowerCase()] || display;
+};
+
 export const generateCV = (sound: string): SyllableItem[] => {
   const s = sound.toLowerCase();
   return vowels.map(v => ({
@@ -31,11 +63,60 @@ export const generateCVCV = (sound: string): SyllableItem[] => {
   }));
 };
 
+// Fixed VC targets from clinical list
+const vcTargets: Record<string, SyllableItem[]> = {
+  P: [
+    { syllable: 'ap', display: 'ap' },
+    { syllable: 'ip', display: 'ip' },
+    { syllable: 'up', display: 'up' },
+    { syllable: 'op', display: 'op' },
+    { syllable: 'ep', display: 'ep' },
+  ],
+  B: [
+    { syllable: 'ab', display: 'ab' },
+    { syllable: 'ib', display: 'ib' },
+    { syllable: 'ub', display: 'ub' },
+    { syllable: 'ob', display: 'ob' },
+    { syllable: 'eb', display: 'eb' },
+  ],
+  M: [
+    { syllable: 'am', display: 'am' },
+    { syllable: 'om', display: 'om' },
+    { syllable: 'um', display: 'um' },
+    { syllable: 'im', display: 'im' },
+    { syllable: 'em', display: 'em' },
+  ],
+  T: [
+    { syllable: 'at', display: 'at' },
+    { syllable: 'it', display: 'it' },
+    { syllable: 'ut', display: 'ut' },
+    { syllable: 'ot', display: 'ot' },
+    { syllable: 'et', display: 'et' },
+  ],
+  D: [
+    { syllable: 'ad', display: 'ad' },
+    { syllable: 'id', display: 'id' },
+    { syllable: 'ud', display: 'ud' },
+    { syllable: 'od', display: 'od' },
+    { syllable: 'ed', display: 'ed' },
+  ],
+  N: [
+    { syllable: 'an', display: 'an' },
+    { syllable: 'in', display: 'in' },
+    { syllable: 'un', display: 'un' },
+    { syllable: 'on', display: 'on' },
+    { syllable: 'en', display: 'en' },
+  ],
+};
+
 export const generateVC = (sound: string): SyllableItem[] => {
-  const s = sound.toLowerCase();
+  const s = sound.toUpperCase();
+  if (vcTargets[s]) return vcTargets[s];
+  // Fallback for other sounds
+  const sl = sound.toLowerCase();
   return vowels.map(v => ({
-    syllable: `${v}${s}`,
-    display: `${v}${s}`,
+    syllable: `${v}${sl}`,
+    display: `${v}${sl}`,
   }));
 };
 
