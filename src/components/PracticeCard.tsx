@@ -7,6 +7,7 @@ interface PracticeCardProps {
   syllable?: SyllableItem;
   cvcItem?: CVCItem;
   level: PracticeLevel;
+  activeLevel?: string;
   soundLetter: string;
   position: string;
 }
