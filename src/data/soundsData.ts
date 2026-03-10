@@ -121,27 +121,72 @@ export const generateVC = (sound: string): SyllableItem[] => {
 };
 
 // CVC words for early motor sounds
+// CVCV reduplicated targets from clinical list
+const cvcvTargets: Record<string, SyllableItem[]> = {
+  P: [
+    { syllable: 'papa', display: 'papa' },
+    { syllable: 'popo', display: 'popo' },
+    { syllable: 'pipi', display: 'pipi' },
+    { syllable: 'pupu', display: 'pupu' },
+  ],
+  B: [
+    { syllable: 'baba', display: 'baba' },
+    { syllable: 'bobo', display: 'bobo' },
+    { syllable: 'bibi', display: 'bibi' },
+  ],
+  M: [
+    { syllable: 'mama', display: 'mama' },
+    { syllable: 'momo', display: 'momo' },
+    { syllable: 'mumu', display: 'mumu' },
+  ],
+  T: [
+    { syllable: 'tata', display: 'tata' },
+    { syllable: 'toto', display: 'toto' },
+    { syllable: 'titi', display: 'titi' },
+    { syllable: 'tutu', display: 'tutu' },
+  ],
+  D: [
+    { syllable: 'dada', display: 'dada' },
+    { syllable: 'dodo', display: 'dodo' },
+    { syllable: 'didi', display: 'didi' },
+    { syllable: 'dudu', display: 'dudu' },
+  ],
+  N: [
+    { syllable: 'nana', display: 'nana' },
+    { syllable: 'nono', display: 'nono' },
+    { syllable: 'nini', display: 'nini' },
+    { syllable: 'nunu', display: 'nunu' },
+  ],
+};
+
+export const generateCVCVTargets = (sound: string): SyllableItem[] => {
+  const s = sound.toUpperCase();
+  if (cvcvTargets[s]) return cvcvTargets[s];
+  // Fallback to generated
+  const sl = sound.toLowerCase();
+  return vowels.map(v => ({
+    syllable: `${sl}${v}${sl}${v}`,
+    display: `${sl}${v}${sl}${v}`,
+  }));
+};
+
+// CVC words from clinical targets
 export const cvcWords: Record<string, CVCItem[]> = {
   P: [
     { word: "pop", display: "pop", image: "🫧" },
-    { word: "pup", display: "pup", image: "🐶" },
     { word: "pip", display: "pip", image: "🌱" },
-    { word: "pep", display: "pep", image: "⚡" },
-    { word: "pap", display: "pap", image: "👴" },
+    { word: "pup", display: "pup", image: "🐶" },
   ],
   B: [
+    { word: "bab", display: "bab", image: "👶" },
     { word: "bob", display: "bob", image: "🎈" },
     { word: "bib", display: "bib", image: "👶" },
     { word: "bub", display: "bub", image: "🫧" },
-    { word: "bat", display: "bat", image: "🦇" },
-    { word: "bed", display: "bed", image: "🛏️" },
+    { word: "bum", display: "bum", image: "🍑" },
   ],
   M: [
+    { word: "mam", display: "mam", image: "👩" },
     { word: "mom", display: "mom", image: "👩" },
-    { word: "mop", display: "mop", image: "🧹" },
-    { word: "map", display: "map", image: "🗺️" },
-    { word: "mat", display: "mat", image: "🟫" },
-    { word: "mud", display: "mud", image: "🟤" },
   ],
   T: [
     { word: "tot", display: "tot", image: "👶" },
@@ -154,8 +199,8 @@ export const cvcWords: Record<string, CVCItem[]> = {
     { word: "dad", display: "dad", image: "👨" },
     { word: "dip", display: "dip", image: "🫕" },
     { word: "dot", display: "dot", image: "⚫" },
-    { word: "dug", display: "dug", image: "🕳️" },
-    { word: "den", display: "den", image: "🏠" },
+    { word: "dub", display: "dub", image: "🎵" },
+    { word: "din", display: "din", image: "🔔" },
   ],
   N: [
     { word: "nap", display: "nap", image: "😴" },
