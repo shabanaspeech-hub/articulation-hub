@@ -63,55 +63,24 @@ export const generateCVCV = (sound: string): SyllableItem[] => {
   }));
 };
 
-// Fixed VC targets from clinical list
-const vcTargets: Record<string, SyllableItem[]> = {
-  P: [
-    { syllable: 'ap', display: 'ap' },
-    { syllable: 'ip', display: 'ip' },
-    { syllable: 'up', display: 'up' },
-    { syllable: 'op', display: 'op' },
-    { syllable: 'ep', display: 'ep' },
-  ],
-  B: [
-    { syllable: 'ab', display: 'ab' },
-    { syllable: 'ib', display: 'ib' },
-    { syllable: 'ub', display: 'ub' },
-    { syllable: 'ob', display: 'ob' },
-    { syllable: 'eb', display: 'eb' },
-  ],
-  M: [
-    { syllable: 'am', display: 'am' },
-    { syllable: 'om', display: 'om' },
-    { syllable: 'um', display: 'um' },
-    { syllable: 'im', display: 'im' },
-    { syllable: 'em', display: 'em' },
-  ],
-  T: [
-    { syllable: 'at', display: 'at' },
-    { syllable: 'it', display: 'it' },
-    { syllable: 'ut', display: 'ut' },
-    { syllable: 'ot', display: 'ot' },
-    { syllable: 'et', display: 'et' },
-  ],
-  D: [
-    { syllable: 'ad', display: 'ad' },
-    { syllable: 'id', display: 'id' },
-    { syllable: 'ud', display: 'ud' },
-    { syllable: 'od', display: 'od' },
-    { syllable: 'ed', display: 'ed' },
-  ],
-  N: [
-    { syllable: 'an', display: 'an' },
-    { syllable: 'in', display: 'in' },
-    { syllable: 'un', display: 'un' },
-    { syllable: 'on', display: 'on' },
-    { syllable: 'en', display: 'en' },
-  ],
-};
+// Clinical VC targets (10 items across early motor consonants)
+const vcClinicalTargets: SyllableItem[] = [
+  { syllable: 'ap', display: 'ap' },
+  { syllable: 'ab', display: 'ab' },
+  { syllable: 'am', display: 'am' },
+  { syllable: 'op', display: 'op' },
+  { syllable: 'ob', display: 'ob' },
+  { syllable: 'om', display: 'om' },
+  { syllable: 'ip', display: 'ip' },
+  { syllable: 'ib', display: 'ib' },
+  { syllable: 'up', display: 'up' },
+  { syllable: 'ub', display: 'ub' },
+];
 
 export const generateVC = (sound: string): SyllableItem[] => {
+  // For early motor sounds, return full clinical VC list
   const s = sound.toUpperCase();
-  if (vcTargets[s]) return vcTargets[s];
+  if (earlyMotorSounds.includes(sound.toLowerCase())) return vcClinicalTargets;
   // Fallback for other sounds
   const sl = sound.toLowerCase();
   return vowels.map(v => ({
