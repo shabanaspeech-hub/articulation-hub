@@ -12,7 +12,7 @@ interface PracticeCardProps {
   position: string;
 }
 
-const PracticeCard = ({ word, syllable, cvcItem, level, soundLetter, position }: PracticeCardProps) => {
+const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter, position }: PracticeCardProps) => {
   const isSyllableLevel = level === "cv" || level === "cvcv";
 
   const getDisplayText = () => {
