@@ -41,7 +41,7 @@ const SoundDetail = () => {
   const syllables = useMemo(() => {
     if (!sound) return [];
     if (activeLevel === "cv") return generateCV(sound.sound);
-    if (activeLevel === "cvcv") return generateCVCV(sound.sound);
+    if (activeLevel === "cvcv") return generateCVCVTargets(sound.sound);
     if (activeLevel === "vc") return generateVC(sound.sound);
     return [];
   }, [sound, activeLevel]);
