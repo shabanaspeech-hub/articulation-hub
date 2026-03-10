@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { WordItem, PracticeLevel, SyllableItem, CVCItem } from "@/data/soundsData";
+import { WordItem, PracticeLevel, SyllableItem, CVCItem, getSyllablePhonetic } from "@/data/soundsData";
 import { Volume2, Mic } from "lucide-react";
 
 interface PracticeCardProps {
@@ -7,11 +7,12 @@ interface PracticeCardProps {
   syllable?: SyllableItem;
   cvcItem?: CVCItem;
   level: PracticeLevel;
+  activeLevel?: string;
   soundLetter: string;
   position: string;
 }
 
-const PracticeCard = ({ word, syllable, cvcItem, level, soundLetter, position }: PracticeCardProps) => {
+const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter, position }: PracticeCardProps) => {
   const isSyllableLevel = level === "cv" || level === "cvcv";
 
   const getDisplayText = () => {
@@ -63,7 +64,23 @@ const PracticeCard = ({ word, syllable, cvcItem, level, soundLetter, position }:
 
   const speakWord = () => {
     const text = getDisplayText();
-    const utterance = new SpeechSynthesisUtterance(text);
+    let speakText = text;
+    
+    if (isSyllableLevel && syllable) {
+      const display = syllable.display.toLowerCase();
+      const phonetic = getSyllablePhonetic(display);
+      if (phonetic !== display) {
+        speakText = phonetic;
+      } else if (activeLevel === "cvcv" || level === "cvcv") {
+        // For CVCV, split into halves and get phonetics
+        const half = Math.floor(display.length / 2);
+        const p1 = getSyllablePhonetic(display.slice(0, half));
+        const p2 = getSyllablePhonetic(display.slice(half));
+        speakText = `${p1} ${p2}`;
+      }
+    }
+    
+    const utterance = new SpeechSynthesisUtterance(speakText);
     utterance.rate = isSyllableLevel ? 0.6 : 0.8;
     utterance.pitch = 1.1;
     speechSynthesis.speak(utterance);

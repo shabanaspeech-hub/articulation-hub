@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Home } from "lucide-react";
-import { getSoundById, Position, PracticeLevel, MotorSpeechLevel, generateCV, generateCVCV, generateVC, getCVCWords, SyllableItem } from "@/data/soundsData";
+import { getSoundById, Position, PracticeLevel, MotorSpeechLevel, generateCV, generateCVCVTargets, generateVC, getCVCWords, SyllableItem } from "@/data/soundsData";
 import { Button } from "@/components/ui/button";
 import PositionSelector from "@/components/PositionSelector";
 import LevelSelector from "@/components/LevelSelector";
@@ -41,7 +41,7 @@ const SoundDetail = () => {
   const syllables = useMemo(() => {
     if (!sound) return [];
     if (activeLevel === "cv") return generateCV(sound.sound);
-    if (activeLevel === "cvcv") return generateCVCV(sound.sound);
+    if (activeLevel === "cvcv") return generateCVCVTargets(sound.sound);
     if (activeLevel === "vc") return generateVC(sound.sound);
     return [];
   }, [sound, activeLevel]);
@@ -229,6 +229,7 @@ const SoundDetail = () => {
               key={`syllable-${activeLevel}-${currentIndex}`}
               syllable={currentSyllable}
               level={activeLevel as PracticeLevel}
+              activeLevel={activeLevel}
               soundLetter={sound.sound}
               position={position}
             />
