@@ -41,6 +41,10 @@ const syllablePhoneticMap: Record<string, string> = {
   // VC phonetics
   'ap': 'ahp', 'ab': 'ahb', 'am': 'ahm', 'op': 'ohp', 'ob': 'ohb', 'om': 'ohm',
   'ip': 'eep', 'ib': 'eeb', 'up': 'uhp', 'ub': 'uhb',
+  // CVCV phonetics
+  'papa': 'pah pah', 'baba': 'bah bah', 'mama': 'mah mah',
+  'popo': 'poh poh', 'bobo': 'boh boh', 'momo': 'moh moh',
+  'pipi': 'pee pee', 'bibi': 'bee bee', 'pupu': 'pooh pooh', 'mumu': 'mooh mooh',
 };
 
 export const getSyllablePhonetic = (display: string): string => {
@@ -63,55 +67,24 @@ export const generateCVCV = (sound: string): SyllableItem[] => {
   }));
 };
 
-// Fixed VC targets from clinical list
-const vcTargets: Record<string, SyllableItem[]> = {
-  P: [
-    { syllable: 'ap', display: 'ap' },
-    { syllable: 'ip', display: 'ip' },
-    { syllable: 'up', display: 'up' },
-    { syllable: 'op', display: 'op' },
-    { syllable: 'ep', display: 'ep' },
-  ],
-  B: [
-    { syllable: 'ab', display: 'ab' },
-    { syllable: 'ib', display: 'ib' },
-    { syllable: 'ub', display: 'ub' },
-    { syllable: 'ob', display: 'ob' },
-    { syllable: 'eb', display: 'eb' },
-  ],
-  M: [
-    { syllable: 'am', display: 'am' },
-    { syllable: 'om', display: 'om' },
-    { syllable: 'um', display: 'um' },
-    { syllable: 'im', display: 'im' },
-    { syllable: 'em', display: 'em' },
-  ],
-  T: [
-    { syllable: 'at', display: 'at' },
-    { syllable: 'it', display: 'it' },
-    { syllable: 'ut', display: 'ut' },
-    { syllable: 'ot', display: 'ot' },
-    { syllable: 'et', display: 'et' },
-  ],
-  D: [
-    { syllable: 'ad', display: 'ad' },
-    { syllable: 'id', display: 'id' },
-    { syllable: 'ud', display: 'ud' },
-    { syllable: 'od', display: 'od' },
-    { syllable: 'ed', display: 'ed' },
-  ],
-  N: [
-    { syllable: 'an', display: 'an' },
-    { syllable: 'in', display: 'in' },
-    { syllable: 'un', display: 'un' },
-    { syllable: 'on', display: 'on' },
-    { syllable: 'en', display: 'en' },
-  ],
-};
+// Clinical VC targets (10 items across early motor consonants)
+const vcClinicalTargets: SyllableItem[] = [
+  { syllable: 'ap', display: 'ap' },
+  { syllable: 'ab', display: 'ab' },
+  { syllable: 'am', display: 'am' },
+  { syllable: 'op', display: 'op' },
+  { syllable: 'ob', display: 'ob' },
+  { syllable: 'om', display: 'om' },
+  { syllable: 'ip', display: 'ip' },
+  { syllable: 'ib', display: 'ib' },
+  { syllable: 'up', display: 'up' },
+  { syllable: 'ub', display: 'ub' },
+];
 
 export const generateVC = (sound: string): SyllableItem[] => {
+  // For early motor sounds, return full clinical VC list
   const s = sound.toUpperCase();
-  if (vcTargets[s]) return vcTargets[s];
+  if (earlyMotorSounds.includes(sound.toLowerCase())) return vcClinicalTargets;
   // Fallback for other sounds
   const sl = sound.toLowerCase();
   return vowels.map(v => ({
@@ -170,24 +143,22 @@ export const generateCVCVTargets = (sound: string): SyllableItem[] => {
   }));
 };
 
-// CVC words from clinical targets
+// Clinical CVC targets (10 items across early motor consonants)
+const cvcClinicalTargets: CVCItem[] = [
+  { word: "pop", display: "pop", image: "🫧" },
+  { word: "bab", display: "bab", image: "👶" },
+  { word: "mam", display: "mam", image: "👩" },
+  { word: "bob", display: "bob", image: "🎈" },
+  { word: "mom", display: "mom", image: "👩" },
+  { word: "pip", display: "pip", image: "🌱" },
+  { word: "bib", display: "bib", image: "👶" },
+  { word: "bum", display: "bum", image: "🥁" },
+  { word: "pup", display: "pup", image: "🐶" },
+  { word: "bub", display: "bub", image: "🫧" },
+];
+
+// Per-sound CVC words for non-motor sounds
 export const cvcWords: Record<string, CVCItem[]> = {
-  P: [
-    { word: "pop", display: "pop", image: "🫧" },
-    { word: "pip", display: "pip", image: "🌱" },
-    { word: "pup", display: "pup", image: "🐶" },
-  ],
-  B: [
-    { word: "bab", display: "bab", image: "👶" },
-    { word: "bob", display: "bob", image: "🎈" },
-    { word: "bib", display: "bib", image: "👶" },
-    { word: "bub", display: "bub", image: "🫧" },
-    { word: "bum", display: "bum", image: "🍑" },
-  ],
-  M: [
-    { word: "mam", display: "mam", image: "👩" },
-    { word: "mom", display: "mom", image: "👩" },
-  ],
   T: [
     { word: "tot", display: "tot", image: "👶" },
     { word: "tap", display: "tap", image: "🚰" },
@@ -212,6 +183,8 @@ export const cvcWords: Record<string, CVCItem[]> = {
 };
 
 export const getCVCWords = (sound: string): CVCItem[] => {
+  // For early motor sounds (P, B, M), return full clinical CVC list
+  if (['p', 'b', 'm'].includes(sound.toLowerCase())) return cvcClinicalTargets;
   return cvcWords[sound.toUpperCase()] || [];
 };
 
