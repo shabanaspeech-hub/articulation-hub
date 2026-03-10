@@ -64,7 +64,23 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
 
   const speakWord = () => {
     const text = getDisplayText();
-    const utterance = new SpeechSynthesisUtterance(text);
+    let speakText = text;
+    
+    if (isSyllableLevel && syllable) {
+      const display = syllable.display.toLowerCase();
+      const phonetic = getSyllablePhonetic(display);
+      if (phonetic !== display) {
+        speakText = phonetic;
+      } else if (activeLevel === "cvcv" || level === "cvcv") {
+        // For CVCV, split into halves and get phonetics
+        const half = Math.floor(display.length / 2);
+        const p1 = getSyllablePhonetic(display.slice(0, half));
+        const p2 = getSyllablePhonetic(display.slice(half));
+        speakText = `${p1} ${p2}`;
+      }
+    }
+    
+    const utterance = new SpeechSynthesisUtterance(speakText);
     utterance.rate = isSyllableLevel ? 0.6 : 0.8;
     utterance.pitch = 1.1;
     speechSynthesis.speak(utterance);
