@@ -41,6 +41,10 @@ const syllablePhoneticMap: Record<string, string> = {
   // VC phonetics
   'ap': 'ahp', 'ab': 'ahb', 'am': 'ahm', 'op': 'ohp', 'ob': 'ohb', 'om': 'ohm',
   'ip': 'eep', 'ib': 'eeb', 'up': 'uhp', 'ub': 'uhb',
+  // CVCV phonetics
+  'papa': 'pah pah', 'baba': 'bah bah', 'mama': 'mah mah',
+  'popo': 'poh poh', 'bobo': 'boh boh', 'momo': 'moh moh',
+  'pipi': 'pee pee', 'bibi': 'bee bee', 'pupu': 'pooh pooh', 'mumu': 'mooh mooh',
 };
 
 export const getSyllablePhonetic = (display: string): string => {
