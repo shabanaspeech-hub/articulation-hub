@@ -183,49 +183,55 @@ export const generateCVCVTargets = (sound: string): SyllableItem[] => {
   }));
 };
 
-// Clinical CVC targets (10 items across early motor consonants)
-const cvcClinicalTargets: CVCItem[] = [
-  { word: "pop", display: "pop", image: "🫧" },
-  { word: "bab", display: "bab", image: "👶" },
-  { word: "mam", display: "mam", image: "👩" },
-  { word: "bob", display: "bob", image: "🎈" },
-  { word: "mom", display: "mom", image: "👩" },
-  { word: "pip", display: "pip", image: "🌱" },
-  { word: "bib", display: "bib", image: "👶" },
-  { word: "bum", display: "bum", image: "🥁" },
-  { word: "pup", display: "pup", image: "🐶" },
-  { word: "bub", display: "bub", image: "🫧" },
-];
-
-// Per-sound CVC words for non-motor sounds
-export const cvcWords: Record<string, CVCItem[]> = {
+// Per-sound CVC targets
+const cvcPerSound: Record<string, CVCItem[]> = {
+  P: [
+    { word: "pop", display: "pop", image: "🫧" },
+    { word: "pip", display: "pip", image: "🌱" },
+    { word: "pup", display: "pup", image: "🐶" },
+    { word: "pep", display: "pep", image: "💪" },
+    { word: "pap", display: "pap", image: "👴" },
+  ],
+  B: [
+    { word: "bab", display: "bab", image: "👶" },
+    { word: "bob", display: "bob", image: "🎈" },
+    { word: "bib", display: "bib", image: "🍼" },
+    { word: "bub", display: "bub", image: "🫧" },
+    { word: "bum", display: "bum", image: "🥁" },
+  ],
+  M: [
+    { word: "mam", display: "mam", image: "👩" },
+    { word: "mom", display: "mom", image: "👩‍👧" },
+    { word: "mum", display: "mum", image: "🌸" },
+    { word: "mim", display: "mim", image: "🎭" },
+    { word: "mem", display: "mem", image: "📝" },
+  ],
   T: [
     { word: "tot", display: "tot", image: "👶" },
-    { word: "tap", display: "tap", image: "🚰" },
-    { word: "top", display: "top", image: "🔝" },
-    { word: "tub", display: "tub", image: "🛁" },
-    { word: "ten", display: "ten", image: "🔟" },
+    { word: "tat", display: "tat", image: "🎨" },
+    { word: "tut", display: "tut", image: "📖" },
+    { word: "tit", display: "tit", image: "🐦" },
+    { word: "tet", display: "tet", image: "🎪" },
   ],
   D: [
     { word: "dad", display: "dad", image: "👨" },
-    { word: "dip", display: "dip", image: "🫕" },
-    { word: "dot", display: "dot", image: "⚫" },
-    { word: "dub", display: "dub", image: "🎵" },
-    { word: "din", display: "din", image: "🔔" },
+    { word: "did", display: "did", image: "✅" },
+    { word: "dud", display: "dud", image: "💣" },
+    { word: "dod", display: "dod", image: "🎯" },
+    { word: "ded", display: "ded", image: "📦" },
   ],
   N: [
-    { word: "nap", display: "nap", image: "😴" },
-    { word: "net", display: "net", image: "🥅" },
-    { word: "nod", display: "nod", image: "😊" },
-    { word: "nut", display: "nut", image: "🥜" },
-    { word: "nip", display: "nip", image: "✂️" },
+    { word: "nan", display: "nan", image: "👵" },
+    { word: "nun", display: "nun", image: "⛪" },
+    { word: "non", display: "non", image: "🚫" },
+    { word: "nin", display: "nin", image: "🥷" },
+    { word: "nen", display: "nen", image: "📝" },
   ],
 };
 
 export const getCVCWords = (sound: string): CVCItem[] => {
-  // For early motor sounds (P, B, M), return full clinical CVC list
-  if (['p', 'b', 'm'].includes(sound.toLowerCase())) return cvcClinicalTargets;
-  return cvcWords[sound.toUpperCase()] || [];
+  const s = sound.toUpperCase();
+  return cvcPerSound[s] || [];
 };
 
 // Early motor sounds for Motor Speech mode

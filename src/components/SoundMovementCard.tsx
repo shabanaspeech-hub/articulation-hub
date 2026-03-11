@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Volume2 } from "lucide-react";
+import MouthDiagram from "./MouthDiagram";
 
 interface SoundMovementCardProps {
   sound: string;
@@ -10,17 +11,17 @@ interface MovementData {
   cue: string;
   mouthDesc: string;
   repetition: string;
-  emoji: string;
   mouthSteps: string[];
   lipCue: string;
+  mouthType: "bilabial" | "alveolar";
+  voicing: "voiced" | "voiceless" | "nasal";
 }
 
 const soundMovementData: Record<string, MovementData> = {
   M: {
     cue: "Close your lips together and hum",
     mouthDesc: "Lips pressed gently together, voice ON, air goes through nose",
-    repetition: "mmm mmm mmm mmm",
-    emoji: "👄",
+    repetition: "em, em, em, em",
     mouthSteps: [
       "😶 Close lips together gently",
       "👃 Air flows through your nose",
@@ -28,12 +29,13 @@ const soundMovementData: Record<string, MovementData> = {
       "⏱️ Hold: mmmmmm",
     ],
     lipCue: "Lips together — touch & hum",
+    mouthType: "bilabial",
+    voicing: "nasal",
   },
   B: {
     cue: "Put lips together, then POP them open!",
     mouthDesc: "Lips pressed together, then burst open with voice ON",
-    repetition: "b b b b b",
-    emoji: "💥",
+    repetition: "buh, buh, buh, buh",
     mouthSteps: [
       "😶 Press lips together",
       "💨 Build up air behind lips",
@@ -41,12 +43,13 @@ const soundMovementData: Record<string, MovementData> = {
       "💥 POP lips open!",
     ],
     lipCue: "Lips together — POP open",
+    mouthType: "bilabial",
+    voicing: "voiced",
   },
   P: {
     cue: "Put lips together, then POP with a puff of air!",
     mouthDesc: "Lips pressed together, burst open with air puff, voice OFF",
-    repetition: "p p p p p",
-    emoji: "💨",
+    repetition: "puh, puh, puh, puh",
     mouthSteps: [
       "😶 Press lips together tightly",
       "💨 Build up air behind lips",
@@ -54,12 +57,13 @@ const soundMovementData: Record<string, MovementData> = {
       "💨 POP lips — feel the air puff on your hand!",
     ],
     lipCue: "Lips together — puff of air",
+    mouthType: "bilabial",
+    voicing: "voiceless",
   },
   T: {
     cue: "Tap your tongue tip on the bumpy spot!",
     mouthDesc: "Tongue tip taps the ridge behind top teeth, voice OFF",
-    repetition: "t t t t t",
-    emoji: "👅",
+    repetition: "tuh, tuh, tuh, tuh",
     mouthSteps: [
       "👅 Lift tongue tip UP",
       "📍 Touch the bumpy ridge behind top teeth",
@@ -67,12 +71,13 @@ const soundMovementData: Record<string, MovementData> = {
       "👅 Tap tongue down quickly — t!",
     ],
     lipCue: "Tongue tip UP — tap the bumpy spot",
+    mouthType: "alveolar",
+    voicing: "voiceless",
   },
   D: {
     cue: "Tap your tongue and turn your voice ON!",
     mouthDesc: "Tongue tip taps ridge behind top teeth, voice ON",
-    repetition: "d d d d d",
-    emoji: "👅",
+    repetition: "duh, duh, duh, duh",
     mouthSteps: [
       "👅 Lift tongue tip UP",
       "📍 Touch the bumpy ridge behind top teeth",
@@ -80,12 +85,13 @@ const soundMovementData: Record<string, MovementData> = {
       "👅 Tap tongue down — d!",
     ],
     lipCue: "Tongue tip UP — voice ON — tap",
+    mouthType: "alveolar",
+    voicing: "voiced",
   },
   N: {
     cue: "Tongue up, hum through your nose!",
     mouthDesc: "Tongue tip up on ridge, voice ON, air through nose",
-    repetition: "nnn nnn nnn nnn",
-    emoji: "👃",
+    repetition: "en, en, en, en",
     mouthSteps: [
       "👅 Lift tongue tip UP",
       "📍 Press on bumpy ridge behind top teeth",
@@ -93,6 +99,8 @@ const soundMovementData: Record<string, MovementData> = {
       "🔊 Voice ON — hold: nnnnn",
     ],
     lipCue: "Tongue up — air through nose — hum",
+    mouthType: "alveolar",
+    voicing: "nasal",
   },
 };
 
@@ -112,14 +120,8 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
     );
   }
 
-  const phoneticMap: Record<string, string> = {
-    'B': 'buh', 'P': 'puh', 'D': 'duh', 'T': 'tuh',
-    'M': 'mmmm', 'N': 'nnnn',
-  };
-
   const speakSound = () => {
-    const phonetic = phoneticMap[upperSound] || upperSound.toLowerCase();
-    const utterance = new SpeechSynthesisUtterance(phonetic);
+    const utterance = new SpeechSynthesisUtterance(data.repetition.split(",")[0].trim());
     utterance.rate = 0.4;
     utterance.pitch = 1.0;
     speechSynthesis.speak(utterance);
@@ -127,7 +129,7 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
 
   const speakRepetition = () => {
     const utterance = new SpeechSynthesisUtterance(data.repetition);
-    utterance.rate = 0.3;
+    utterance.rate = 0.35;
     utterance.pitch = 1.0;
     speechSynthesis.speak(utterance);
   };
@@ -139,7 +141,7 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
       exit={{ opacity: 0, scale: 0.9 }}
       className="practice-card flex flex-col items-center gap-5 max-w-sm mx-auto"
     >
-      {/* Mouth visual area */}
+      {/* Animated Mouth Diagram */}
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.9 }}
@@ -147,12 +149,14 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
         className="relative cursor-pointer"
         aria-label={`Hear the ${sound} sound`}
       >
-        <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-gradient-to-br from-accent/20 to-primary/20 flex flex-col items-center justify-center shadow-lg border-4 border-accent/30">
-          <span className="text-7xl mb-2">{data.emoji}</span>
-          <span className="font-fredoka text-4xl md:text-5xl font-bold text-primary">{upperSound}</span>
+        <div className="rounded-3xl bg-gradient-to-br from-accent/20 to-primary/20 p-4 shadow-lg border-4 border-accent/30">
+          <MouthDiagram type={data.mouthType} voicing={data.voicing} />
         </div>
         <div className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md">
           <Volume2 className="w-5 h-5" />
+        </div>
+        <div className="absolute top-2 left-2 font-fredoka text-3xl font-bold text-primary bg-background/80 rounded-xl px-3 py-1">
+          {upperSound}
         </div>
       </motion.button>
 

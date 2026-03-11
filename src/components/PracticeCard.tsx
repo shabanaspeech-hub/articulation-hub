@@ -104,8 +104,11 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           className="relative cursor-pointer"
           aria-label={`Tap to hear ${syllable.display}`}
         >
-          <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-gradient-to-br from-primary/20 to-accent/30 flex items-center justify-center shadow-lg border-4 border-primary/20">
-            <span className="font-fredoka text-5xl md:text-7xl font-bold text-primary">
+          <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-gradient-to-br from-primary/20 to-accent/30 flex flex-col items-center justify-center shadow-lg border-4 border-primary/20">
+            {syllable.image && (
+              <span className="text-5xl md:text-6xl mb-2">{syllable.image}</span>
+            )}
+            <span className="font-fredoka text-4xl md:text-6xl font-bold text-primary">
               {syllable.display}
             </span>
           </div>
