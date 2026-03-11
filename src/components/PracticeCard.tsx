@@ -13,7 +13,7 @@ interface PracticeCardProps {
 }
 
 const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter, position }: PracticeCardProps) => {
-  const isSyllableLevel = level === "cv" || level === "cvcv";
+  const isSyllableLevel = level === "cv" || level === "cvcv" || level === "vc";
 
   const getDisplayText = () => {
     if (isSyllableLevel && syllable) return syllable.display;
