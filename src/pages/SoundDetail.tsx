@@ -215,8 +215,25 @@ const SoundDetail = () => {
       </div>
 
       {/* Main Practice Area */}
-      <main className="flex-1 container flex flex-col items-center justify-center py-8">
-        <AnimatePresence mode="wait">
+      <main className="flex-1 container flex flex-col items-center justify-center py-8 overflow-hidden">
+        <motion.div
+          key={`swipe-${activeLevel}-${currentIndex}`}
+          className="w-full flex flex-col items-center"
+          drag={totalItems > 1 && !isSoundMovement ? "x" : false}
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.3}
+          onDragEnd={(_, info) => {
+            if (info.offset.x < -80 && currentIndex < totalItems - 1) {
+              handleNext();
+            } else if (info.offset.x > 80 && currentIndex > 0) {
+              handlePrevious();
+            }
+          }}
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -50 }}
+          transition={{ duration: 0.25 }}
+        >
           {isSoundMovement && (
             <SoundMovementCard
               key={`movement-${sound.sound}`}
@@ -259,7 +276,7 @@ const SoundDetail = () => {
               position={position}
             />
           )}
-        </AnimatePresence>
+        </motion.div>
       </main>
 
       {/* Bottom Controls */}

@@ -13,7 +13,7 @@ interface PracticeCardProps {
 }
 
 const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter, position }: PracticeCardProps) => {
-  const isSyllableLevel = level === "cv" || level === "cvcv";
+  const isSyllableLevel = level === "cv" || level === "cvcv" || level === "vc";
 
   const getDisplayText = () => {
     if (isSyllableLevel && syllable) return syllable.display;
@@ -48,10 +48,10 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
   };
 
   const phoneticMap: Record<string, string> = {
-    'B': 'b', 'P': 'p', 'D': 'd', 'T': 't', 'K': 'k', 'G': 'g',
-    'F': 'fff', 'V': 'vvv', 'S': 'sss', 'Z': 'zzz', 'H': 'h',
-    'M': 'mmm', 'N': 'nnn', 'L': 'lll', 'R': 'rrr', 'W': 'w', 'Y': 'y',
-    'J': 'j', 'CH': 'ch', 'SH': 'shh', 'TH': 'thh',
+    'B': 'buh', 'P': 'puh', 'D': 'duh', 'T': 'tuh', 'K': 'kuh', 'G': 'guh',
+    'F': 'fff', 'V': 'vvv', 'S': 'sss', 'Z': 'zzz', 'H': 'huh',
+    'M': 'em', 'N': 'en', 'L': 'el', 'R': 'ar', 'W': 'wuh', 'Y': 'yuh',
+    'J': 'juh', 'CH': 'chuh', 'SH': 'shh', 'TH': 'thh',
   };
 
   const speakSound = () => {
@@ -104,8 +104,11 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           className="relative cursor-pointer"
           aria-label={`Tap to hear ${syllable.display}`}
         >
-          <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-gradient-to-br from-primary/20 to-accent/30 flex items-center justify-center shadow-lg border-4 border-primary/20">
-            <span className="font-fredoka text-5xl md:text-7xl font-bold text-primary">
+          <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-gradient-to-br from-primary/20 to-accent/30 flex flex-col items-center justify-center shadow-lg border-4 border-primary/20">
+            {syllable.image && (
+              <span className="text-5xl md:text-6xl mb-2">{syllable.image}</span>
+            )}
+            <span className="font-fredoka text-4xl md:text-6xl font-bold text-primary">
               {syllable.display}
             </span>
           </div>

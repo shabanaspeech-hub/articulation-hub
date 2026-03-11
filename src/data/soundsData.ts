@@ -1,10 +1,11 @@
 export type Position = 'initial' | 'medial' | 'final';
-export type PracticeLevel = 'cv' | 'cvcv' | 'words' | 'phrases' | 'sentences';
+export type PracticeLevel = 'cv' | 'vc' | 'cvcv' | 'words' | 'phrases' | 'sentences';
 export type MotorSpeechLevel = 'sound-movement' | 'cv' | 'vc' | 'cvcv' | 'cvc' | 'motor-sequencing' | 'words' | 'phrases' | 'sentences';
 
 export interface SyllableItem {
   syllable: string;
   display: string;
+  image?: string;
 }
 
 export interface CVCItem {
@@ -17,34 +18,42 @@ const vowels = ['a', 'i', 'oo', 'e', 'o'];
 
 // Phonetic pronunciation map for speech synthesis (avoids "pi" → "pie")
 const syllablePhoneticMap: Record<string, string> = {
-  'pa': 'pah', 'pi': 'pee', 'poo': 'pooh', 'pe': 'peh', 'po': 'poh',
-  'ba': 'bah', 'bi': 'bee', 'boo': 'booh', 'be': 'beh', 'bo': 'boh',
-  'ma': 'mah', 'mi': 'mee', 'moo': 'mooh', 'me': 'meh', 'mo': 'moh',
-  'ta': 'tah', 'ti': 'tee', 'too': 'tooh', 'te': 'teh', 'to': 'toh',
-  'da': 'dah', 'di': 'dee', 'doo': 'dooh', 'de': 'deh', 'do': 'doh',
-  'na': 'nah', 'ni': 'nee', 'noo': 'nooh', 'ne': 'neh', 'no': 'noh',
-  'ka': 'kah', 'ki': 'kee', 'koo': 'kooh', 'ke': 'keh', 'ko': 'koh',
-  'ga': 'gah', 'gi': 'gee', 'goo': 'gooh', 'ge': 'geh', 'go': 'goh',
-  'fa': 'fah', 'fi': 'fee', 'foo': 'fooh', 'fe': 'feh', 'fo': 'foh',
-  'va': 'vah', 'vi': 'vee', 'voo': 'vooh', 've': 'veh', 'vo': 'voh',
-  'sa': 'sah', 'si': 'see', 'soo': 'sooh', 'se': 'seh', 'so': 'soh',
-  'za': 'zah', 'zi': 'zee', 'zoo': 'zooh', 'ze': 'zeh', 'zo': 'zoh',
-  'ha': 'hah', 'hi': 'hee', 'hoo': 'hooh', 'he': 'heh', 'ho': 'hoh',
-  'wa': 'wah', 'wi': 'wee', 'woo': 'wooh', 'we': 'weh', 'wo': 'woh',
-  'ya': 'yah', 'yi': 'yee', 'yoo': 'yooh', 'ye': 'yeh', 'yo': 'yoh',
-  'la': 'lah', 'li': 'lee', 'loo': 'looh', 'le': 'leh', 'lo': 'loh',
-  'ra': 'rah', 'ri': 'ree', 'roo': 'rooh', 're': 'reh', 'ro': 'roh',
-  'ja': 'jah', 'ji': 'jee', 'joo': 'jooh', 'je': 'jeh', 'jo': 'joh',
-  'cha': 'chah', 'chi': 'chee', 'choo': 'chooh', 'che': 'cheh', 'cho': 'choh',
-  'sha': 'shah', 'shi': 'shee', 'shoo': 'shooh', 'she': 'sheh', 'sho': 'shoh',
-  'tha': 'thah', 'thi': 'thee', 'thoo': 'thooh', 'the': 'theh', 'tho': 'thoh',
+  // CV phonetics (short vowels for therapy)
+  'pa': 'pah', 'pi': 'pih', 'poo': 'pooh', 'pe': 'peh', 'po': 'poh',
+  'ba': 'bah', 'bi': 'bih', 'boo': 'booh', 'be': 'beh', 'bo': 'boh',
+  'ma': 'mah', 'mi': 'mih', 'moo': 'mooh', 'me': 'meh', 'mo': 'moh',
+  'ta': 'tah', 'ti': 'tih', 'too': 'tooh', 'te': 'teh', 'to': 'toh',
+  'da': 'dah', 'di': 'dih', 'doo': 'dooh', 'de': 'deh', 'do': 'doh',
+  'na': 'nah', 'ni': 'nih', 'noo': 'nooh', 'ne': 'neh', 'no': 'noh',
+  'ka': 'kah', 'ki': 'kih', 'koo': 'kooh', 'ke': 'keh', 'ko': 'koh',
+  'ga': 'gah', 'gi': 'gih', 'goo': 'gooh', 'ge': 'geh', 'go': 'goh',
+  'fa': 'fah', 'fi': 'fih', 'foo': 'fooh', 'fe': 'feh', 'fo': 'foh',
+  'va': 'vah', 'vi': 'vih', 'voo': 'vooh', 've': 'veh', 'vo': 'voh',
+  'sa': 'sah', 'si': 'sih', 'soo': 'sooh', 'se': 'seh', 'so': 'soh',
+  'za': 'zah', 'zi': 'zih', 'zoo': 'zooh', 'ze': 'zeh', 'zo': 'zoh',
+  'ha': 'hah', 'hi': 'hih', 'hoo': 'hooh', 'he': 'heh', 'ho': 'hoh',
+  'wa': 'wah', 'wi': 'wih', 'woo': 'wooh', 'we': 'weh', 'wo': 'woh',
+  'ya': 'yah', 'yi': 'yih', 'yoo': 'yooh', 'ye': 'yeh', 'yo': 'yoh',
+  'la': 'lah', 'li': 'lih', 'loo': 'looh', 'le': 'leh', 'lo': 'loh',
+  'ra': 'rah', 'ri': 'rih', 'roo': 'rooh', 're': 'reh', 'ro': 'roh',
+  'ja': 'jah', 'ji': 'jih', 'joo': 'jooh', 'je': 'jeh', 'jo': 'joh',
+  'cha': 'chah', 'chi': 'chih', 'choo': 'chooh', 'che': 'cheh', 'cho': 'choh',
+  'sha': 'shah', 'shi': 'shih', 'shoo': 'shooh', 'she': 'sheh', 'sho': 'shoh',
+  'tha': 'thah', 'thi': 'thih', 'thoo': 'thooh', 'the': 'theh', 'tho': 'thoh',
   // VC phonetics
   'ap': 'ahp', 'ab': 'ahb', 'am': 'ahm', 'op': 'ohp', 'ob': 'ohb', 'om': 'ohm',
-  'ip': 'eep', 'ib': 'eeb', 'up': 'uhp', 'ub': 'uhb',
+  'ip': 'ihp', 'ib': 'ihb', 'im': 'ihm', 'up': 'uhp', 'ub': 'uhb', 'um': 'uhm',
+  'ep': 'ehp', 'eb': 'ehb', 'em': 'ehm',
+  'at': 'aht', 'ot': 'oht', 'it': 'iht', 'ut': 'uht', 'et': 'eht',
+  'ad': 'ahd', 'od': 'ohd', 'id': 'ihd', 'ud': 'uhd', 'ed': 'ehd',
+  'an': 'ahn', 'on': 'ohn', 'in': 'ihn', 'un': 'uhn', 'en': 'ehn',
   // CVCV phonetics
   'papa': 'pah pah', 'baba': 'bah bah', 'mama': 'mah mah',
   'popo': 'poh poh', 'bobo': 'boh boh', 'momo': 'moh moh',
-  'pipi': 'pee pee', 'bibi': 'bee bee', 'pupu': 'pooh pooh', 'mumu': 'mooh mooh',
+  'pipi': 'pih pih', 'bibi': 'bih bih', 'pupu': 'pooh pooh', 'mumu': 'mooh mooh',
+  'tata': 'tah tah', 'toto': 'toh toh', 'titi': 'tih tih', 'tutu': 'tooh tooh',
+  'dada': 'dah dah', 'dodo': 'doh doh', 'didi': 'dih dih', 'dudu': 'dooh dooh',
+  'nana': 'nah nah', 'nono': 'noh noh', 'nini': 'nih nih', 'nunu': 'nooh nooh',
 };
 
 export const getSyllablePhonetic = (display: string): string => {
@@ -67,24 +76,55 @@ export const generateCVCV = (sound: string): SyllableItem[] => {
   }));
 };
 
-// Clinical VC targets (10 items across early motor consonants)
-const vcClinicalTargets: SyllableItem[] = [
-  { syllable: 'ap', display: 'ap' },
-  { syllable: 'ab', display: 'ab' },
-  { syllable: 'am', display: 'am' },
-  { syllable: 'op', display: 'op' },
-  { syllable: 'ob', display: 'ob' },
-  { syllable: 'om', display: 'om' },
-  { syllable: 'ip', display: 'ip' },
-  { syllable: 'ib', display: 'ib' },
-  { syllable: 'up', display: 'up' },
-  { syllable: 'ub', display: 'ub' },
-];
+// Per-sound VC targets with visuals
+const vcPerSound: Record<string, SyllableItem[]> = {
+  P: [
+    { syllable: 'ap', display: 'ap', image: '😮' },
+    { syllable: 'op', display: 'op', image: '⭕' },
+    { syllable: 'ip', display: 'ip', image: '😬' },
+    { syllable: 'up', display: 'up', image: '⬆️' },
+    { syllable: 'ep', display: 'ep', image: '😊' },
+  ],
+  B: [
+    { syllable: 'ab', display: 'ab', image: '😮' },
+    { syllable: 'ob', display: 'ob', image: '⭕' },
+    { syllable: 'ib', display: 'ib', image: '😬' },
+    { syllable: 'ub', display: 'ub', image: '⬆️' },
+    { syllable: 'eb', display: 'eb', image: '😊' },
+  ],
+  M: [
+    { syllable: 'am', display: 'am', image: '😮' },
+    { syllable: 'om', display: 'om', image: '⭕' },
+    { syllable: 'im', display: 'im', image: '😬' },
+    { syllable: 'um', display: 'um', image: '⬆️' },
+    { syllable: 'em', display: 'em', image: '😊' },
+  ],
+  T: [
+    { syllable: 'at', display: 'at', image: '😮' },
+    { syllable: 'ot', display: 'ot', image: '⭕' },
+    { syllable: 'it', display: 'it', image: '😬' },
+    { syllable: 'ut', display: 'ut', image: '⬆️' },
+    { syllable: 'et', display: 'et', image: '😊' },
+  ],
+  D: [
+    { syllable: 'ad', display: 'ad', image: '😮' },
+    { syllable: 'od', display: 'od', image: '⭕' },
+    { syllable: 'id', display: 'id', image: '😬' },
+    { syllable: 'ud', display: 'ud', image: '⬆️' },
+    { syllable: 'ed', display: 'ed', image: '😊' },
+  ],
+  N: [
+    { syllable: 'an', display: 'an', image: '😮' },
+    { syllable: 'on', display: 'on', image: '⭕' },
+    { syllable: 'in', display: 'in', image: '😬' },
+    { syllable: 'un', display: 'un', image: '⬆️' },
+    { syllable: 'en', display: 'en', image: '😊' },
+  ],
+};
 
 export const generateVC = (sound: string): SyllableItem[] => {
-  // For early motor sounds, return full clinical VC list
   const s = sound.toUpperCase();
-  if (earlyMotorSounds.includes(sound.toLowerCase())) return vcClinicalTargets;
+  if (vcPerSound[s]) return vcPerSound[s];
   // Fallback for other sounds
   const sl = sound.toLowerCase();
   return vowels.map(v => ({
@@ -143,49 +183,55 @@ export const generateCVCVTargets = (sound: string): SyllableItem[] => {
   }));
 };
 
-// Clinical CVC targets (10 items across early motor consonants)
-const cvcClinicalTargets: CVCItem[] = [
-  { word: "pop", display: "pop", image: "🫧" },
-  { word: "bab", display: "bab", image: "👶" },
-  { word: "mam", display: "mam", image: "👩" },
-  { word: "bob", display: "bob", image: "🎈" },
-  { word: "mom", display: "mom", image: "👩" },
-  { word: "pip", display: "pip", image: "🌱" },
-  { word: "bib", display: "bib", image: "👶" },
-  { word: "bum", display: "bum", image: "🥁" },
-  { word: "pup", display: "pup", image: "🐶" },
-  { word: "bub", display: "bub", image: "🫧" },
-];
-
-// Per-sound CVC words for non-motor sounds
-export const cvcWords: Record<string, CVCItem[]> = {
+// Per-sound CVC targets
+const cvcPerSound: Record<string, CVCItem[]> = {
+  P: [
+    { word: "pop", display: "pop", image: "🫧" },
+    { word: "pip", display: "pip", image: "🌱" },
+    { word: "pup", display: "pup", image: "🐶" },
+    { word: "pep", display: "pep", image: "💪" },
+    { word: "pap", display: "pap", image: "👴" },
+  ],
+  B: [
+    { word: "bab", display: "bab", image: "👶" },
+    { word: "bob", display: "bob", image: "🎈" },
+    { word: "bib", display: "bib", image: "🍼" },
+    { word: "bub", display: "bub", image: "🫧" },
+    { word: "bum", display: "bum", image: "🥁" },
+  ],
+  M: [
+    { word: "mam", display: "mam", image: "👩" },
+    { word: "mom", display: "mom", image: "👩‍👧" },
+    { word: "mum", display: "mum", image: "🌸" },
+    { word: "mim", display: "mim", image: "🎭" },
+    { word: "mem", display: "mem", image: "📝" },
+  ],
   T: [
     { word: "tot", display: "tot", image: "👶" },
-    { word: "tap", display: "tap", image: "🚰" },
-    { word: "top", display: "top", image: "🔝" },
-    { word: "tub", display: "tub", image: "🛁" },
-    { word: "ten", display: "ten", image: "🔟" },
+    { word: "tat", display: "tat", image: "🎨" },
+    { word: "tut", display: "tut", image: "📖" },
+    { word: "tit", display: "tit", image: "🐦" },
+    { word: "tet", display: "tet", image: "🎪" },
   ],
   D: [
     { word: "dad", display: "dad", image: "👨" },
-    { word: "dip", display: "dip", image: "🫕" },
-    { word: "dot", display: "dot", image: "⚫" },
-    { word: "dub", display: "dub", image: "🎵" },
-    { word: "din", display: "din", image: "🔔" },
+    { word: "did", display: "did", image: "✅" },
+    { word: "dud", display: "dud", image: "💣" },
+    { word: "dod", display: "dod", image: "🎯" },
+    { word: "ded", display: "ded", image: "📦" },
   ],
   N: [
-    { word: "nap", display: "nap", image: "😴" },
-    { word: "net", display: "net", image: "🥅" },
-    { word: "nod", display: "nod", image: "😊" },
-    { word: "nut", display: "nut", image: "🥜" },
-    { word: "nip", display: "nip", image: "✂️" },
+    { word: "nan", display: "nan", image: "👵" },
+    { word: "nun", display: "nun", image: "⛪" },
+    { word: "non", display: "non", image: "🚫" },
+    { word: "nin", display: "nin", image: "🥷" },
+    { word: "nen", display: "nen", image: "📝" },
   ],
 };
 
 export const getCVCWords = (sound: string): CVCItem[] => {
-  // For early motor sounds (P, B, M), return full clinical CVC list
-  if (['p', 'b', 'm'].includes(sound.toLowerCase())) return cvcClinicalTargets;
-  return cvcWords[sound.toUpperCase()] || [];
+  const s = sound.toUpperCase();
+  return cvcPerSound[s] || [];
 };
 
 // Early motor sounds for Motor Speech mode
