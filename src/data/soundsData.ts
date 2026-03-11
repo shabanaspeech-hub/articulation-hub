@@ -76,24 +76,55 @@ export const generateCVCV = (sound: string): SyllableItem[] => {
   }));
 };
 
-// Clinical VC targets (10 items across early motor consonants)
-const vcClinicalTargets: SyllableItem[] = [
-  { syllable: 'ap', display: 'ap' },
-  { syllable: 'ab', display: 'ab' },
-  { syllable: 'am', display: 'am' },
-  { syllable: 'op', display: 'op' },
-  { syllable: 'ob', display: 'ob' },
-  { syllable: 'om', display: 'om' },
-  { syllable: 'ip', display: 'ip' },
-  { syllable: 'ib', display: 'ib' },
-  { syllable: 'up', display: 'up' },
-  { syllable: 'ub', display: 'ub' },
-];
+// Per-sound VC targets with visuals
+const vcPerSound: Record<string, SyllableItem[]> = {
+  P: [
+    { syllable: 'ap', display: 'ap', image: '😮' },
+    { syllable: 'op', display: 'op', image: '⭕' },
+    { syllable: 'ip', display: 'ip', image: '😬' },
+    { syllable: 'up', display: 'up', image: '⬆️' },
+    { syllable: 'ep', display: 'ep', image: '😊' },
+  ],
+  B: [
+    { syllable: 'ab', display: 'ab', image: '😮' },
+    { syllable: 'ob', display: 'ob', image: '⭕' },
+    { syllable: 'ib', display: 'ib', image: '😬' },
+    { syllable: 'ub', display: 'ub', image: '⬆️' },
+    { syllable: 'eb', display: 'eb', image: '😊' },
+  ],
+  M: [
+    { syllable: 'am', display: 'am', image: '😮' },
+    { syllable: 'om', display: 'om', image: '⭕' },
+    { syllable: 'im', display: 'im', image: '😬' },
+    { syllable: 'um', display: 'um', image: '⬆️' },
+    { syllable: 'em', display: 'em', image: '😊' },
+  ],
+  T: [
+    { syllable: 'at', display: 'at', image: '😮' },
+    { syllable: 'ot', display: 'ot', image: '⭕' },
+    { syllable: 'it', display: 'it', image: '😬' },
+    { syllable: 'ut', display: 'ut', image: '⬆️' },
+    { syllable: 'et', display: 'et', image: '😊' },
+  ],
+  D: [
+    { syllable: 'ad', display: 'ad', image: '😮' },
+    { syllable: 'od', display: 'od', image: '⭕' },
+    { syllable: 'id', display: 'id', image: '😬' },
+    { syllable: 'ud', display: 'ud', image: '⬆️' },
+    { syllable: 'ed', display: 'ed', image: '😊' },
+  ],
+  N: [
+    { syllable: 'an', display: 'an', image: '😮' },
+    { syllable: 'on', display: 'on', image: '⭕' },
+    { syllable: 'in', display: 'in', image: '😬' },
+    { syllable: 'un', display: 'un', image: '⬆️' },
+    { syllable: 'en', display: 'en', image: '😊' },
+  ],
+};
 
 export const generateVC = (sound: string): SyllableItem[] => {
-  // For early motor sounds, return full clinical VC list
   const s = sound.toUpperCase();
-  if (earlyMotorSounds.includes(sound.toLowerCase())) return vcClinicalTargets;
+  if (vcPerSound[s]) return vcPerSound[s];
   // Fallback for other sounds
   const sl = sound.toLowerCase();
   return vowels.map(v => ({
