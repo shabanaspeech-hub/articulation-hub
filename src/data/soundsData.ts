@@ -5,6 +5,7 @@ export type MotorSpeechLevel = 'sound-movement' | 'cv' | 'vc' | 'cvcv' | 'cvc' |
 export interface SyllableItem {
   syllable: string;
   display: string;
+  image?: string;
 }
 
 export interface CVCItem {
