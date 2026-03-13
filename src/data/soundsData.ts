@@ -76,7 +76,7 @@ export const generateCVCV = (sound: string): SyllableItem[] => {
   }));
 };
 
-// Per-sound VC targets with visuals
+// Per-sound VC targets with visuals (clinical list: ap, ab, am, op, ob, om, ip, ib, up, ub)
 const vcPerSound: Record<string, SyllableItem[]> = {
   P: [
     { syllable: 'ap', display: 'ap', image: '😮' },
@@ -84,6 +84,11 @@ const vcPerSound: Record<string, SyllableItem[]> = {
     { syllable: 'ip', display: 'ip', image: '😬' },
     { syllable: 'up', display: 'up', image: '⬆️' },
     { syllable: 'ep', display: 'ep', image: '😊' },
+    { syllable: 'at', display: 'at', image: '🎯' },
+    { syllable: 'ot', display: 'ot', image: '🎯' },
+    { syllable: 'it', display: 'it', image: '🎯' },
+    { syllable: 'ut', display: 'ut', image: '🎯' },
+    { syllable: 'et', display: 'et', image: '🎯' },
   ],
   B: [
     { syllable: 'ab', display: 'ab', image: '😮' },
@@ -91,6 +96,11 @@ const vcPerSound: Record<string, SyllableItem[]> = {
     { syllable: 'ib', display: 'ib', image: '😬' },
     { syllable: 'ub', display: 'ub', image: '⬆️' },
     { syllable: 'eb', display: 'eb', image: '😊' },
+    { syllable: 'ad', display: 'ad', image: '🎯' },
+    { syllable: 'od', display: 'od', image: '🎯' },
+    { syllable: 'id', display: 'id', image: '🎯' },
+    { syllable: 'ud', display: 'ud', image: '🎯' },
+    { syllable: 'ed', display: 'ed', image: '🎯' },
   ],
   M: [
     { syllable: 'am', display: 'am', image: '😮' },
@@ -98,6 +108,11 @@ const vcPerSound: Record<string, SyllableItem[]> = {
     { syllable: 'im', display: 'im', image: '😬' },
     { syllable: 'um', display: 'um', image: '⬆️' },
     { syllable: 'em', display: 'em', image: '😊' },
+    { syllable: 'an', display: 'an', image: '🎯' },
+    { syllable: 'on', display: 'on', image: '🎯' },
+    { syllable: 'in', display: 'in', image: '🎯' },
+    { syllable: 'un', display: 'un', image: '🎯' },
+    { syllable: 'en', display: 'en', image: '🎯' },
   ],
   T: [
     { syllable: 'at', display: 'at', image: '😮' },
@@ -105,6 +120,11 @@ const vcPerSound: Record<string, SyllableItem[]> = {
     { syllable: 'it', display: 'it', image: '😬' },
     { syllable: 'ut', display: 'ut', image: '⬆️' },
     { syllable: 'et', display: 'et', image: '😊' },
+    { syllable: 'ap', display: 'ap', image: '🎯' },
+    { syllable: 'op', display: 'op', image: '🎯' },
+    { syllable: 'ip', display: 'ip', image: '🎯' },
+    { syllable: 'up', display: 'up', image: '🎯' },
+    { syllable: 'ep', display: 'ep', image: '🎯' },
   ],
   D: [
     { syllable: 'ad', display: 'ad', image: '😮' },
@@ -112,6 +132,11 @@ const vcPerSound: Record<string, SyllableItem[]> = {
     { syllable: 'id', display: 'id', image: '😬' },
     { syllable: 'ud', display: 'ud', image: '⬆️' },
     { syllable: 'ed', display: 'ed', image: '😊' },
+    { syllable: 'ab', display: 'ab', image: '🎯' },
+    { syllable: 'ob', display: 'ob', image: '🎯' },
+    { syllable: 'ib', display: 'ib', image: '🎯' },
+    { syllable: 'ub', display: 'ub', image: '🎯' },
+    { syllable: 'eb', display: 'eb', image: '🎯' },
   ],
   N: [
     { syllable: 'an', display: 'an', image: '😮' },
@@ -119,6 +144,11 @@ const vcPerSound: Record<string, SyllableItem[]> = {
     { syllable: 'in', display: 'in', image: '😬' },
     { syllable: 'un', display: 'un', image: '⬆️' },
     { syllable: 'en', display: 'en', image: '😊' },
+    { syllable: 'am', display: 'am', image: '🎯' },
+    { syllable: 'om', display: 'om', image: '🎯' },
+    { syllable: 'im', display: 'im', image: '🎯' },
+    { syllable: 'um', display: 'um', image: '🎯' },
+    { syllable: 'em', display: 'em', image: '🎯' },
   ],
 };
 
