@@ -121,7 +121,14 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
   }
 
   const speakSound = () => {
-    const utterance = new SpeechSynthesisUtterance(data.repetition.split(",")[0].trim());
+    const isolationPhonemeMap: Record<string, string> = {
+      P: "pa",
+      M: "mmm",
+      N: "nnn",
+    };
+    const utterance = new SpeechSynthesisUtterance(
+      isolationPhonemeMap[upperSound] || data.repetition.split(",")[0].trim()
+    );
     utterance.rate = 0.4;
     utterance.pitch = 1.0;
     speechSynthesis.speak(utterance);
