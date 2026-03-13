@@ -213,13 +213,14 @@ export const generateCVCVTargets = (sound: string): SyllableItem[] => {
   }));
 };
 
-// Per-sound CVC targets
+// Per-sound CVC targets - each sound gets its own CVC words (same sound throughout)
+// Clinical targets: P (pop, pep, pip, pup, pap), B (bab, bob, bib, bub, bum), M (mam, mom, mum, mim, mem)
 const cvcPerSound: Record<string, CVCItem[]> = {
   P: [
     { word: "pop", display: "pop", image: "🫧" },
+    { word: "pep", display: "pep", image: "💪" },
     { word: "pip", display: "pip", image: "🌱" },
     { word: "pup", display: "pup", image: "🐶" },
-    { word: "pep", display: "pep", image: "💪" },
     { word: "pap", display: "pap", image: "👴" },
   ],
   B: [
