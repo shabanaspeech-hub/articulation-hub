@@ -40,13 +40,13 @@ const syllablePhoneticMap: Record<string, string> = {
   'cha': 'chah', 'chi': 'chih', 'choo': 'chooh', 'che': 'cheh', 'cho': 'choh',
   'sha': 'shah', 'shi': 'shih', 'shoo': 'shooh', 'she': 'sheh', 'sho': 'shoh',
   'tha': 'thah', 'thi': 'thih', 'thoo': 'thooh', 'the': 'theh', 'tho': 'thoh',
-  // VC phonetics
-  'ap': 'ahp', 'ab': 'ahb', 'am': 'ahm', 'op': 'ohp', 'ob': 'ohb', 'om': 'ohm',
-  'ip': 'ihp', 'ib': 'ihb', 'im': 'ihm', 'up': 'uhp', 'ub': 'uhb', 'um': 'uhm',
-  'ep': 'ehp', 'eb': 'ehb', 'em': 'ehm',
-  'at': 'aht', 'ot': 'oht', 'it': 'iht', 'ut': 'uht', 'et': 'eht',
-  'ad': 'ahd', 'od': 'ohd', 'id': 'ihd', 'ud': 'uhd', 'ed': 'ehd',
-  'an': 'ahn', 'on': 'ohn', 'in': 'ihn', 'un': 'uhn', 'en': 'ehn',
+  // VC phonetics - use clear consonant endings
+  'ap': 'app', 'ab': 'abb', 'am': 'amm', 'op': 'opp', 'ob': 'obb', 'om': 'omm',
+  'ip': 'ipp', 'ib': 'ibb', 'im': 'imm', 'up': 'upp', 'ub': 'ubb', 'um': 'umm',
+  'ep': 'epp', 'eb': 'ebb', 'em': 'emm',
+  'at': 'att', 'ot': 'ott', 'it': 'itt', 'ut': 'utt', 'et': 'ett',
+  'ad': 'add', 'od': 'odd', 'id': 'idd', 'ud': 'udd', 'ed': 'edd',
+  'an': 'ann', 'on': 'onn', 'in': 'inn', 'un': 'unn', 'en': 'enn',
   // CVCV phonetics
   'papa': 'pah pah', 'baba': 'bah bah', 'mama': 'mah mah',
   'popo': 'poh poh', 'bobo': 'boh boh', 'momo': 'moh moh',
