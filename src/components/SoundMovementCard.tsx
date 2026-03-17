@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Volume2 } from "lucide-react";
-import MouthDiagram from "./MouthDiagram";
+import MouthDiagram, { type MouthType } from "./MouthDiagram";
+import VoiceRecorder from "./VoiceRecorder";
 
 interface SoundMovementCardProps {
   sound: string;
@@ -13,7 +14,7 @@ interface MovementData {
   repetition: string;
   mouthSteps: string[];
   lipCue: string;
-  mouthType: "bilabial" | "alveolar";
+  mouthType: MouthType;
   voicing: "voiced" | "voiceless" | "nasal";
 }
 
@@ -91,7 +92,7 @@ const soundMovementData: Record<string, MovementData> = {
   N: {
     cue: "Tongue up, hum through your nose!",
     mouthDesc: "Tongue tip up on ridge, voice ON, air through nose",
-    repetition: "en, en, en, en",
+    repetition: "nnn, nnn, nnn, nnn",
     mouthSteps: [
       "👅 Lift tongue tip UP",
       "📍 Press on bumpy ridge behind top teeth",
@@ -102,9 +103,219 @@ const soundMovementData: Record<string, MovementData> = {
     mouthType: "alveolar",
     voicing: "nasal",
   },
+  K: {
+    cue: "Push the back of your tongue up and cough!",
+    mouthDesc: "Back of tongue pushes up to soft palate, voice OFF, quick release",
+    repetition: "kuh, kuh, kuh, kuh",
+    mouthSteps: [
+      "👅 Push the BACK of tongue up high",
+      "📍 Touch the soft back part of the roof",
+      "🔇 Voice stays OFF",
+      "💨 Drop tongue quickly — k!",
+    ],
+    lipCue: "Tongue back UP — drop for k",
+    mouthType: "velar",
+    voicing: "voiceless",
+  },
+  G: {
+    cue: "Back of tongue up — voice ON — drop!",
+    mouthDesc: "Back of tongue to soft palate, voice ON, release",
+    repetition: "guh, guh, guh, guh",
+    mouthSteps: [
+      "👅 Push the BACK of tongue up high",
+      "📍 Touch the soft back part of the roof",
+      "🔊 Voice ON — feel throat buzz",
+      "💨 Drop tongue — g!",
+    ],
+    lipCue: "Tongue back UP — voice ON — drop",
+    mouthType: "velar",
+    voicing: "voiced",
+  },
+  F: {
+    cue: "Bite your bottom lip gently and blow!",
+    mouthDesc: "Top teeth rest on lower lip, blow air through, voice OFF",
+    repetition: "fff, fff, fff, fff",
+    mouthSteps: [
+      "😬 Top teeth on bottom lip gently",
+      "💨 Blow air through teeth and lip",
+      "🔇 Voice stays OFF",
+      "💨 Hold steady: fffffffffff",
+    ],
+    lipCue: "Teeth on lip — blow air — fff",
+    mouthType: "labiodental",
+    voicing: "voiceless",
+  },
+  V: {
+    cue: "Teeth on lip — turn your voice ON and buzz!",
+    mouthDesc: "Top teeth on lower lip, voice ON, air flows through",
+    repetition: "vvv, vvv, vvv, vvv",
+    mouthSteps: [
+      "😬 Top teeth on bottom lip gently",
+      "💨 Blow air through teeth and lip",
+      "🔊 Voice ON — feel the buzz",
+      "🔊 Hold steady: vvvvvvvv",
+    ],
+    lipCue: "Teeth on lip — voice ON — vvv",
+    mouthType: "labiodental",
+    voicing: "voiced",
+  },
+  S: {
+    cue: "Tongue behind teeth — blow like a snake!",
+    mouthDesc: "Tongue tip behind top teeth, narrow air stream, voice OFF",
+    repetition: "sss, sss, sss, sss",
+    mouthSteps: [
+      "👅 Tongue tip behind top teeth (not touching)",
+      "😁 Teeth close together — small gap",
+      "🔇 Voice stays OFF",
+      "💨 Blow air through: sssssss",
+    ],
+    lipCue: "Tongue behind teeth — blow sss",
+    mouthType: "alveolar",
+    voicing: "voiceless",
+  },
+  Z: {
+    cue: "Same as S but turn your voice ON — buzz!",
+    mouthDesc: "Tongue tip behind top teeth, voice ON, buzzing sound",
+    repetition: "zzz, zzz, zzz, zzz",
+    mouthSteps: [
+      "👅 Tongue tip behind top teeth (not touching)",
+      "😁 Teeth close together — small gap",
+      "🔊 Voice ON — feel the buzz",
+      "🔊 Blow air and buzz: zzzzzzz",
+    ],
+    lipCue: "Tongue behind teeth — voice ON — zzz",
+    mouthType: "alveolar",
+    voicing: "voiced",
+  },
+  H: {
+    cue: "Open your mouth wide and push air out!",
+    mouthDesc: "Mouth open, push air from throat, like fogging a mirror",
+    repetition: "huh, huh, huh, huh",
+    mouthSteps: [
+      "😮 Open mouth wide",
+      "🔇 Voice stays OFF",
+      "💨 Push air out from deep in throat",
+      "💨 Like fogging a mirror: hhhhhh",
+    ],
+    lipCue: "Mouth open — push air — hhh",
+    mouthType: "glottal",
+    voicing: "voiceless",
+  },
+  W: {
+    cue: "Round your lips tight like blowing a candle!",
+    mouthDesc: "Lips rounded tightly, voice ON, glide to next vowel",
+    repetition: "wuh, wuh, wuh, wuh",
+    mouthSteps: [
+      "😗 Round lips into a small circle",
+      "🔊 Voice ON — feel throat buzz",
+      "👅 Tongue stays low and relaxed",
+      "😮 Glide lips open: wuh",
+    ],
+    lipCue: "Lips round — voice ON — glide open",
+    mouthType: "bilabial",
+    voicing: "voiced",
+  },
+  Y: {
+    cue: "Smile big and push tongue up — yuh!",
+    mouthDesc: "Tongue high and forward, lips spread in smile, voice ON",
+    repetition: "yuh, yuh, yuh, yuh",
+    mouthSteps: [
+      "😁 Spread lips into a big smile",
+      "👅 Push tongue up high and forward",
+      "🔊 Voice ON",
+      "😮 Glide tongue down: yuh",
+    ],
+    lipCue: "Smile — tongue up — glide — yuh",
+    mouthType: "palatal",
+    voicing: "voiced",
+  },
+  L: {
+    cue: "Tongue tip UP behind your teeth — hold it!",
+    mouthDesc: "Tongue tip touches ridge behind top teeth, air flows over sides",
+    repetition: "la, la, la, la",
+    mouthSteps: [
+      "👅 Lift tongue tip UP to bumpy ridge",
+      "📍 Hold tongue tip there — don't let go!",
+      "🔊 Voice ON",
+      "💨 Air flows over the SIDES of tongue: lll",
+    ],
+    lipCue: "Tongue tip UP and hold — lll",
+    mouthType: "lateral",
+    voicing: "voiced",
+  },
+  R: {
+    cue: "Curl your tongue back — like a growl!",
+    mouthDesc: "Tongue curled back or bunched up, voice ON, steady sound",
+    repetition: "rrr, rrr, rrr, rrr",
+    mouthSteps: [
+      "👅 Curl tongue tip back (or bunch tongue up)",
+      "📍 Tongue sides touch back teeth",
+      "🔊 Voice ON",
+      "🔊 Hold steady: rrrrrrr",
+    ],
+    lipCue: "Tongue curled back — voice ON — rrr",
+    mouthType: "retroflex",
+    voicing: "voiced",
+  },
+  J: {
+    cue: "Tongue up — push then slide — voice ON!",
+    mouthDesc: "Tongue tip to ridge, push then slide into 'zh', voice ON",
+    repetition: "juh, juh, juh, juh",
+    mouthSteps: [
+      "👅 Lift tongue to bumpy ridge",
+      "📍 Push tongue against ridge",
+      "🔊 Voice ON — feel buzz",
+      "💨 Release and slide: juh!",
+    ],
+    lipCue: "Tongue up — push — slide — juh",
+    mouthType: "postalveolar",
+    voicing: "voiced",
+  },
+  CH: {
+    cue: "Tongue up — push then slide — like a train!",
+    mouthDesc: "Tongue tip to ridge, push then slide into 'sh', voice OFF",
+    repetition: "ch, ch, ch, ch",
+    mouthSteps: [
+      "👅 Lift tongue to bumpy ridge",
+      "📍 Push tongue firmly against ridge",
+      "🔇 Voice stays OFF",
+      "💨 Release and slide: ch! ch! ch!",
+    ],
+    lipCue: "Tongue up — push — slide — ch",
+    mouthType: "postalveolar",
+    voicing: "voiceless",
+  },
+  SH: {
+    cue: "Tongue back a little — round lips — shhhh!",
+    mouthDesc: "Tongue slightly behind ridge, lips rounded, voice OFF",
+    repetition: "shh, shh, shh, shh",
+    mouthSteps: [
+      "👅 Tongue slightly behind the bumpy ridge",
+      "😗 Round lips into a circle",
+      "🔇 Voice stays OFF",
+      "💨 Blow air through: shhhhhh",
+    ],
+    lipCue: "Tongue back — lips round — shhh",
+    mouthType: "postalveolar",
+    voicing: "voiceless",
+  },
+  TH: {
+    cue: "Stick tongue between your teeth and blow!",
+    mouthDesc: "Tongue tip between top and bottom teeth, air flows over tongue",
+    repetition: "th, th, th, th",
+    mouthSteps: [
+      "👅 Stick tongue tip between your teeth",
+      "😬 Teeth rest gently on tongue",
+      "🔇 Voice stays OFF (voiceless TH)",
+      "💨 Blow air over tongue: thhhh",
+    ],
+    lipCue: "Tongue between teeth — blow — thh",
+    mouthType: "dental",
+    voicing: "voiceless",
+  },
 };
 
-const allSounds = ["M", "B", "P", "T", "D", "N"];
+const allSounds = Object.keys(soundMovementData);
 
 const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
   const upperSound = sound.toUpperCase();
@@ -114,7 +325,7 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
     return (
       <div className="practice-card flex flex-col items-center gap-4 p-8">
         <p className="font-nunito text-muted-foreground">
-          Sound movement practice is available for early motor sounds: M, B, P, T, D, N
+          Sound movement data not available for this sound.
         </p>
       </div>
     );
@@ -122,9 +333,10 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
 
   const speakSound = () => {
     const isolationPhonemeMap: Record<string, string> = {
-      P: "pa",
-      M: "mmm",
-      N: "nnn",
+      P: "pa", M: "mmm", N: "nnn",
+      F: "fff", V: "vvv", S: "sss", Z: "zzz",
+      SH: "shhh", TH: "thhh", H: "hhh",
+      L: "lll", R: "rrr",
     };
     const utterance = new SpeechSynthesisUtterance(
       isolationPhonemeMap[upperSound] || data.repetition.split(",")[0].trim()
@@ -210,6 +422,9 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
           Tap to hear slow repetition
         </p>
       </motion.button>
+
+      {/* Voice Recorder */}
+      <VoiceRecorder label="🎙️ Now you try! Record yourself:" />
     </motion.div>
   );
 };
