@@ -265,8 +265,8 @@ export const getCVCWords = (sound: string): CVCItem[] => {
   return cvcPerSound[s] || [];
 };
 
-// Early motor sounds for Motor Speech mode
-export const earlyMotorSounds = ['p', 'b', 'm', 't', 'd', 'n'];
+// All sounds available in Motor Speech mode
+export const earlyMotorSounds = ['p', 'b', 'm', 'h', 'w', 'y', 'd', 'n', 't', 'k', 'g', 'f', 'v', 'ch', 'j', 'l', 'r', 's', 'z', 'sh', 'th'];
 
 export interface WordItem {
   word: string;

@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { WordItem, PracticeLevel, SyllableItem, CVCItem, getSyllablePhonetic } from "@/data/soundsData";
 import { Volume2, Mic } from "lucide-react";
+import VoiceRecorder from "./VoiceRecorder";
 
 interface PracticeCardProps {
   word?: WordItem;
@@ -191,6 +192,9 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
         <Mic className="w-5 h-5" />
         Say "{soundLetter.toUpperCase()}"
       </motion.button>
+
+      {/* Voice Recorder */}
+      <VoiceRecorder label="🎙️ Now you try! Record yourself:" />
 
       {/* Position indicator - only for word levels */}
       {!isSyllableLevel && (
