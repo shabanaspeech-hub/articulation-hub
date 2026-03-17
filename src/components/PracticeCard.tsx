@@ -193,6 +193,9 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
         Say "{soundLetter.toUpperCase()}"
       </motion.button>
 
+      {/* Voice Recorder */}
+      <VoiceRecorder label="🎙️ Now you try! Record yourself:" />
+
       {/* Position indicator - only for word levels */}
       {!isSyllableLevel && (
         <div className="text-sm text-muted-foreground font-nunito capitalize">
