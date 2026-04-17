@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Volume2 } from "lucide-react";
 import MouthDiagram, { type MouthType } from "./MouthDiagram";
 import VoiceRecorder from "./VoiceRecorder";
+import { getIsolationSpeechText, getPhoneticRepetitionText, speakPhoneticText } from "@/lib/speech";
 
 interface SoundMovementCardProps {
   sound: string;
@@ -36,7 +37,7 @@ const soundMovementData: Record<string, MovementData> = {
   B: {
     cue: "Put lips together, then POP them open!",
     mouthDesc: "Lips pressed together, then burst open with voice ON",
-    repetition: "buh, buh, buh, buh",
+    repetition: "ba, ba, ba, ba",
     mouthSteps: [
       "😶 Press lips together",
       "💨 Build up air behind lips",
@@ -64,7 +65,7 @@ const soundMovementData: Record<string, MovementData> = {
   T: {
     cue: "Tap your tongue tip on the bumpy spot!",
     mouthDesc: "Tongue tip taps the ridge behind top teeth, voice OFF",
-    repetition: "tuh, tuh, tuh, tuh",
+    repetition: "ta, ta, ta, ta",
     mouthSteps: [
       "👅 Lift tongue tip UP",
       "📍 Touch the bumpy ridge behind top teeth",
@@ -78,7 +79,7 @@ const soundMovementData: Record<string, MovementData> = {
   D: {
     cue: "Tap your tongue and turn your voice ON!",
     mouthDesc: "Tongue tip taps ridge behind top teeth, voice ON",
-    repetition: "duh, duh, duh, duh",
+    repetition: "da, da, da, da",
     mouthSteps: [
       "👅 Lift tongue tip UP",
       "📍 Touch the bumpy ridge behind top teeth",
@@ -106,7 +107,7 @@ const soundMovementData: Record<string, MovementData> = {
   K: {
     cue: "Push the back of your tongue up and cough!",
     mouthDesc: "Back of tongue pushes up to soft palate, voice OFF, quick release",
-    repetition: "kuh, kuh, kuh, kuh",
+    repetition: "ka, ka, ka, ka",
     mouthSteps: [
       "👅 Push the BACK of tongue up high",
       "📍 Touch the soft back part of the roof",
@@ -120,7 +121,7 @@ const soundMovementData: Record<string, MovementData> = {
   G: {
     cue: "Back of tongue up — voice ON — drop!",
     mouthDesc: "Back of tongue to soft palate, voice ON, release",
-    repetition: "guh, guh, guh, guh",
+    repetition: "ga, ga, ga, ga",
     mouthSteps: [
       "👅 Push the BACK of tongue up high",
       "📍 Touch the soft back part of the roof",
@@ -190,7 +191,7 @@ const soundMovementData: Record<string, MovementData> = {
   H: {
     cue: "Open your mouth wide and push air out!",
     mouthDesc: "Mouth open, push air from throat, like fogging a mirror",
-    repetition: "huh, huh, huh, huh",
+    repetition: "hhh, hhh, hhh, hhh",
     mouthSteps: [
       "😮 Open mouth wide",
       "🔇 Voice stays OFF",
@@ -232,7 +233,7 @@ const soundMovementData: Record<string, MovementData> = {
   L: {
     cue: "Tongue tip UP behind your teeth — hold it!",
     mouthDesc: "Tongue tip touches ridge behind top teeth, air flows over sides",
-    repetition: "la, la, la, la",
+    repetition: "llll, llll, llll, llll",
     mouthSteps: [
       "👅 Lift tongue tip UP to bumpy ridge",
       "📍 Hold tongue tip there — don't let go!",
@@ -246,7 +247,7 @@ const soundMovementData: Record<string, MovementData> = {
   R: {
     cue: "Curl your tongue back — like a growl!",
     mouthDesc: "Tongue curled back or bunched up, voice ON, steady sound",
-    repetition: "rrr, rrr, rrr, rrr",
+    repetition: "rrrr, rrrr, rrrr, rrrr",
     mouthSteps: [
       "👅 Curl tongue tip back (or bunch tongue up)",
       "📍 Tongue sides touch back teeth",
@@ -274,7 +275,7 @@ const soundMovementData: Record<string, MovementData> = {
   CH: {
     cue: "Tongue up — push then slide — like a train!",
     mouthDesc: "Tongue tip to ridge, push then slide into 'sh', voice OFF",
-    repetition: "ch, ch, ch, ch",
+    repetition: "cha, cha, cha, cha",
     mouthSteps: [
       "👅 Lift tongue to bumpy ridge",
       "📍 Push tongue firmly against ridge",
@@ -288,7 +289,7 @@ const soundMovementData: Record<string, MovementData> = {
   SH: {
     cue: "Tongue back a little — round lips — shhhh!",
     mouthDesc: "Tongue slightly behind ridge, lips rounded, voice OFF",
-    repetition: "shh, shh, shh, shh",
+    repetition: "shhh, shhh, shhh, shhh",
     mouthSteps: [
       "👅 Tongue slightly behind the bumpy ridge",
       "😗 Round lips into a circle",
@@ -302,7 +303,7 @@ const soundMovementData: Record<string, MovementData> = {
   TH: {
     cue: "Stick tongue between your teeth and blow!",
     mouthDesc: "Tongue tip between top and bottom teeth, air flows over tongue",
-    repetition: "th, th, th, th",
+    repetition: "thhh, thhh, thhh, thhh",
     mouthSteps: [
       "👅 Stick tongue tip between your teeth",
       "😬 Teeth rest gently on tongue",
@@ -332,25 +333,11 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
   }
 
   const speakSound = () => {
-    const isolationPhonemeMap: Record<string, string> = {
-      P: "pa", M: "mmm", N: "nnn",
-      F: "fff", V: "vvv", S: "sss", Z: "zzz",
-      SH: "shhh", TH: "thhh", H: "hhh",
-      L: "lll", R: "rrr",
-    };
-    const utterance = new SpeechSynthesisUtterance(
-      isolationPhonemeMap[upperSound] || data.repetition.split(",")[0].trim()
-    );
-    utterance.rate = 0.4;
-    utterance.pitch = 1.0;
-    speechSynthesis.speak(utterance);
+    speakPhoneticText(getIsolationSpeechText(upperSound), { rate: 0.4, pitch: 1 });
   };
 
   const speakRepetition = () => {
-    const utterance = new SpeechSynthesisUtterance(data.repetition);
-    utterance.rate = 0.35;
-    utterance.pitch = 1.0;
-    speechSynthesis.speak(utterance);
+    speakPhoneticText(getPhoneticRepetitionText(upperSound, data.repetition), { rate: 0.35, pitch: 1 });
   };
 
   return (

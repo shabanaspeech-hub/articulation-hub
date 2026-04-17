@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { WordItem, PracticeLevel, SyllableItem, CVCItem, getSyllablePhonetic } from "@/data/soundsData";
 import { Volume2, Mic } from "lucide-react";
 import VoiceRecorder from "./VoiceRecorder";
+import { getIsolationSpeechText, speakPhoneticText } from "@/lib/speech";
 
 interface PracticeCardProps {
   word?: WordItem;
@@ -48,19 +49,8 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
     );
   };
 
-  const phoneticMap: Record<string, string> = {
-    'B': 'b', 'P': 'p', 'D': 'd', 'T': 't', 'K': 'k', 'G': 'g',
-    'F': 'f', 'V': 'v', 'S': 's', 'Z': 'z', 'H': 'h',
-    'M': 'mmm', 'N': 'nnn', 'L': 'l', 'R': 'r', 'W': 'w', 'Y': 'y',
-    'J': 'j', 'CH': 'ch', 'SH': 'sh', 'TH': 'th',
-  };
-
   const speakSound = () => {
-    const phonetic = phoneticMap[soundLetter.toUpperCase()] || soundLetter.toLowerCase();
-    const utterance = new SpeechSynthesisUtterance(phonetic);
-    utterance.rate = 0.5;
-    utterance.pitch = 1.0;
-    speechSynthesis.speak(utterance);
+    speakPhoneticText(getIsolationSpeechText(soundLetter), { rate: 0.45, pitch: 1 });
   };
 
   const speakWord = () => {
@@ -81,10 +71,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
       }
     }
     
-    const utterance = new SpeechSynthesisUtterance(speakText);
-    utterance.rate = isSyllableLevel ? 0.6 : 0.8;
-    utterance.pitch = 1.1;
-    speechSynthesis.speak(utterance);
+    speakPhoneticText(speakText, { rate: isSyllableLevel ? 0.6 : 0.8, pitch: 1.1 });
   };
 
   return (
