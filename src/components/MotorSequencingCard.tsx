@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Volume2, Zap } from "lucide-react";
+import { getSpokenSequenceText, speakPhoneticText } from "@/lib/speech";
 
 interface MotorSequencingCardProps {
   sound: string;
@@ -31,10 +32,7 @@ const MotorSequencingCard = ({ sound, currentIndex }: MotorSequencingCardProps) 
   const current = sequences[currentIndex % sequences.length];
 
   const speakSequence = () => {
-    const utterance = new SpeechSynthesisUtterance(current.display.replace(/\s+/g, " "));
-    utterance.rate = 0.4;
-    utterance.pitch = 1.0;
-    speechSynthesis.speak(utterance);
+    speakPhoneticText(getSpokenSequenceText(current.display), { rate: 0.4, pitch: 1 });
   };
 
   return (
