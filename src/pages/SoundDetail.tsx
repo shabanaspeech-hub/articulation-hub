@@ -13,6 +13,7 @@ import NavigationControls from "@/components/NavigationControls";
 import SoundMovementCard from "@/components/SoundMovementCard";
 import MotorSequencingCard from "@/components/MotorSequencingCard";
 import SpeechMotorPathway from "@/components/SpeechMotorPathway";
+import GamesView from "@/components/games/GamesView";
 import { useAppMode } from "@/contexts/AppModeContext";
 import { generateSequences } from "@/components/MotorSequencingCard";
 
@@ -37,6 +38,7 @@ const SoundDetail = () => {
   const isMotorSequencing = activeLevel === "motor-sequencing";
   const isCVC = activeLevel === "cvc";
   const isWordLevel = activeLevel === "words" || activeLevel === "phrases" || activeLevel === "sentences";
+  const isGames = activeLevel === "games";
 
   const syllables = useMemo(() => {
     if (!sound) return [];
@@ -216,6 +218,9 @@ const SoundDetail = () => {
 
       {/* Main Practice Area */}
       <main className="flex-1 container flex flex-col items-center justify-center py-8 overflow-hidden">
+        {isGames ? (
+          <GamesView sound={sound} />
+        ) : (
         <motion.div
           key={`swipe-${activeLevel}-${currentIndex}`}
           className="w-full flex flex-col items-center"
@@ -277,10 +282,11 @@ const SoundDetail = () => {
             />
           )}
         </motion.div>
+        )}
       </main>
 
       {/* Bottom Controls */}
-      {!isSoundMovement && totalItems > 0 && (
+      {!isSoundMovement && !isGames && totalItems > 0 && (
         <div className="sticky bottom-0 bg-background/80 backdrop-blur-lg border-t border-border">
           <div className="container py-4 space-y-4">
             <ProgressBar current={currentIndex} total={totalItems} />
