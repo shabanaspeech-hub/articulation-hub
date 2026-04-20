@@ -1,5 +1,5 @@
 export type Position = 'initial' | 'medial' | 'final';
-export type PracticeLevel = 'cv' | 'vc' | 'cvcv' | 'words' | 'phrases' | 'sentences';
+export type PracticeLevel = 'cv' | 'vc' | 'cvcv' | 'words' | 'phrases' | 'sentences' | 'games';
 export type MotorSpeechLevel = 'sound-movement' | 'cv' | 'vc' | 'cvcv' | 'cvc' | 'motor-sequencing' | 'words' | 'phrases' | 'sentences';
 
 export interface SyllableItem {
