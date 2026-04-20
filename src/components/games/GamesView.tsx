@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Puzzle, Sparkles } from "lucide-react";
-import { Sound, getAllSounds } from "@/data/soundsData";
+import { SoundData, soundsData } from "@/data/soundsData";
 import MatchingGame from "./MatchingGame";
 import PopBalloonGame from "./PopBalloonGame";
 
 interface GamesViewProps {
-  sound: Sound;
+  sound: SoundData;
 }
 
 type GameKey = "matching" | "balloon";
@@ -27,7 +27,7 @@ const GamesView = ({ sound }: GamesViewProps) => {
   ];
 
   // Distractor words from other sounds for sound-discrimination games
-  const distractorWords = getAllSounds()
+  const distractorWords = soundsData
     .filter((s) => s.sound !== sound.sound)
     .flatMap((s) => s.words.initial.slice(0, 2));
 
