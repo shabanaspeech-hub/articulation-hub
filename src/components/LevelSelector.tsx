@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { PracticeLevel } from "@/data/soundsData";
-import { MessageCircle, FileText, BookOpen, Music, Music2, Gamepad2 } from "lucide-react";
+import { MessageCircle, FileText, BookOpen, Music, Music2, Gamepad2, Volume2 } from "lucide-react";
 
 interface LevelSelectorProps {
   selectedLevel: PracticeLevel;
@@ -8,6 +8,7 @@ interface LevelSelectorProps {
 }
 
 const levels: { key: PracticeLevel; label: string; icon: React.ReactNode }[] = [
+  { key: "sound", label: "Sound", icon: <Volume2 className="w-5 h-5" /> },
   { key: "cv", label: "CV", icon: <Music className="w-5 h-5" /> },
   { key: "cvcv", label: "CVCV", icon: <Music2 className="w-5 h-5" /> },
   { key: "words", label: "Words", icon: <FileText className="w-5 h-5" /> },
@@ -18,21 +19,21 @@ const levels: { key: PracticeLevel; label: string; icon: React.ReactNode }[] = [
 
 const LevelSelector = ({ selectedLevel, onLevelChange }: LevelSelectorProps) => {
   return (
-    <div className="flex gap-2 p-1.5 bg-secondary rounded-2xl">
+    <div className="grid w-full grid-cols-3 gap-2 rounded-2xl bg-secondary p-1.5 sm:grid-cols-4 md:grid-cols-7">
       {levels.map((level) => (
         <motion.button
           key={level.key}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => onLevelChange(level.key)}
-          className={`relative flex-1 py-2.5 px-3 rounded-xl font-nunito font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
+          className={`relative min-h-12 rounded-xl px-3 py-2.5 font-nunito text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
             selectedLevel === level.key
               ? "bg-primary text-primary-foreground shadow-md"
               : "text-secondary-foreground hover:bg-primary/10"
           }`}
         >
           {level.icon}
-          <span className="hidden sm:inline">{level.label}</span>
+          <span>{level.label}</span>
         </motion.button>
       ))}
     </div>
