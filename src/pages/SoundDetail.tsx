@@ -25,7 +25,7 @@ const SoundDetail = () => {
   const sound = getSoundById(soundId || "");
   
   const [position, setPosition] = useState<Position>("initial");
-  const [articulationLevel, setArticulationLevel] = useState<PracticeLevel>("cv");
+  const [articulationLevel, setArticulationLevel] = useState<PracticeLevel>("sound");
   const [motorLevel, setMotorLevel] = useState<MotorSpeechLevel>("sound-movement");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showPathway, setShowPathway] = useState(false);
@@ -35,6 +35,7 @@ const SoundDetail = () => {
 
   const isSyllableLevel = activeLevel === "cv" || activeLevel === "cvcv" || activeLevel === "vc";
   const isSoundMovement = activeLevel === "sound-movement";
+  const isIsolationLevel = activeLevel === "sound" || isSoundMovement;
   const isMotorSequencing = activeLevel === "motor-sequencing";
   const isCVC = activeLevel === "cvc";
   const isWordLevel = activeLevel === "words" || activeLevel === "phrases" || activeLevel === "sentences";
@@ -64,12 +65,12 @@ const SoundDetail = () => {
   }, [sound, position]);
 
   const totalItems = useMemo(() => {
-    if (isSoundMovement) return 1;
+    if (isIsolationLevel) return 1;
     if (isSyllableLevel) return syllables.length;
     if (isCVC) return cvcItems.length;
     if (isMotorSequencing) return sequenceCount;
     return words.length;
-  }, [isSoundMovement, isSyllableLevel, isCVC, isMotorSequencing, syllables, cvcItems, sequenceCount, words]);
+  }, [isIsolationLevel, isSyllableLevel, isCVC, isMotorSequencing, syllables, cvcItems, sequenceCount, words]);
 
   const currentWord = isWordLevel ? words[currentIndex] : null;
   const currentSyllable = isSyllableLevel ? syllables[currentIndex] : null;
@@ -224,7 +225,7 @@ const SoundDetail = () => {
         <motion.div
           key={`swipe-${activeLevel}-${currentIndex}`}
           className="w-full flex flex-col items-center"
-          drag={totalItems > 1 && !isSoundMovement ? "x" : false}
+          drag={totalItems > 1 && !isIsolationLevel ? "x" : false}
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.3}
           onDragEnd={(_, info) => {
@@ -239,6 +240,13 @@ const SoundDetail = () => {
           exit={{ opacity: 0, x: -50 }}
           transition={{ duration: 0.25 }}
         >
+          {activeLevel === "sound" && (
+            <SoundMovementCard
+              key={`isolation-${sound.sound}`}
+              sound={sound.sound}
+              currentIndex={0}
+            />
+          )}
           {isSoundMovement && (
             <SoundMovementCard
               key={`movement-${sound.sound}`}
@@ -286,7 +294,7 @@ const SoundDetail = () => {
       </main>
 
       {/* Bottom Controls */}
-      {!isSoundMovement && !isGames && totalItems > 0 && (
+      {!isIsolationLevel && !isGames && totalItems > 0 && (
         <div className="sticky bottom-0 bg-background/80 backdrop-blur-lg border-t border-border">
           <div className="container py-4 space-y-4">
             <ProgressBar current={currentIndex} total={totalItems} />
