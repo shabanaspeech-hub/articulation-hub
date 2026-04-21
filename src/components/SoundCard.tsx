@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { SoundData } from "@/data/soundsData";
 import { useNavigate } from "react-router-dom";
+import { Volume2 } from "lucide-react";
+import { getIsolationSpeechText, speakPhoneticText } from "@/lib/speech";
 
 interface SoundCardProps {
   sound: SoundData;
