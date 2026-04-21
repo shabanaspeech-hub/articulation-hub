@@ -80,6 +80,9 @@ const Index = () => {
         <p className="text-xs text-muted-foreground/70 font-nunito">
           Made by Speech Language Therapist <span className="font-semibold text-primary">Shabana Tariq</span>
         </p>
+        <p className="text-xs text-muted-foreground/70 font-nunito">
+          <a href="/privacy" className="hover:underline">Privacy Policy</a>
+        </p>
       </footer>
     </div>
   );
