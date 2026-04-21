@@ -1,51 +1,54 @@
 import { getSyllablePhonetic } from "@/data/soundsData";
 
+// Phoneme-level isolation production (NOT letter names).
+// Whispered/unvoiced stops use minimal vowel; continuants are sustained.
 const isolationSpeechMap: Record<string, string> = {
-  P: "pa",
-  B: "ba",
-  M: "mmm",
-  T: "ta",
+  P: "p",         // whispered /p/, no added vowel
+  B: "ba",        // voiced stop CV
+  M: "mmmm",      // continuous nasal
+  T: "t",         // soft /t/, no vowel
   D: "da",
-  N: "nnn",
-  K: "ka",
+  N: "nnnn",      // continuous nasal
+  K: "k",
   G: "ga",
-  F: "ffff",
-  V: "vvvv",
-  S: "ssss",
-  Z: "zzzz",
-  H: "hhh",
-  W: "wuh",
-  Y: "yuh",
+  F: "fffff",     // sustained fricative
+  V: "vvvvv",
+  S: "sssss",
+  Z: "zzzzz",
+  H: "haa",       // soft breathy haa
+  W: "wa",
+  Y: "ya",
   L: "llll",
   R: "rrrr",
-  J: "juh",
-  CH: "cha",
-  SH: "shhh",
-  TH: "thhh",
+  J: "ja",
+  CH: "ch",
+  SH: "shhhh",
+  TH: "thhhh",
 };
 
+// For repetition practice: repeat the same phoneme model with brief pauses.
 const repetitionSpeechMap: Record<string, string> = {
-  P: "pa, pa, pa, pa",
+  P: "p, p, p, p",
   B: "ba, ba, ba, ba",
-  M: "mmm, mmm, mmm, mmm",
-  T: "ta, ta, ta, ta",
+  M: "mmmm, mmmm, mmmm",
+  T: "t, t, t, t",
   D: "da, da, da, da",
-  N: "nnn, nnn, nnn, nnn",
-  K: "ka, ka, ka, ka",
+  N: "nnnn, nnnn, nnnn",
+  K: "k, k, k, k",
   G: "ga, ga, ga, ga",
-  F: "ffff, ffff, ffff, ffff",
-  V: "vvvv, vvvv, vvvv, vvvv",
-  S: "ssss, ssss, ssss, ssss",
-  Z: "zzzz, zzzz, zzzz, zzzz",
-  H: "hhh, hhh, hhh, hhh",
-  W: "wuh, wuh, wuh, wuh",
-  Y: "yuh, yuh, yuh, yuh",
-  L: "llll, llll, llll, llll",
-  R: "rrrr, rrrr, rrrr, rrrr",
-  J: "juh, juh, juh, juh",
-  CH: "cha, cha, cha, cha",
-  SH: "shhh, shhh, shhh, shhh",
-  TH: "thhh, thhh, thhh, thhh",
+  F: "fffff, fffff, fffff",
+  V: "vvvvv, vvvvv, vvvvv",
+  S: "sssss, sssss, sssss",
+  Z: "zzzzz, zzzzz, zzzzz",
+  H: "haa, haa, haa, haa",
+  W: "wa, wa, wa, wa",
+  Y: "ya, ya, ya, ya",
+  L: "llll, llll, llll",
+  R: "rrrr, rrrr, rrrr",
+  J: "ja, ja, ja, ja",
+  CH: "ch, ch, ch, ch",
+  SH: "shhhh, shhhh, shhhh",
+  TH: "thhhh, thhhh, thhhh",
 };
 
 export const getIsolationSpeechText = (sound: string) => {
