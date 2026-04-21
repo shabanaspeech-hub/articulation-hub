@@ -174,10 +174,10 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
         whileTap={{ scale: 0.9 }}
         onClick={speakSound}
         className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent text-accent-foreground font-fredoka text-lg shadow-md hover:shadow-lg transition-shadow"
-        aria-label={`Say the ${soundLetter} sound`}
+        aria-label={`Play the ${soundLetter.toUpperCase()} sound`}
       >
         <Mic className="w-5 h-5" />
-        Say "{soundLetter.toUpperCase()}"
+        Play sound
       </motion.button>
 
       {/* Voice Recorder */}

@@ -7,16 +7,17 @@ import {
 } from "@/lib/speech";
 
 describe("speech phonetic mapping", () => {
-  it("uses sustained phonemes for continuant isolation sounds", () => {
-    expect(getIsolationSpeechText("H")).toBe("hhh");
-    expect(getIsolationSpeechText("F")).toBe("ffff");
-    expect(getIsolationSpeechText("L")).toBe("llll");
-    expect(getIsolationSpeechText("TH")).toBe("thhh");
+  it("uses motor-speech-friendly isolation outputs instead of alphabet names", () => {
+    expect(getIsolationSpeechText("P")).toBe("p");
+    expect(getIsolationSpeechText("H")).toBe("haa");
+    expect(getIsolationSpeechText("F")).toBe("fffff");
+    expect(getIsolationSpeechText("M")).toBe("mmmm");
   });
 
-  it("keeps motor repetition output phonetic instead of alphabetic", () => {
-    expect(getPhoneticRepetitionText("N", "en, en, en, en")).toBe("nnn, nnn, nnn, nnn");
-    expect(getPhoneticRepetitionText("S", "es, es, es, es")).toBe("ssss, ssss, ssss, ssss");
+  it("keeps repetition output phonetic instead of alphabetic", () => {
+    expect(getPhoneticRepetitionText("N", "en, en, en, en")).toBe("nnnn, nnnn, nnnn");
+    expect(getPhoneticRepetitionText("S", "es, es, es, es")).toBe("sssss, sssss, sssss");
+    expect(getPhoneticRepetitionText("T", "tee, tee, tee")).toBe("t, t, t, t");
   });
 
   it("converts sequencing drills to phonetic speech text", () => {
