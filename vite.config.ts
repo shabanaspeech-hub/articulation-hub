@@ -23,12 +23,13 @@ export default defineConfig(({ mode }) => ({
         name: "Articulation Hub - Speech Therapy",
         short_name: "Articulation Hub",
         description: "Practice speech sounds with pictures, words, phrases, and sentences. Made by Speech Language Therapist Shabana Tariq.",
-        theme_color: "#2db8a4",
-        background_color: "#faf6f0",
+        theme_color: "#4CAF50",
+        background_color: "#ffffff",
         display: "standalone",
         orientation: "portrait",
         scope: "/",
         start_url: "/",
+        categories: ["education", "medical", "kids"],
         icons: [
           {
             src: "/icon-192.png",
