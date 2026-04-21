@@ -21,6 +21,11 @@ const colorClasses = {
 const SoundCard = ({ sound, index }: SoundCardProps) => {
   const navigate = useNavigate();
 
+  const playSound = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    speakPhoneticText(getIsolationSpeechText(sound.sound), { rate: 0.45, pitch: 1 });
+  };
+
   return (
     <motion.button
       initial={{ opacity: 0, y: 20 }}
@@ -29,8 +34,15 @@ const SoundCard = ({ sound, index }: SoundCardProps) => {
       whileHover={{ scale: 1.05, y: -4 }}
       whileTap={{ scale: 0.98 }}
       onClick={() => navigate(`/sound/${sound.id}`)}
-      className="sound-card group cursor-pointer text-left"
+      className="sound-card group cursor-pointer text-left relative"
     >
+      <button
+        onClick={playSound}
+        className="absolute top-2 right-2 z-20 w-8 h-8 rounded-full bg-primary/90 text-primary-foreground flex items-center justify-center shadow-md hover:scale-110 transition-transform"
+        aria-label={`Play ${sound.sound} sound`}
+      >
+        <Volume2 className="w-4 h-4" />
+      </button>
       <div
         className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${colorClasses[sound.color]} opacity-10 group-hover:opacity-20 transition-opacity`}
       />
