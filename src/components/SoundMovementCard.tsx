@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Volume2 } from "lucide-react";
 import MouthDiagram, { type MouthType } from "./MouthDiagram";
 import VoiceRecorder from "./VoiceRecorder";
-import { getIsolationSpeechText, getPhoneticRepetitionText, speakPhoneticText } from "@/lib/speech";
+import { getIsolationIpaLabel, playIsolationSound } from "@/lib/speech";
 
 interface SoundMovementCardProps {
   sound: string;
@@ -333,11 +333,11 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
   }
 
   const speakSound = () => {
-    speakPhoneticText(getIsolationSpeechText(upperSound), { rate: 0.4, pitch: 1 });
+    playIsolationSound(upperSound);
   };
 
   const speakRepetition = () => {
-    speakPhoneticText(getPhoneticRepetitionText(upperSound, data.repetition), { rate: 0.35, pitch: 1 });
+    playIsolationSound(upperSound, 3);
   };
 
   return (
@@ -371,6 +371,7 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
         <h2 className="font-fredoka text-xl md:text-2xl font-bold text-foreground">
           {data.cue}
         </h2>
+        <p className="font-nunito text-lg font-semibold text-primary">{getIsolationIpaLabel(upperSound)}</p>
         <p className="font-nunito text-muted-foreground text-xs bg-secondary/50 rounded-full px-3 py-1 inline-block">
           {data.lipCue}
         </p>

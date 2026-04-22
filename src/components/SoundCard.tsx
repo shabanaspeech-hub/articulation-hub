@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { SoundData } from "@/data/soundsData";
 import { useNavigate } from "react-router-dom";
 import { Volume2 } from "lucide-react";
-import { getIsolationSpeechText, speakPhoneticText } from "@/lib/speech";
+import { getIsolationIpaLabel, playIsolationSound } from "@/lib/speech";
 
 interface SoundCardProps {
   sound: SoundData;
@@ -24,7 +24,7 @@ const SoundCard = ({ sound, index }: SoundCardProps) => {
 
   const playSound = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    speakPhoneticText(getIsolationSpeechText(sound.sound), { rate: 0.45, pitch: 1 });
+    playIsolationSound(sound.sound);
   };
 
   return (
@@ -38,26 +38,19 @@ const SoundCard = ({ sound, index }: SoundCardProps) => {
     >
       <button
         onClick={() => navigate(`/sound/${sound.id}`)}
-        className="sound-card group relative w-full cursor-pointer text-left"
+        className="sound-card group relative w-full cursor-pointer border border-border bg-card px-3 py-5 text-center"
         aria-label={`Open ${sound.displayName}`}
       >
         <div
           className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${colorClasses[sound.color]} opacity-10 group-hover:opacity-20 transition-opacity`}
         />
 
-        <div className="relative z-10 flex flex-col items-center gap-3">
-          <div
-            className={`w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br ${colorClasses[sound.color]} flex items-center justify-center shadow-lg`}
-          >
-            <span className="text-3xl md:text-4xl">{sound.icon}</span>
-          </div>
-
-          <div className="text-center">
-            <h3 className="font-fredoka text-2xl md:text-3xl font-bold text-foreground">
-              {sound.sound}
-            </h3>
-            <p className="text-sm text-muted-foreground mt-1">{sound.displayName}</p>
-          </div>
+        <div className="relative z-10 flex min-h-28 flex-col items-center justify-center gap-2">
+          <h3 className="font-fredoka text-4xl font-bold text-foreground md:text-5xl">
+            {sound.sound}
+          </h3>
+          <p className="text-base font-nunito font-semibold text-primary">{getIsolationIpaLabel(sound.sound)}</p>
+          <p className="text-xs font-nunito text-muted-foreground">Tap to open</p>
         </div>
 
         <div
