@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { WordItem, PracticeLevel, SyllableItem, CVCItem, getSyllablePhonetic } from "@/data/soundsData";
 import { Volume2, Mic } from "lucide-react";
 import VoiceRecorder from "./VoiceRecorder";
-import { getIsolationSpeechText, speakPhoneticText } from "@/lib/speech";
+import { playIsolationSound, speakPhoneticText } from "@/lib/speech";
 
 interface PracticeCardProps {
   word?: WordItem;
@@ -50,7 +50,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
   };
 
   const speakSound = () => {
-    speakPhoneticText(getIsolationSpeechText(soundLetter), { rate: 0.45, pitch: 1 });
+    playIsolationSound(soundLetter);
   };
 
   const speakWord = () => {

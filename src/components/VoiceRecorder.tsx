@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { forwardRef, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mic, Square, Play, RotateCcw } from "lucide-react";
 
@@ -6,7 +6,7 @@ interface VoiceRecorderProps {
   label?: string;
 }
 
-const VoiceRecorder = ({ label = "Record yourself" }: VoiceRecorderProps) => {
+const VoiceRecorder = forwardRef<HTMLDivElement, VoiceRecorderProps>(({ label = "Record yourself" }, ref) => {
   const [state, setState] = useState<"idle" | "recording" | "recorded">("idle");
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [duration, setDuration] = useState(0);
@@ -73,7 +73,7 @@ const VoiceRecorder = ({ label = "Record yourself" }: VoiceRecorderProps) => {
   const formatTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, "0")}`;
 
   return (
-    <div className="w-full flex flex-col items-center gap-2">
+    <div ref={ref} className="w-full flex flex-col items-center gap-2">
       <p className="font-nunito text-xs text-muted-foreground">{label}</p>
 
       <AnimatePresence mode="wait">
@@ -147,6 +147,8 @@ const VoiceRecorder = ({ label = "Record yourself" }: VoiceRecorderProps) => {
       </AnimatePresence>
     </div>
   );
-};
+});
+
+VoiceRecorder.displayName = "VoiceRecorder";
 
 export default VoiceRecorder;

@@ -14,8 +14,10 @@ import SoundMovementCard from "@/components/SoundMovementCard";
 import MotorSequencingCard from "@/components/MotorSequencingCard";
 import SpeechMotorPathway from "@/components/SpeechMotorPathway";
 import GamesView from "@/components/games/GamesView";
+import SoundDetailHero from "@/components/SoundDetailHero";
 import { useAppMode } from "@/contexts/AppModeContext";
 import { generateSequences } from "@/components/MotorSequencingCard";
+import { playIsolationSound } from "@/lib/speech";
 
 const SoundDetail = () => {
   const { soundId } = useParams<{ soundId: string }>();
@@ -200,6 +202,16 @@ const SoundDetail = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <div className="container pt-4">
+        <SoundDetailHero
+          color={sound.color}
+          displayName={sound.displayName}
+          isMotorMode={isMotorMode}
+          onPlay={() => playIsolationSound(sound.sound)}
+          sound={sound.sound}
+        />
+      </div>
 
       {/* Position Selector - only for word levels */}
       {isWordLevel && (

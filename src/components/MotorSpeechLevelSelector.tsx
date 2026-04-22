@@ -21,7 +21,7 @@ const levels: { key: MotorSpeechLevel; label: string; shortLabel: string; icon: 
 
 const MotorSpeechLevelSelector = ({ selectedLevel, onLevelChange }: MotorSpeechLevelSelectorProps) => {
   return (
-    <div className="flex gap-1.5 p-1.5 bg-secondary rounded-2xl overflow-x-auto">
+    <div className="flex gap-1.5 overflow-x-auto rounded-2xl bg-secondary p-1.5">
       {levels.map((level) => (
         <motion.button
           key={level.key}
