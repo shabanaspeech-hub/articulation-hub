@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Volume2 } from "lucide-react";
 import MouthDiagram, { type MouthType } from "./MouthDiagram";
 import VoiceRecorder from "./VoiceRecorder";
-import { getIsolationIpaLabel, playIsolationSound } from "@/lib/speech";
+import { getIsolationSpeechText, getPhoneticRepetitionText, speakPhoneticText } from "@/lib/speech";
 
 interface SoundMovementCardProps {
   sound: string;
@@ -21,56 +21,56 @@ interface MovementData {
 
 const soundMovementData: Record<string, MovementData> = {
   M: {
-    cue: "Close your lips and hum mmm",
+    cue: "Close your lips tight and hum mmm",
     mouthDesc: "Lips pressed together with gentle pressure, voice ON, air through nose",
-    repetition: "mmmm, mmmm, mmmm",
+    repetition: "mmm, mmm, mmm, mmm",
     mouthSteps: [
       "😶 Press lips together gently but firmly",
       "💨 Feel pressure building behind lips",
       "👃 Air flows through your nose",
-      "🔊 Turn voice ON and hold: mmmm",
+      "🔊 Turn voice ON and hum: mmmmmm",
     ],
     lipCue: "Lips closed tight — hum mmm",
     mouthType: "bilabial",
     voicing: "nasal",
   },
   B: {
-    cue: "Put lips together, then POP them open for ba",
+    cue: "Put lips together, then POP them open!",
     mouthDesc: "Lips pressed together, then burst open with voice ON",
     repetition: "ba, ba, ba, ba",
     mouthSteps: [
       "😶 Press lips together",
       "💨 Build up air behind lips",
       "🔊 Voice ON — feel throat buzz",
-      "💥 POP lips open: ba",
+      "💥 POP lips open!",
     ],
     lipCue: "Lips together — POP open",
     mouthType: "bilabial",
     voicing: "voiced",
   },
   P: {
-    cue: "Lips together, then pop a quiet p",
-    mouthDesc: "Lips pressed together, quick air release, voice OFF",
-    repetition: "p, p, p, p",
+    cue: "Lips together, then pop open for pa",
+    mouthDesc: "Lips pressed together, burst open with air puff, voice OFF",
+    repetition: "pa, pa, pa, pa",
     mouthSteps: [
       "😶 Press lips together tightly",
       "💨 Build up air pressure behind lips",
-      "🔇 Voice stays OFF — keep it quiet",
-      "💨 POP lips open: p",
+      "🔇 Voice stays OFF — whisper sound",
+      "💨 POP lips open and say: pa pa pa",
     ],
-    lipCue: "Lips together — pop a quiet p",
+    lipCue: "Lips together — pop for pa",
     mouthType: "bilabial",
     voicing: "voiceless",
   },
   T: {
-    cue: "Tap your tongue tip lightly for t",
+    cue: "Tap your tongue tip on the bumpy spot!",
     mouthDesc: "Tongue tip taps the ridge behind top teeth, voice OFF",
-    repetition: "t, t, t, t",
+    repetition: "ta, ta, ta, ta",
     mouthSteps: [
       "👅 Lift tongue tip UP",
       "📍 Touch the bumpy ridge behind top teeth",
       "🔇 Voice stays OFF",
-      "👅 Tap tongue down quickly: t",
+      "👅 Tap tongue down quickly — t!",
     ],
     lipCue: "Tongue tip UP — tap the bumpy spot",
     mouthType: "alveolar",
@@ -84,63 +84,63 @@ const soundMovementData: Record<string, MovementData> = {
       "👅 Lift tongue tip UP",
       "📍 Touch the bumpy ridge behind top teeth",
       "🔊 Voice ON — feel throat buzz",
-      "👅 Tap tongue down: da",
+      "👅 Tap tongue down — d!",
     ],
     lipCue: "Tongue tip UP — voice ON — tap",
     mouthType: "alveolar",
     voicing: "voiced",
   },
   N: {
-    cue: "Tongue up, hum through your nose nnn",
+    cue: "Tongue up, hum through your nose!",
     mouthDesc: "Tongue tip up on ridge, voice ON, air through nose",
-    repetition: "nnnn, nnnn, nnnn",
+    repetition: "nnn, nnn, nnn, nnn",
     mouthSteps: [
       "👅 Lift tongue tip UP",
       "📍 Press on bumpy ridge behind top teeth",
       "👃 Air flows through your nose",
-      "🔊 Voice ON — hold: nnnn",
+      "🔊 Voice ON — hold: nnnnn",
     ],
     lipCue: "Tongue up — air through nose — hum",
     mouthType: "alveolar",
     voicing: "nasal",
   },
   K: {
-    cue: "Push the back of your tongue up, then release k",
+    cue: "Push the back of your tongue up and cough!",
     mouthDesc: "Back of tongue pushes up to soft palate, voice OFF, quick release",
-    repetition: "k, k, k, k",
+    repetition: "ka, ka, ka, ka",
     mouthSteps: [
       "👅 Push the BACK of tongue up high",
       "📍 Touch the soft back part of the roof",
       "🔇 Voice stays OFF",
-      "💨 Drop tongue quickly: k",
+      "💨 Drop tongue quickly — k!",
     ],
     lipCue: "Tongue back UP — drop for k",
     mouthType: "velar",
     voicing: "voiceless",
   },
   G: {
-    cue: "Back of tongue up — voice ON — ga",
+    cue: "Back of tongue up — voice ON — drop!",
     mouthDesc: "Back of tongue to soft palate, voice ON, release",
     repetition: "ga, ga, ga, ga",
     mouthSteps: [
       "👅 Push the BACK of tongue up high",
       "📍 Touch the soft back part of the roof",
       "🔊 Voice ON — feel throat buzz",
-      "💨 Drop tongue: ga",
+      "💨 Drop tongue — g!",
     ],
     lipCue: "Tongue back UP — voice ON — drop",
     mouthType: "velar",
     voicing: "voiced",
   },
   F: {
-    cue: "Bite your bottom lip gently and blow fffff",
+    cue: "Bite your bottom lip gently and blow!",
     mouthDesc: "Top teeth rest on lower lip, blow air through, voice OFF",
-    repetition: "fffff, fffff, fffff",
+    repetition: "fff, fff, fff, fff",
     mouthSteps: [
       "😬 Top teeth on bottom lip gently",
       "💨 Blow air through teeth and lip",
       "🔇 Voice stays OFF",
-      "💨 Hold steady: fffff",
+      "💨 Hold steady: fffffffffff",
     ],
     lipCue: "Teeth on lip — blow air — fff",
     mouthType: "labiodental",
@@ -189,16 +189,16 @@ const soundMovementData: Record<string, MovementData> = {
     voicing: "voiced",
   },
   H: {
-    cue: "Open your mouth and breathe out haa",
-    mouthDesc: "Mouth open, soft breath from throat, like fogging a mirror",
-    repetition: "haa, haa, haa, haa",
+    cue: "Open your mouth wide and push air out!",
+    mouthDesc: "Mouth open, push air from throat, like fogging a mirror",
+    repetition: "hhh, hhh, hhh, hhh",
     mouthSteps: [
       "😮 Open mouth wide",
-      "🔇 Voice stays OFF or very light",
-      "💨 Push soft air out from deep in throat",
-      "💨 Gentle breathy model: haa",
+      "🔇 Voice stays OFF",
+      "💨 Push air out from deep in throat",
+      "💨 Like fogging a mirror: hhhhhh",
     ],
-    lipCue: "Mouth open — soft breath — haa",
+    lipCue: "Mouth open — push air — hhh",
     mouthType: "glottal",
     voicing: "voiceless",
   },
@@ -333,11 +333,11 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
   }
 
   const speakSound = () => {
-    playIsolationSound(upperSound);
+    speakPhoneticText(getIsolationSpeechText(upperSound), { rate: 0.4, pitch: 1 });
   };
 
   const speakRepetition = () => {
-    playIsolationSound(upperSound, 3);
+    speakPhoneticText(getPhoneticRepetitionText(upperSound, data.repetition), { rate: 0.35, pitch: 1 });
   };
 
   return (
@@ -371,7 +371,6 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
         <h2 className="font-fredoka text-xl md:text-2xl font-bold text-foreground">
           {data.cue}
         </h2>
-        <p className="font-nunito text-lg font-semibold text-primary">{getIsolationIpaLabel(upperSound)}</p>
         <p className="font-nunito text-muted-foreground text-xs bg-secondary/50 rounded-full px-3 py-1 inline-block">
           {data.lipCue}
         </p>

@@ -14,10 +14,8 @@ import SoundMovementCard from "@/components/SoundMovementCard";
 import MotorSequencingCard from "@/components/MotorSequencingCard";
 import SpeechMotorPathway from "@/components/SpeechMotorPathway";
 import GamesView from "@/components/games/GamesView";
-import SoundDetailHero from "@/components/SoundDetailHero";
 import { useAppMode } from "@/contexts/AppModeContext";
 import { generateSequences } from "@/components/MotorSequencingCard";
-import { playIsolationSound } from "@/lib/speech";
 
 const SoundDetail = () => {
   const { soundId } = useParams<{ soundId: string }>();
@@ -27,7 +25,7 @@ const SoundDetail = () => {
   const sound = getSoundById(soundId || "");
   
   const [position, setPosition] = useState<Position>("initial");
-  const [articulationLevel, setArticulationLevel] = useState<PracticeLevel>("sound");
+  const [articulationLevel, setArticulationLevel] = useState<PracticeLevel>("cv");
   const [motorLevel, setMotorLevel] = useState<MotorSpeechLevel>("sound-movement");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showPathway, setShowPathway] = useState(false);
@@ -37,7 +35,6 @@ const SoundDetail = () => {
 
   const isSyllableLevel = activeLevel === "cv" || activeLevel === "cvcv" || activeLevel === "vc";
   const isSoundMovement = activeLevel === "sound-movement";
-  const isIsolationLevel = activeLevel === "sound" || isSoundMovement;
   const isMotorSequencing = activeLevel === "motor-sequencing";
   const isCVC = activeLevel === "cvc";
   const isWordLevel = activeLevel === "words" || activeLevel === "phrases" || activeLevel === "sentences";
@@ -67,12 +64,12 @@ const SoundDetail = () => {
   }, [sound, position]);
 
   const totalItems = useMemo(() => {
-    if (isIsolationLevel) return 1;
+    if (isSoundMovement) return 1;
     if (isSyllableLevel) return syllables.length;
     if (isCVC) return cvcItems.length;
     if (isMotorSequencing) return sequenceCount;
     return words.length;
-  }, [isIsolationLevel, isSyllableLevel, isCVC, isMotorSequencing, syllables, cvcItems, sequenceCount, words]);
+  }, [isSoundMovement, isSyllableLevel, isCVC, isMotorSequencing, syllables, cvcItems, sequenceCount, words]);
 
   const currentWord = isWordLevel ? words[currentIndex] : null;
   const currentSyllable = isSyllableLevel ? syllables[currentIndex] : null;
@@ -203,16 +200,6 @@ const SoundDetail = () => {
         )}
       </AnimatePresence>
 
-      <div className="container pt-4">
-        <SoundDetailHero
-          color={sound.color}
-          displayName={sound.displayName}
-          isMotorMode={isMotorMode}
-          onPlay={() => playIsolationSound(sound.sound)}
-          sound={sound.sound}
-        />
-      </div>
-
       {/* Position Selector - only for word levels */}
       {isWordLevel && (
         <div className="container py-4">
@@ -237,7 +224,7 @@ const SoundDetail = () => {
         <motion.div
           key={`swipe-${activeLevel}-${currentIndex}`}
           className="w-full flex flex-col items-center"
-          drag={totalItems > 1 && !isIsolationLevel ? "x" : false}
+          drag={totalItems > 1 && !isSoundMovement ? "x" : false}
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.3}
           onDragEnd={(_, info) => {
@@ -252,13 +239,6 @@ const SoundDetail = () => {
           exit={{ opacity: 0, x: -50 }}
           transition={{ duration: 0.25 }}
         >
-          {activeLevel === "sound" && (
-            <SoundMovementCard
-              key={`isolation-${sound.sound}`}
-              sound={sound.sound}
-              currentIndex={0}
-            />
-          )}
           {isSoundMovement && (
             <SoundMovementCard
               key={`movement-${sound.sound}`}
@@ -306,7 +286,7 @@ const SoundDetail = () => {
       </main>
 
       {/* Bottom Controls */}
-      {!isIsolationLevel && !isGames && totalItems > 0 && (
+      {!isSoundMovement && !isGames && totalItems > 0 && (
         <div className="sticky bottom-0 bg-background/80 backdrop-blur-lg border-t border-border">
           <div className="container py-4 space-y-4">
             <ProgressBar current={currentIndex} total={totalItems} />

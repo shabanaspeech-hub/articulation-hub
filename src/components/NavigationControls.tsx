@@ -1,4 +1,3 @@
-import { forwardRef } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,15 +10,15 @@ interface NavigationControlsProps {
   hasNext: boolean;
 }
 
-const NavigationControls = forwardRef<HTMLDivElement, NavigationControlsProps>(({ 
+const NavigationControls = ({
   onPrevious,
   onNext,
   onShuffle,
   hasPrevious,
   hasNext,
-}, ref) => {
+}: NavigationControlsProps) => {
   return (
-    <div ref={ref} className="flex items-center justify-center gap-4">
+    <div className="flex items-center justify-center gap-4">
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <Button
           variant="outline"
@@ -56,8 +55,6 @@ const NavigationControls = forwardRef<HTMLDivElement, NavigationControlsProps>((
       </motion.div>
     </div>
   );
-});
-
-NavigationControls.displayName = "NavigationControls";
+};
 
 export default NavigationControls;

@@ -1,4 +1,3 @@
-import { forwardRef } from "react";
 import { motion } from "framer-motion";
 
 interface ProgressBarProps {
@@ -6,11 +5,11 @@ interface ProgressBarProps {
   total: number;
 }
 
-const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(({ current, total }, ref) => {
+const ProgressBar = ({ current, total }: ProgressBarProps) => {
   const progress = ((current + 1) / total) * 100;
 
   return (
-    <div ref={ref} className="w-full">
+    <div className="w-full">
       <div className="flex justify-between items-center mb-2">
         <span className="text-sm font-nunito text-muted-foreground">Progress</span>
         <span className="text-sm font-fredoka font-semibold text-foreground">
@@ -27,8 +26,6 @@ const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(({ current, tot
       </div>
     </div>
   );
-});
-
-ProgressBar.displayName = "ProgressBar";
+};
 
 export default ProgressBar;

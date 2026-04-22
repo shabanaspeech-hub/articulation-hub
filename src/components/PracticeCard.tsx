@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { WordItem, PracticeLevel, SyllableItem, CVCItem, getSyllablePhonetic } from "@/data/soundsData";
 import { Volume2, Mic } from "lucide-react";
 import VoiceRecorder from "./VoiceRecorder";
-import { playIsolationSound, speakPhoneticText } from "@/lib/speech";
+import { getIsolationSpeechText, speakPhoneticText } from "@/lib/speech";
 
 interface PracticeCardProps {
   word?: WordItem;
@@ -50,7 +50,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
   };
 
   const speakSound = () => {
-    playIsolationSound(soundLetter);
+    speakPhoneticText(getIsolationSpeechText(soundLetter), { rate: 0.45, pitch: 1 });
   };
 
   const speakWord = () => {
@@ -174,10 +174,10 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
         whileTap={{ scale: 0.9 }}
         onClick={speakSound}
         className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent text-accent-foreground font-fredoka text-lg shadow-md hover:shadow-lg transition-shadow"
-        aria-label={`Play the ${soundLetter.toUpperCase()} sound`}
+        aria-label={`Say the ${soundLetter} sound`}
       >
         <Mic className="w-5 h-5" />
-        Play sound
+        Say "{soundLetter.toUpperCase()}"
       </motion.button>
 
       {/* Voice Recorder */}
