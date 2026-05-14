@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { WordItem, PracticeLevel, SyllableItem, CVCItem, getSyllablePhonetic } from "@/data/soundsData";
-import { Volume2, Mic } from "lucide-react";
+import { Mic } from "lucide-react";
 import VoiceRecorder from "./VoiceRecorder";
 import { getIsolationSpeechText, speakPhoneticText } from "@/lib/speech";
 
