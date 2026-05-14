@@ -5,6 +5,7 @@ import {
   getPhoneticRepetitionText,
   getSpokenSequenceText,
 } from "@/lib/speech";
+import { getSyllablePhonetic } from "@/data/soundsData";
 
 describe("speech phonetic mapping", () => {
   it("uses sustained phonemes for continuant isolation sounds", () => {
@@ -21,5 +22,14 @@ describe("speech phonetic mapping", () => {
 
   it("converts sequencing drills to phonetic speech text", () => {
     expect(getSpokenSequenceText("pa ta ka")).toBe("pah tah kah");
+  });
+
+  it("speaks i-vowel CV targets as joined syllables", () => {
+    expect(getSyllablePhonetic("pi")).toBe("pee");
+    expect(getSyllablePhonetic("bi")).toBe("bee");
+    expect(getSyllablePhonetic("hi")).toBe("he");
+    expect(getSyllablePhonetic("ni")).toBe("knee");
+    expect(getSyllablePhonetic("li")).toBe("lee");
+    expect(getSyllablePhonetic("ri")).toBe("ree");
   });
 });
