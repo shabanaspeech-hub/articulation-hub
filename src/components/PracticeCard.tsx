@@ -100,9 +100,6 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
               {syllable.display}
             </span>
           </div>
-          <div className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md">
-            <Volume2 className="w-5 h-5" />
-          </div>
         </motion.button>
       ) : cvcItem ? (
         /* CVC word mode */
