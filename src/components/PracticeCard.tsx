@@ -114,9 +114,6 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
             <span className="text-[5rem] md:text-[6rem] leading-none">{cvcItem.image}</span>
             <span className="font-fredoka text-2xl font-bold text-primary mt-2">{cvcItem.display}</span>
           </div>
-          <div className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md">
-            <Volume2 className="w-5 h-5" />
-          </div>
         </motion.button>
       ) : word ? (
         /* Word/Phrase/Sentence mode: image with tap-to-hear */
