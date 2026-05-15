@@ -174,18 +174,6 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
         </motion.div>
       </AnimatePresence>
 
-      {/* Say Sound Button */}
-      <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={speakSound}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent text-accent-foreground font-fredoka text-lg shadow-md hover:shadow-lg transition-shadow"
-        aria-label={`Say the ${soundLetter} sound`}
-      >
-        <Mic className="w-5 h-5" />
-        Say "{soundLetter.toUpperCase()}"
-      </motion.button>
-
       {/* Voice Recorder */}
       <VoiceRecorder label="🎙️ Now you try! Record yourself:" />
 
