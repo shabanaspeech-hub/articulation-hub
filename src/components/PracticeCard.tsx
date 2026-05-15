@@ -49,9 +49,6 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
     );
   };
 
-  const speakSound = () => {
-    speakPhoneticText(getIsolationSpeechText(soundLetter), { rate: 0.45, pitch: 1 });
-  };
 
   const speakWord = () => {
     const text = getDisplayText();
