@@ -3,6 +3,7 @@ import { WordItem, PracticeLevel, SyllableItem, CVCItem, getSyllablePhonetic } f
 import { Mic } from "lucide-react";
 import VoiceRecorder from "./VoiceRecorder";
 import { getIsolationSpeechText, speakPhoneticText } from "@/lib/speech";
+import { getWordImage } from "@/lib/wordImages";
 
 interface PracticeCardProps {
   word?: WordItem;
@@ -110,9 +111,16 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           className="relative cursor-pointer"
           aria-label={`Tap to hear ${cvcItem.display}`}
         >
-          <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-gradient-to-br from-accent/20 to-primary/20 flex flex-col items-center justify-center shadow-lg border-4 border-primary/20">
-            <span className="text-[5rem] md:text-[6rem] leading-none">{cvcItem.image}</span>
-            <span className="font-fredoka text-2xl font-bold text-primary mt-2">{cvcItem.display}</span>
+          <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-white flex flex-col items-center justify-center shadow-lg border-4 border-primary/20 overflow-hidden">
+            {(() => {
+              const img = getWordImage(cvcItem.word);
+              return img ? (
+                <img src={img} alt={cvcItem.display} className="w-full h-[70%] object-contain" loading="lazy" />
+              ) : (
+                <span className="text-[5rem] md:text-[6rem] leading-none">{cvcItem.image}</span>
+              );
+            })()}
+            <span className="font-fredoka text-2xl font-bold text-primary mt-1">{cvcItem.display}</span>
           </div>
         </motion.button>
       ) : word ? (
@@ -124,8 +132,15 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           className="relative cursor-pointer"
           aria-label={`Tap to hear ${getDisplayText()}`}
         >
-          <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-gradient-to-br from-muted to-secondary flex items-center justify-center shadow-lg">
-            <span className="text-[6rem] md:text-[8rem] leading-none">{word.image}</span>
+          <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-white flex items-center justify-center shadow-lg border-4 border-primary/10 overflow-hidden">
+            {(() => {
+              const img = getWordImage(word.word);
+              return img ? (
+                <img src={img} alt={word.word} className="w-full h-full object-contain p-3" loading="lazy" />
+              ) : (
+                <span className="text-[6rem] md:text-[8rem] leading-none">{word.image}</span>
+              );
+            })()}
           </div>
           <div className="absolute -bottom-3 -right-3 w-12 h-12 rounded-full bg-primary/20 blur-xl" />
         </motion.button>
