@@ -217,7 +217,7 @@ const SoundDetail = () => {
       </div>
 
       {/* Main Practice Area */}
-      <main className="flex-1 container flex flex-col items-center justify-center py-8 overflow-hidden">
+      <main className="flex-1 container flex flex-col items-center justify-center py-3 sm:py-6 overflow-hidden">
         {isGames ? (
           <GamesView sound={sound} />
         ) : (
