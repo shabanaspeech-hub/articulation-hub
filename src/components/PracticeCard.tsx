@@ -68,7 +68,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
       }
     }
     
-    speakPhoneticText(speakText, { rate: isSyllableLevel ? 0.6 : 0.8, pitch: 1.1 });
+    speakPhoneticText(speakText, { rate: isSyllableLevel ? 0.55 : 0.75, pitch: 1.1, volume: 1 });
   };
 
   return (
