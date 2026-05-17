@@ -89,7 +89,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           className="relative cursor-pointer"
           aria-label={`Tap to hear ${syllable.display}`}
         >
-          <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-gradient-to-br from-primary/20 to-accent/30 flex flex-col items-center justify-center shadow-lg border-4 border-primary/20">
+          <div className="w-72 h-72 md:w-96 md:h-96 rounded-3xl bg-gradient-to-br from-primary/20 to-accent/30 flex flex-col items-center justify-center shadow-lg border-4 border-primary/20">
             {syllable.image && (
               <span className="text-5xl md:text-6xl mb-2">{syllable.image}</span>
             )}
@@ -107,7 +107,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           className="relative cursor-pointer"
           aria-label={`Tap to hear ${cvcItem.display}`}
         >
-          <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-white flex flex-col items-center justify-center shadow-lg border-4 border-primary/20 overflow-hidden">
+          <div className="w-72 h-72 md:w-96 md:h-96 rounded-3xl bg-white flex flex-col items-center justify-center shadow-lg border-4 border-primary/20 overflow-hidden">
             {(() => {
               const img = getWordImage(cvcItem.word);
               return img ? (
@@ -128,7 +128,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           className="relative cursor-pointer"
           aria-label={`Tap to hear ${getDisplayText()}`}
         >
-          <div className="w-48 h-48 md:w-60 md:h-60 rounded-3xl bg-white flex items-center justify-center shadow-lg border-4 border-primary/10 overflow-hidden">
+          <div className="w-72 h-72 md:w-96 md:h-96 rounded-3xl bg-white flex items-center justify-center shadow-lg border-4 border-primary/10 overflow-hidden">
             {(() => {
               const img = getWordImage(word.word);
               return img ? (
