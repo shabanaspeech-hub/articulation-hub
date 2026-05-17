@@ -128,7 +128,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           className="relative cursor-pointer"
           aria-label={`Tap to hear ${getDisplayText()}`}
         >
-          <div className="w-72 h-72 md:w-96 md:h-96 rounded-3xl bg-white flex items-center justify-center shadow-lg border-4 border-primary/10 overflow-hidden">
+          <div className="w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-3xl bg-white flex items-center justify-center shadow-lg border-4 border-primary/10 overflow-hidden">
             {(() => {
               const img = getWordImage(word.word);
               return img ? (
