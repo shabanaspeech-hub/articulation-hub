@@ -16,6 +16,7 @@ interface PracticeCardProps {
 
 const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter, position }: PracticeCardProps) => {
   const isSyllableLevel = level === "cv" || level === "cvcv" || level === "vc";
+  const cardSizeClass = "w-[min(20rem,76vw,42vh)] h-[min(20rem,76vw,42vh)]";
 
   const getDisplayText = () => {
     if (isSyllableLevel && syllable) return syllable.display;
@@ -78,7 +79,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
       transition={{ duration: 0.3 }}
-      className="practice-card flex flex-col items-center gap-6"
+      className="practice-card flex flex-col items-center gap-3 sm:gap-4"
     >
       {/* Syllable mode: big text bubble instead of image */}
       {isSyllableLevel && syllable ? (
@@ -89,11 +90,11 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           className="relative cursor-pointer"
           aria-label={`Tap to hear ${syllable.display}`}
         >
-          <div className="w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-3xl bg-gradient-to-br from-primary/20 to-accent/30 flex flex-col items-center justify-center shadow-lg border-4 border-primary/20">
+          <div className={`${cardSizeClass} rounded-3xl bg-gradient-to-br from-primary/20 to-accent/30 flex flex-col items-center justify-center shadow-lg border-4 border-primary/20`}>
             {syllable.image && (
-              <span className="text-5xl md:text-6xl mb-2">{syllable.image}</span>
+              <span className="text-5xl md:text-6xl mb-1 sm:mb-2">{syllable.image}</span>
             )}
-            <span className="font-fredoka text-4xl md:text-6xl font-bold text-primary">
+            <span className="font-fredoka text-4xl md:text-5xl font-bold text-primary">
               {syllable.display}
             </span>
           </div>
@@ -107,13 +108,13 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           className="relative cursor-pointer"
           aria-label={`Tap to hear ${cvcItem.display}`}
         >
-          <div className="w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-3xl bg-white flex flex-col items-center justify-center shadow-lg border-4 border-primary/20 overflow-hidden">
+          <div className={`${cardSizeClass} rounded-3xl bg-card flex flex-col items-center justify-center shadow-lg border-4 border-primary/20 overflow-hidden`}>
             {(() => {
               const img = getWordImage(cvcItem.word);
               return img ? (
                 <img src={img} alt={cvcItem.display} className="w-full h-[70%] object-contain" loading="lazy" />
               ) : (
-                <span className="text-[5rem] md:text-[6rem] leading-none">{cvcItem.image}</span>
+                <span className="text-[4.5rem] md:text-[5.5rem] leading-none">{cvcItem.image}</span>
               );
             })()}
             <span className="font-fredoka text-2xl font-bold text-primary mt-1">{cvcItem.display}</span>
@@ -128,13 +129,13 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           className="relative cursor-pointer"
           aria-label={`Tap to hear ${getDisplayText()}`}
         >
-          <div className="w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-3xl bg-white flex items-center justify-center shadow-lg border-4 border-primary/10 overflow-hidden">
+          <div className={`${cardSizeClass} rounded-3xl bg-card flex items-center justify-center shadow-lg border-4 border-primary/10 overflow-hidden`}>
             {(() => {
               const img = getWordImage(word.word);
               return img ? (
                 <img src={img} alt={word.word} className="w-full h-full object-contain p-3" loading="lazy" />
               ) : (
-                <span className="text-[6rem] md:text-[8rem] leading-none">{word.image}</span>
+                <span className="text-[5rem] md:text-[7rem] leading-none">{word.image}</span>
               );
             })()}
           </div>
@@ -149,7 +150,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="text-center"
+          className="text-center px-2"
         >
           {isSyllableLevel ? (
             <p className="font-nunito text-lg text-muted-foreground">
@@ -157,11 +158,11 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
             </p>
           ) : (
             <>
-              <h2 className="font-fredoka text-3xl md:text-5xl font-bold text-foreground leading-tight">
+              <h2 className="font-fredoka text-2xl md:text-4xl font-bold text-foreground leading-tight">
                 {highlightSound(getDisplayText())}
               </h2>
               {level !== "words" && word && (
-                <p className="text-lg text-muted-foreground mt-2 font-nunito">
+                <p className="text-base text-muted-foreground mt-1 font-nunito">
                   {word.word}
                 </p>
               )}
