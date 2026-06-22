@@ -15,7 +15,6 @@ import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import InstallBanner from "@/components/InstallBanner";
-import LoginStatusIndicator from "@/components/LoginStatusIndicator";
 
 const queryClient = new QueryClient();
 
@@ -29,7 +28,6 @@ const App = () => (
             <Sonner />
             <InstallBanner />
             <AdminLoginModal />
-            <LoginStatusIndicator />
             <Routes>
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/auth" element={<Auth />} />
