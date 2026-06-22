@@ -10,9 +10,13 @@ interface Row {
   email: string;
   name: string | null;
   created_at: string;
+  last_login: string | null;
 }
 
 const ROLES: AppRole[] = ["owner", "admin", "therapist", "content_manager", "user"];
+
+const fmt = (d: string | null) =>
+  d ? new Date(d).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" }) : "—";
 
 const Admin = () => {
   const { signOut, user, roles } = useAuth();
@@ -23,7 +27,7 @@ const Admin = () => {
   useEffect(() => {
     (async () => {
       const [{ data: profiles }, { data: allRoles }] = await Promise.all([
-        supabase.from("profiles").select("id,email,name,created_at").order("created_at", { ascending: false }),
+        supabase.from("profiles").select("id,email,name,created_at,last_login").order("created_at", { ascending: false }),
         supabase.from("user_roles").select("user_id,role"),
       ]);
       setRows((profiles ?? []) as Row[]);
@@ -57,11 +61,30 @@ const Admin = () => {
         </div>
       </header>
 
-      <main className="container py-8 space-y-6">
+      <main className="container py-6 sm:py-8 space-y-6">
         <div className="bg-card rounded-2xl p-4 border">
           <p className="text-sm text-muted-foreground font-nunito">
             Signed in as <strong>{user?.email}</strong> · Roles: {roles.join(", ") || "none"}
           </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-card rounded-2xl border p-5">
+            <p className="text-xs text-muted-foreground uppercase font-nunito">Total Users</p>
+            <p className="font-fredoka text-3xl font-bold mt-1">{rows.length}</p>
+          </div>
+          <div className="bg-card rounded-2xl border p-5">
+            <p className="text-xs text-muted-foreground uppercase font-nunito">Active (last 7d)</p>
+            <p className="font-fredoka text-3xl font-bold mt-1">
+              {rows.filter((r) => r.last_login && Date.now() - new Date(r.last_login).getTime() < 7 * 86400000).length}
+            </p>
+          </div>
+          <div className="bg-card rounded-2xl border p-5">
+            <p className="text-xs text-muted-foreground uppercase font-nunito">New (last 7d)</p>
+            <p className="font-fredoka text-3xl font-bold mt-1">
+              {rows.filter((r) => Date.now() - new Date(r.created_at).getTime() < 7 * 86400000).length}
+            </p>
+          </div>
         </div>
 
         <div className="bg-card rounded-2xl border overflow-hidden">
@@ -71,25 +94,42 @@ const Admin = () => {
           {loading ? (
             <div className="p-8 flex justify-center"><Loader2 className="w-6 h-6 animate-spin" /></div>
           ) : (
-            <div className="divide-y">
-              {rows.map((r) => (
-                <div key={r.id} className="p-4 flex flex-wrap items-center gap-3">
-                  <div className="flex-1 min-w-[200px]">
-                    <p className="font-semibold font-nunito">{r.name || "—"}</p>
-                    <p className="text-sm text-muted-foreground">{r.email}</p>
-                  </div>
-                  <select
-                    value={roleMap[r.id]?.[0] ?? "user"}
-                    onChange={(e) => setRole(r.id, e.target.value as AppRole)}
-                    className="bg-background border rounded-md px-3 py-1.5 text-sm"
-                  >
-                    {ROLES.map((role) => (
-                      <option key={role} value={role}>{role}</option>
-                    ))}
-                  </select>
-                </div>
-              ))}
-              {rows.length === 0 && <p className="p-8 text-center text-muted-foreground">No users yet</p>}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-muted/50 text-left">
+                  <tr>
+                    <th className="p-3 font-nunito">Name</th>
+                    <th className="p-3 font-nunito">Email</th>
+                    <th className="p-3 font-nunito hidden md:table-cell">Signed up</th>
+                    <th className="p-3 font-nunito hidden md:table-cell">Last login</th>
+                    <th className="p-3 font-nunito">Role</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  {rows.map((r) => (
+                    <tr key={r.id}>
+                      <td className="p-3 font-semibold font-nunito">{r.name || "—"}</td>
+                      <td className="p-3 text-muted-foreground">{r.email}</td>
+                      <td className="p-3 text-muted-foreground hidden md:table-cell">{fmt(r.created_at)}</td>
+                      <td className="p-3 text-muted-foreground hidden md:table-cell">{fmt(r.last_login)}</td>
+                      <td className="p-3">
+                        <select
+                          value={roleMap[r.id]?.[0] ?? "user"}
+                          onChange={(e) => setRole(r.id, e.target.value as AppRole)}
+                          className="bg-background border rounded-md px-2 py-1 text-sm"
+                        >
+                          {ROLES.map((role) => (
+                            <option key={role} value={role}>{role}</option>
+                          ))}
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
+                  {rows.length === 0 && (
+                    <tr><td colSpan={5} className="p-8 text-center text-muted-foreground">No users yet</td></tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           )}
         </div>
