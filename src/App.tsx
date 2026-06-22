@@ -12,6 +12,7 @@ import Index from "./pages/Index";
 import SoundDetail from "./pages/SoundDetail";
 import Privacy from "./pages/Privacy";
 import Admin from "./pages/Admin";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import InstallBanner from "@/components/InstallBanner";
 
@@ -29,6 +30,7 @@ const App = () => (
             <AdminLoginModal />
             <Routes>
               <Route path="/privacy" element={<Privacy />} />
+              <Route path="/auth" element={<Auth />} />
               <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
               <Route path="/" element={<AuthGate><Index /></AuthGate>} />
               <Route path="/sound/:soundId" element={<AuthGate><SoundDetail /></AuthGate>} />

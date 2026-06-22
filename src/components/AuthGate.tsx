@@ -1,10 +1,11 @@
 import { ReactNode } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import EmailGate from "./EmailGate";
 import { Loader2 } from "lucide-react";
 
 const AuthGate = ({ children }: { children: ReactNode }) => {
   const { user, loading } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -14,7 +15,7 @@ const AuthGate = ({ children }: { children: ReactNode }) => {
     );
   }
 
-  if (!user) return <EmailGate />;
+  if (!user) return <Navigate to="/auth" state={{ from: location }} replace />;
   return <>{children}</>;
 };
 

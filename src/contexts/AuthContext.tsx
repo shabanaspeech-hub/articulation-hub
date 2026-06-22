@@ -29,12 +29,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     // Set up listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
       setSession(newSession);
       setUser(newSession?.user ?? null);
       if (newSession?.user) {
-        // Defer role fetch to avoid deadlock
+        // Defer to avoid deadlock
         setTimeout(() => fetchRoles(newSession.user.id), 0);
+        if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
+          setTimeout(() => {
+            supabase
+              .from("profiles")
+              .update({ last_login: new Date().toISOString() })
+              .eq("id", newSession.user.id)
+              .then(() => {});
+          }, 0);
+        }
       } else {
         setRoles([]);
       }
