@@ -2,12 +2,8 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
-export const ADMIN_EMAILS = [
-  "st8546@gmail.com",
-  "shabana.speech@gmail.com",
-];
-
 export type AppRole = "owner" | "admin" | "therapist" | "content_manager" | "user";
+
 
 interface AuthContextValue {
   session: Session | null;
@@ -76,9 +72,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setRoles([]);
   };
 
-  const emailIsAdminWhitelist = !!user?.email && ADMIN_EMAILS.includes(user.email.toLowerCase());
-  const isAdmin = roles.includes("owner") || roles.includes("admin") || emailIsAdminWhitelist;
+  const isAdmin = roles.includes("owner") || roles.includes("admin");
   const isStaff = isAdmin || roles.includes("therapist") || roles.includes("content_manager");
+
 
   return (
     <AuthContext.Provider value={{ session, user, roles, loading, isStaff, isAdmin, signOut }}>
