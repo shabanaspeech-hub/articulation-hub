@@ -72,9 +72,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setRoles([]);
   };
 
-  const emailIsAdminWhitelist = !!user?.email && ADMIN_EMAILS.includes(user.email.toLowerCase());
-  const isAdmin = roles.includes("owner") || roles.includes("admin") || emailIsAdminWhitelist;
+  const isAdmin = roles.includes("owner") || roles.includes("admin");
   const isStaff = isAdmin || roles.includes("therapist") || roles.includes("content_manager");
+
 
   return (
     <AuthContext.Provider value={{ session, user, roles, loading, isStaff, isAdmin, signOut }}>
