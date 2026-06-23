@@ -2,12 +2,8 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
-export const ADMIN_EMAILS = [
-  "st8546@gmail.com",
-  "shabana.speech@gmail.com",
-];
-
 export type AppRole = "owner" | "admin" | "therapist" | "content_manager" | "user";
+
 
 interface AuthContextValue {
   session: Session | null;
