@@ -1,8 +1,10 @@
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Volume2 } from "lucide-react";
 import MouthDiagram, { type MouthType } from "./MouthDiagram";
 import VoiceRecorder from "./VoiceRecorder";
 import { getIsolationSpeechText, getPhoneticRepetitionText, speakPhoneticText } from "@/lib/speech";
+
 
 interface SoundMovementCardProps {
   sound: string;
@@ -340,6 +342,20 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
     speakPhoneticText(getPhoneticRepetitionText(upperSound, data.repetition), { rate: 0.35, pitch: 1 });
   };
 
+  const speakCue = () => {
+    speakPhoneticText(data.cue, { rate: 0.75, pitch: 1.05 });
+  };
+
+  // Avatar auto-introduces the placement cue the first time this sound loads
+  const introducedRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (introducedRef.current === upperSound) return;
+    introducedRef.current = upperSound;
+    const t = setTimeout(() => speakCue(), 350);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [upperSound]);
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -347,6 +363,35 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
       exit={{ opacity: 0, scale: 0.9 }}
       className="practice-card flex flex-col items-center gap-5 max-w-sm mx-auto"
     >
+      {/* Speaking Avatar Coach */}
+      <motion.button
+        onClick={speakCue}
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
+        className="w-full flex items-start gap-3 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-3 border-2 border-primary/20 text-left"
+        aria-label="Hear the coach explain the placement"
+      >
+        <motion.div
+          animate={{ y: [0, -3, 0] }}
+          transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+          className="text-4xl md:text-5xl flex-shrink-0"
+        >
+          🧑‍🏫
+        </motion.div>
+        <div className="flex-1 relative">
+          <div className="bg-background rounded-2xl rounded-tl-sm px-3 py-2 shadow-sm border border-border">
+            <p className="font-fredoka text-sm md:text-base text-foreground leading-snug">
+              {data.cue}
+            </p>
+            <div className="flex items-center gap-1 mt-1 text-primary">
+              <Volume2 className="w-3.5 h-3.5" />
+              <span className="font-nunito text-[10px] uppercase tracking-wide">Tap to hear coach</span>
+            </div>
+          </div>
+        </div>
+      </motion.button>
+
+
       {/* Animated Mouth Diagram */}
       <motion.button
         whileHover={{ scale: 1.05 }}
