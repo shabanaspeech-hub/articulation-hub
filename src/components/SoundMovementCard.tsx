@@ -335,16 +335,33 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
     );
   }
 
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
   const speakSound = () => {
-    speakPhoneticText(getIsolationSpeechText(upperSound), { rate: 0.4, pitch: 1 });
+    setIsSpeaking(true);
+    speakPhoneticText(getIsolationSpeechText(upperSound), {
+      rate: 0.4,
+      pitch: 1,
+      onEnd: () => setIsSpeaking(false),
+    });
   };
 
   const speakRepetition = () => {
-    speakPhoneticText(getPhoneticRepetitionText(upperSound, data.repetition), { rate: 0.35, pitch: 1 });
+    setIsSpeaking(true);
+    speakPhoneticText(getPhoneticRepetitionText(upperSound, data.repetition), {
+      rate: 0.35,
+      pitch: 1,
+      onEnd: () => setIsSpeaking(false),
+    });
   };
 
   const speakCue = () => {
-    speakPhoneticText(data.cue, { rate: 0.75, pitch: 1.05 });
+    setIsSpeaking(true);
+    speakPhoneticText(data.cue, {
+      rate: 0.75,
+      pitch: 1.05,
+      onEnd: () => setIsSpeaking(false),
+    });
   };
 
   // Avatar auto-introduces the placement cue the first time this sound loads
@@ -364,53 +381,56 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
       exit={{ opacity: 0, scale: 0.9 }}
       className="practice-card flex flex-col items-center gap-5 max-w-sm mx-auto"
     >
-      {/* Speaking Avatar Coach */}
-      <motion.button
-        onClick={speakCue}
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
-        className="w-full flex items-start gap-3 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-3 border-2 border-primary/20 text-left"
-        aria-label="Hear the coach explain the placement"
-      >
-        <motion.div
-          animate={{ y: [0, -3, 0] }}
-          transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
-          className="text-4xl md:text-5xl flex-shrink-0"
+      {/* Speaking Avatar Coach — a real face with visible lips/teeth/tongue */}
+      <div className="w-full flex flex-col items-center gap-3">
+        <motion.button
+          onClick={speakSound}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          className="relative rounded-3xl bg-gradient-to-br from-accent/30 to-primary/20 p-3 shadow-lg border-4 border-accent/30"
+          aria-label={`Watch and hear the ${upperSound} sound`}
         >
-          🧑‍🏫
-        </motion.div>
-        <div className="flex-1 relative">
-          <div className="bg-background rounded-2xl rounded-tl-sm px-3 py-2 shadow-sm border border-border">
-            <p className="font-fredoka text-sm md:text-base text-foreground leading-snug">
-              {data.cue}
-            </p>
-            <div className="flex items-center gap-1 mt-1 text-primary">
-              <Volume2 className="w-3.5 h-3.5" />
-              <span className="font-nunito text-[10px] uppercase tracking-wide">Tap to hear coach</span>
-            </div>
+          <SpeakingFace
+            type={data.mouthType}
+            voicing={data.voicing}
+            speaking={isSpeaking}
+            size={200}
+          />
+          <div className="absolute top-2 left-2 font-fredoka text-2xl font-bold text-primary bg-background/85 rounded-xl px-2.5 py-0.5 shadow">
+            {upperSound}
           </div>
-        </div>
-      </motion.button>
+          <div className="absolute bottom-2 right-2 w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md">
+            <Volume2 className="w-4 h-4" />
+          </div>
+        </motion.button>
 
+        <motion.button
+          onClick={speakCue}
+          whileTap={{ scale: 0.97 }}
+          className="w-full bg-background rounded-2xl px-3 py-2 shadow-sm border border-border text-left"
+          aria-label="Hear the coach explain the placement"
+        >
+          <p className="font-fredoka text-sm md:text-base text-foreground leading-snug">
+            {data.cue}
+          </p>
+          <div className="flex items-center gap-1 mt-1 text-primary">
+            <Volume2 className="w-3.5 h-3.5" />
+            <span className="font-nunito text-[10px] uppercase tracking-wide">
+              Tap to hear coach
+            </span>
+          </div>
+        </motion.button>
+      </div>
 
-      {/* Animated Mouth Diagram */}
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={speakSound}
-        className="relative cursor-pointer"
-        aria-label={`Hear the ${sound} sound`}
-      >
-        <div className="rounded-3xl bg-gradient-to-br from-accent/20 to-primary/20 p-4 shadow-lg border-4 border-accent/30">
+      {/* Simplified placement diagram (kept as secondary reference) */}
+      <details className="w-full">
+        <summary className="font-nunito text-xs text-muted-foreground cursor-pointer text-center">
+          See placement diagram
+        </summary>
+        <div className="mt-2 rounded-2xl bg-gradient-to-br from-accent/10 to-primary/10 p-3 border border-border flex justify-center">
           <MouthDiagram type={data.mouthType} voicing={data.voicing} />
         </div>
-        <div className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md">
-          <Volume2 className="w-5 h-5" />
-        </div>
-        <div className="absolute top-2 left-2 font-fredoka text-3xl font-bold text-primary bg-background/80 rounded-xl px-3 py-1">
-          {upperSound}
-        </div>
-      </motion.button>
+      </details>
 
       {/* Cue text */}
       <div className="text-center space-y-1">
