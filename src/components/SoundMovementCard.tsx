@@ -1,8 +1,10 @@
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Volume2 } from "lucide-react";
 import MouthDiagram, { type MouthType } from "./MouthDiagram";
 import VoiceRecorder from "./VoiceRecorder";
 import { getIsolationSpeechText, getPhoneticRepetitionText, speakPhoneticText } from "@/lib/speech";
+
 
 interface SoundMovementCardProps {
   sound: string;
