@@ -3,7 +3,7 @@ import { getSyllablePhonetic } from "@/data/soundsData";
 const isolationSpeechMap: Record<string, string> = {
   P: "pah",
   B: "bah",
-  M: "mmmmmmmm",
+  M: "hmmmmmm",
   T: "tah",
   D: "dah",
   N: "nnnnnnnn",
