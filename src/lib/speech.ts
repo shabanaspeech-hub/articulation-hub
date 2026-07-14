@@ -27,7 +27,7 @@ const isolationSpeechMap: Record<string, string> = {
 const repetitionSpeechMap: Record<string, string> = {
   P: "pah, pah, pah, pah",
   B: "bah, bah, bah, bah",
-  M: "mmmmm, mmmmm, mmmmm, mmmmm",
+  M: "hmmm, hmmm, hmmm, hmmm",
   T: "tah, tah, tah, tah",
   D: "dah, dah, dah, dah",
   N: "nnnnn, nnnnn, nnnnn, nnnnn",
