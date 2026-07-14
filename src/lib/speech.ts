@@ -80,7 +80,14 @@ export const getSpokenSequenceText = (text: string) => {
 
 export const speakPhoneticText = (
   text: string,
-  options?: { rate?: number; pitch?: number; lang?: string; volume?: number },
+  options?: {
+    rate?: number;
+    pitch?: number;
+    lang?: string;
+    volume?: number;
+    onStart?: () => void;
+    onEnd?: () => void;
+  },
 ) => {
   if (typeof window === "undefined" || !("speechSynthesis" in window) || !text.trim()) {
     return;
@@ -100,6 +107,12 @@ export const speakPhoneticText = (
     /en[-_]US/i.test(v.lang) && /(Google US English|Samantha|Microsoft Aria|Microsoft Jenny|Natural)/i.test(v.name)
   ) || voices.find(v => /en[-_]US/i.test(v.lang));
   if (preferred) utterance.voice = preferred;
+
+  if (options?.onStart) utterance.onstart = options.onStart;
+  if (options?.onEnd) {
+    utterance.onend = options.onEnd;
+    utterance.onerror = options.onEnd;
+  }
 
   window.speechSynthesis.speak(utterance);
 };
