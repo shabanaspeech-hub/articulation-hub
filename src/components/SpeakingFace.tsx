@@ -120,8 +120,9 @@ const SpeakingFace = ({
 
         {/* MOUTH GROUP — the star of the show */}
         <motion.g
-          animate={humWiggle}
-          transition={{ duration: 0.35, repeat: speaking ? Infinity : 0 }}
+          animate={jawDrop}
+          transition={{ duration: isStop ? 0.7 : 0.5, repeat: speaking ? Infinity : 0, ease: "easeInOut" }}
+
           style={{ transformOrigin: "100px 158px" }}
         >
           <motion.g
