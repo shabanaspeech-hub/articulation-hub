@@ -394,11 +394,8 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
             type={data.mouthType}
             voicing={data.voicing}
             speaking={isSpeaking}
-            size={200}
+            size={220}
           />
-          <div className="absolute top-2 left-2 font-fredoka text-2xl font-bold text-primary bg-background/85 rounded-xl px-2.5 py-0.5 shadow">
-            {upperSound}
-          </div>
           <div className="absolute bottom-2 right-2 w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md">
             <Volume2 className="w-4 h-4" />
           </div>
@@ -432,19 +429,9 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
         </div>
       </details>
 
-      {/* Cue text */}
-      <div className="text-center space-y-1">
-        <h2 className="font-fredoka text-xl md:text-2xl font-bold text-foreground">
-          {data.cue}
-        </h2>
-        <p className="font-nunito text-muted-foreground text-xs bg-secondary/50 rounded-full px-3 py-1 inline-block">
-          {data.lipCue}
-        </p>
-      </div>
-
       {/* Mouth placement steps */}
       <div className="w-full bg-card rounded-2xl border border-border p-4 space-y-2">
-        <p className="font-fredoka text-sm font-semibold text-foreground mb-2">👄 Mouth Placement:</p>
+        <p className="font-fredoka text-sm font-semibold text-foreground mb-2">Mouth placement</p>
         {data.mouthSteps.map((step, i) => (
           <motion.div
             key={i}
@@ -461,23 +448,25 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
         </p>
       </div>
 
-      {/* Repetition drill */}
+      {/* Repetition drill — tap to hear */}
       <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
         onClick={speakRepetition}
-        className="bg-secondary rounded-2xl px-6 py-4 w-full text-center cursor-pointer"
+        className="bg-secondary rounded-2xl px-6 py-3 w-full text-center cursor-pointer flex items-center justify-center gap-2"
+        aria-label="Hear slow repetition drill"
       >
-        <p className="font-fredoka text-2xl tracking-[0.3em] text-foreground">
-          {data.repetition}
-        </p>
-        <p className="font-nunito text-xs text-muted-foreground mt-1">
-          Tap to hear slow repetition
-        </p>
+        <Volume2 className="w-4 h-4 text-primary" />
+        <span className="font-nunito text-xs uppercase tracking-wide text-muted-foreground">
+          Slow repetition drill
+        </span>
       </motion.button>
 
-      {/* Voice Recorder */}
-      <VoiceRecorder label="🎙️ Now you try! Record yourself:" />
+      {/* Voice Recorder — saves per sound so parents' voices can be reused */}
+      <VoiceRecorder
+        label="Record your voice for this sound"
+        storageKey={`motor-speech:${upperSound}`}
+      />
     </motion.div>
   );
 };

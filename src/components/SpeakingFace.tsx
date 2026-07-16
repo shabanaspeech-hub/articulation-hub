@@ -30,16 +30,33 @@ const SpeakingFace = ({
   const tongue = "#E88AA0";
   const gum = "#F4A9B4";
 
-  // Mouth open cycle while speaking (drives the outer lip aperture)
-  const openLoop = speaking
-    ? { scaleY: [1, 1.35, 0.95, 1.25, 1] }
-    : { scaleY: 1 };
-
-  // Nasal hum → lips stay closed with tiny vibration
+  // Per-phoneme mouth aperture cycle so kids see clear articulation
   const isBilabialClosed = type === "bilabial" && voicing === "nasal"; // M
-  const humWiggle = speaking && isBilabialClosed
-    ? { y: [0, -1, 0, 1, 0] }
-    : { y: 0 };
+  const isStop = type === "bilabial" || type === "alveolar" || type === "velar";
+  const isFricative =
+    type === "labiodental" ||
+    type === "dental" ||
+    type === "postalveolar" ||
+    type === "glottal";
+
+  const openLoop = !speaking
+    ? { scaleY: 1, scaleX: 1 }
+    : isBilabialClosed
+      ? { scaleY: [1, 1.04, 1], scaleX: [1, 1.02, 1] }
+      : isStop
+        ? { scaleY: [0.9, 1.6, 0.9, 1.6, 0.9], scaleX: [1, 1.02, 1, 1.02, 1] }
+        : isFricative
+          ? { scaleY: [1.1, 1.25, 1.1], scaleX: [1, 1.02, 1] }
+          : { scaleY: [0.95, 1.45, 1.0, 1.35, 0.95], scaleX: [1, 1.03, 1, 1.03, 1] };
+
+  const jawDrop = !speaking
+    ? { y: 0 }
+    : isBilabialClosed
+      ? { y: [0, -1, 0, 1, 0] }
+      : isStop
+        ? { y: [0, 4, 0, 4, 0] }
+        : { y: [0, 3, 1, 3, 0] };
+
 
   return (
     <div className="relative" style={{ width: size, height: size }}>
@@ -103,8 +120,9 @@ const SpeakingFace = ({
 
         {/* MOUTH GROUP — the star of the show */}
         <motion.g
-          animate={humWiggle}
-          transition={{ duration: 0.35, repeat: speaking ? Infinity : 0 }}
+          animate={jawDrop}
+          transition={{ duration: isStop ? 0.7 : 0.5, repeat: speaking ? Infinity : 0, ease: "easeInOut" }}
+
           style={{ transformOrigin: "100px 158px" }}
         >
           <motion.g

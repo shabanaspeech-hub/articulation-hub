@@ -143,43 +143,13 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
         </motion.button>
       ) : null}
 
-      {/* Text Display */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={level}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          className="text-center px-2"
-        >
-          {isSyllableLevel ? (
-            <p className="font-nunito text-lg text-muted-foreground">
-              {level === "cv" ? "Consonant-Vowel" : "Consonant-Vowel-Consonant-Vowel"}
-            </p>
-          ) : (
-            <>
-              <h2 className="font-fredoka text-2xl md:text-4xl font-bold text-foreground leading-tight">
-                {highlightSound(getDisplayText())}
-              </h2>
-              {level !== "words" && word && (
-                <p className="text-base text-muted-foreground mt-1 font-nunito">
-                  {word.word}
-                </p>
-              )}
-            </>
-          )}
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Voice Recorder */}
-      <VoiceRecorder label="🎙️ Now you try! Record yourself:" />
-
-      {/* Position indicator - only for word levels */}
-      {!isSyllableLevel && (
-        <div className="text-sm text-muted-foreground font-nunito capitalize">
-          {position} position
-        </div>
-      )}
+      {/* Voice Recorder — saves per-target so parents can reuse familiar voices */}
+      <VoiceRecorder
+        label="Record your voice"
+        storageKey={`practice:${soundLetter}:${level}:${position}:${
+          syllable?.display || cvcItem?.word || word?.word || ""
+        }`}
+      />
     </motion.div>
   );
 };
