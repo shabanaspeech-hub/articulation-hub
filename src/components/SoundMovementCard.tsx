@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Volume2 } from "lucide-react";
 import MouthDiagram, { type MouthType } from "./MouthDiagram";
 import VoiceRecorder from "./VoiceRecorder";
-import SpeakingFace from "./SpeakingFace";
+import PhonemeAvatar from "./PhonemeAvatar";
 import { getIsolationSpeechText, getPhoneticRepetitionText, speakPhoneticText } from "@/lib/speech";
 
 
