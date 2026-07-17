@@ -383,23 +383,14 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
     >
       {/* Speaking Avatar Coach — a real face with visible lips/teeth/tongue */}
       <div className="w-full flex flex-col items-center gap-3">
-        <motion.button
-          onClick={speakSound}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          className="relative rounded-3xl bg-gradient-to-br from-accent/30 to-primary/20 p-3 shadow-lg border-4 border-accent/30"
-          aria-label={`Watch and hear the ${upperSound} sound`}
-        >
-          <SpeakingFace
-            type={data.mouthType}
-            voicing={data.voicing}
-            speaking={isSpeaking}
-            size={220}
-          />
-          <div className="absolute bottom-2 right-2 w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md">
-            <Volume2 className="w-4 h-4" />
-          </div>
-        </motion.button>
+        <PhonemeAvatar
+          phoneme={upperSound}
+          mouthType={data.mouthType}
+          voicing={data.voicing}
+          speaking={isSpeaking}
+          onTap={speakSound}
+          size={240}
+        />
 
         <motion.button
           onClick={speakCue}
