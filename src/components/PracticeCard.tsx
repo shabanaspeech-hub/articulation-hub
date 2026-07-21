@@ -1,8 +1,12 @@
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WordItem, PracticeLevel, SyllableItem, CVCItem, getSyllablePhonetic } from "@/data/soundsData";
 import VoiceRecorder from "./VoiceRecorder";
-import { speakPhoneticText } from "@/lib/speech";
+import PhonemeAvatar from "./PhonemeAvatar";
+import { speakPhoneticText, getIsolationSpeechText } from "@/lib/speech";
 import { getWordImage } from "@/lib/wordImages";
+import { getPhonemeArticulation } from "@/lib/phonemeArticulation";
+
 
 interface PracticeCardProps {
   word?: WordItem;
@@ -17,6 +21,18 @@ interface PracticeCardProps {
 const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter, position }: PracticeCardProps) => {
   const isSyllableLevel = level === "cv" || level === "cvcv" || level === "vc";
   const cardSizeClass = "w-[min(20rem,76vw,42vh)] h-[min(20rem,76vw,42vh)]";
+  const [avatarSpeaking, setAvatarSpeaking] = useState(false);
+  const articulation = getPhonemeArticulation(soundLetter);
+
+  const speakIsolatedSound = () => {
+    setAvatarSpeaking(true);
+    speakPhoneticText(getIsolationSpeechText(soundLetter), {
+      rate: 0.5,
+      pitch: 1,
+      onEnd: () => setAvatarSpeaking(false),
+    });
+  };
+
 
   const getDisplayText = () => {
     if (isSyllableLevel && syllable) return syllable.display;
@@ -81,7 +97,18 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
       transition={{ duration: 0.3 }}
       className="practice-card flex flex-col items-center gap-3 sm:gap-4"
     >
+      {/* Articulation avatar — shows the mouth shape and plays the pure phoneme */}
+      <PhonemeAvatar
+        phoneme={soundLetter.toUpperCase()}
+        mouthType={articulation.mouthType}
+        voicing={articulation.voicing}
+        speaking={avatarSpeaking}
+        onTap={speakIsolatedSound}
+        size={140}
+      />
+
       {/* Syllable mode: big text bubble instead of image */}
+
       {isSyllableLevel && syllable ? (
         <motion.button
           whileHover={{ scale: 1.05 }}

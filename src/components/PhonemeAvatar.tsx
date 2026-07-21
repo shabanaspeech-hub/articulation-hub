@@ -1,28 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Play, Volume2 } from "lucide-react";
-import SpeakingFace from "./SpeakingFace";
-import type { MouthType } from "./MouthDiagram";
+import { Play, Volume2, Video } from "lucide-react";
+import MouthDiagram, { type MouthType } from "./MouthDiagram";
 import { getPhonemeVideo } from "@/lib/phonemeVideos";
 
 /**
  * PhonemeAvatar — pluggable articulation demonstrator.
  *
- * Providers (Phase 1 ships `video` + `svg`; Phase 2 will add `ai` / `3d`):
- *   - "video": real close-up clinician video (preferred)
- *   - "svg":   animated SVG SpeakingFace fallback
- *   - "ai":    reserved for HeyGen/D-ID/Synthesia (future)
- *   - "3d":    reserved for Ready Player Me / three.js (future)
+ * Providers (Phase 1 ships `video` + `diagram`; Phase 2 will add `ai` / `3d`):
+ *   - "video":   real close-up clinician video (preferred)
+ *   - "diagram": clean, calm placement diagram fallback (no blinking face)
  *
- * The component chooses the best available provider automatically:
- *   1. If a video is registered for the phoneme AND loads successfully → video.
- *   2. Otherwise → animated SVG.
- *
- * To swap the whole app to a different provider later, only this file needs
- * to change — every consumer just renders <PhonemeAvatar phoneme="P" ... />.
+ * Chooses the best available provider automatically:
+ *   1. If a video is registered AND loads successfully → video.
+ *   2. Otherwise → static-feel placement diagram.
  */
 
-export type AvatarProvider = "auto" | "video" | "svg" | "ai" | "3d";
+export type AvatarProvider = "auto" | "video" | "diagram" | "ai" | "3d";
 
 interface PhonemeAvatarProps {
   phoneme: string;
@@ -47,21 +41,16 @@ const PhonemeAvatar = ({
   const [videoAvailable, setVideoAvailable] = useState<boolean>(!!video);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  // Reset availability whenever the phoneme changes so a missing video for
-  // one sound doesn't disable videos for the next.
   useEffect(() => {
     setVideoAvailable(!!video);
   }, [phoneme, video]);
 
-  // Sync playback with the `speaking` prop (audio drives visual timing).
   useEffect(() => {
     const el = videoRef.current;
     if (!el || !videoAvailable) return;
     if (speaking) {
       el.currentTime = 0;
-      el.play().catch(() => {
-        /* autoplay blocked — user tap will start it */
-      });
+      el.play().catch(() => {});
     } else {
       el.pause();
     }
@@ -75,9 +64,10 @@ const PhonemeAvatar = ({
       onClick={onTap}
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
-      className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-accent/20 to-primary/10 shadow-xl border-4 border-accent/30"
+      animate={speaking ? { boxShadow: "0 0 0 6px hsl(var(--primary) / 0.25)" } : { boxShadow: "0 0 0 0px hsl(var(--primary) / 0)" }}
+      className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-accent/20 to-primary/10 shadow-xl border-4 border-accent/30 flex items-center justify-center"
       style={{ width: size, height: size }}
-      aria-label={`Watch the ${phoneme} articulation`}
+      aria-label={`Hear and see the ${phoneme} sound`}
     >
       {useVideo ? (
         <video
@@ -92,24 +82,16 @@ const PhonemeAvatar = ({
           className="w-full h-full object-cover"
         />
       ) : (
-        <div className="w-full h-full flex items-center justify-center">
-          <SpeakingFace
-            type={mouthType}
-            voicing={voicing}
-            speaking={speaking}
-            size={size - 20}
-          />
+        <div className="w-full h-full flex flex-col items-center justify-center px-2">
+          <MouthDiagram type={mouthType} voicing={voicing} />
+          <span className="mt-1 text-[10px] uppercase tracking-wide text-muted-foreground flex items-center gap-1">
+            <Video className="w-3 h-3" /> Add real video
+          </span>
         </div>
       )}
 
-      {/* Play / speaker chip */}
       <div className="absolute bottom-2 right-2 w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md">
         {useVideo ? <Play className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-      </div>
-
-      {/* Subtle provider badge — helpful for QA, invisible-ish for kids */}
-      <div className="absolute top-2 left-2 text-[9px] uppercase tracking-wide bg-background/70 backdrop-blur px-1.5 py-0.5 rounded-full text-muted-foreground">
-        {useVideo ? "Video" : "Animated"}
       </div>
     </motion.button>
   );
