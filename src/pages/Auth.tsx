@@ -71,14 +71,13 @@ const Auth = () => {
 
   const handleGoogle = async () => {
     setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (result.error) {
+    const { error } = await signInWithGoogle();
+    if (error) {
       toast.error("Google sign-in failed");
       setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10">
