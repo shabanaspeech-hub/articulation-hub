@@ -410,15 +410,11 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
         </motion.button>
       </div>
 
-      {/* Simplified placement diagram (kept as secondary reference) */}
-      <details className="w-full">
-        <summary className="font-nunito text-xs text-muted-foreground cursor-pointer text-center">
-          See placement diagram
-        </summary>
-        <div className="mt-2 rounded-2xl bg-gradient-to-br from-accent/10 to-primary/10 p-3 border border-border flex justify-center">
-          <MouthDiagram type={data.mouthType} voicing={data.voicing} />
-        </div>
-      </details>
+      {/* Therapist video model — record or upload a 2–3s clip per sound */}
+      <TherapistVideoModel
+        storageKey={`isolated:${upperSound}`}
+        soundLabel={`/${upperSound.toLowerCase()}/`}
+      />
 
       {/* Mouth placement steps */}
       <div className="w-full bg-card rounded-2xl border border-border p-4 space-y-2">
