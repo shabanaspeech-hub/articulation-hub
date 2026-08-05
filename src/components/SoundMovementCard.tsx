@@ -439,19 +439,6 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
         </p>
       </div>
 
-      {/* Repetition drill — tap to hear */}
-      <motion.button
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
-        onClick={speakRepetition}
-        className="bg-secondary rounded-2xl px-6 py-3 w-full text-center cursor-pointer flex items-center justify-center gap-2"
-        aria-label="Hear slow repetition drill"
-      >
-        <Volume2 className="w-4 h-4 text-primary" />
-        <span className="font-nunito text-xs uppercase tracking-wide text-muted-foreground">
-          Slow repetition drill
-        </span>
-      </motion.button>
 
       {/* Voice Recorder — saves per sound so parents' voices can be reused */}
       <VoiceRecorder
