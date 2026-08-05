@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { PracticeLevel } from "@/data/soundsData";
-import { MessageCircle, FileText, BookOpen, Music, Music2, Gamepad2 } from "lucide-react";
+import { MessageCircle, FileText, BookOpen, Music, Music2, Gamepad2, Mic } from "lucide-react";
 
 interface LevelSelectorProps {
   selectedLevel: PracticeLevel;
@@ -8,6 +8,7 @@ interface LevelSelectorProps {
 }
 
 const levels: { key: PracticeLevel; label: string; icon: React.ReactNode }[] = [
+  { key: "sound-movement", label: "Sound", icon: <Mic className="w-5 h-5" /> },
   { key: "cv", label: "CV", icon: <Music className="w-5 h-5" /> },
   { key: "cvcv", label: "CVCV", icon: <Music2 className="w-5 h-5" /> },
   { key: "words", label: "Words", icon: <FileText className="w-5 h-5" /> },
