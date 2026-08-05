@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Volume2 } from "lucide-react";
-import MouthDiagram, { type MouthType } from "./MouthDiagram";
+import { type MouthType } from "./MouthDiagram";
 import VoiceRecorder from "./VoiceRecorder";
 import PhonemeAvatar from "./PhonemeAvatar";
+import TherapistVideoModel from "./TherapistVideoModel";
 import { getIsolationSpeechText, getPhoneticRepetitionText, speakPhoneticText } from "@/lib/speech";
 
 
