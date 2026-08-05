@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Volume2 } from "lucide-react";
-import MouthDiagram, { type MouthType } from "./MouthDiagram";
+import { type MouthType } from "./MouthDiagram";
 import VoiceRecorder from "./VoiceRecorder";
 import PhonemeAvatar from "./PhonemeAvatar";
+import TherapistVideoModel from "./TherapistVideoModel";
 import { getIsolationSpeechText, getPhoneticRepetitionText, speakPhoneticText } from "@/lib/speech";
 
 
@@ -410,15 +411,11 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
         </motion.button>
       </div>
 
-      {/* Simplified placement diagram (kept as secondary reference) */}
-      <details className="w-full">
-        <summary className="font-nunito text-xs text-muted-foreground cursor-pointer text-center">
-          See placement diagram
-        </summary>
-        <div className="mt-2 rounded-2xl bg-gradient-to-br from-accent/10 to-primary/10 p-3 border border-border flex justify-center">
-          <MouthDiagram type={data.mouthType} voicing={data.voicing} />
-        </div>
-      </details>
+      {/* Therapist video model — record or upload a 2–3s clip per sound */}
+      <TherapistVideoModel
+        storageKey={`isolated:${upperSound}`}
+        soundLabel={`/${upperSound.toLowerCase()}/`}
+      />
 
       {/* Mouth placement steps */}
       <div className="w-full bg-card rounded-2xl border border-border p-4 space-y-2">
@@ -439,19 +436,6 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
         </p>
       </div>
 
-      {/* Repetition drill — tap to hear */}
-      <motion.button
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
-        onClick={speakRepetition}
-        className="bg-secondary rounded-2xl px-6 py-3 w-full text-center cursor-pointer flex items-center justify-center gap-2"
-        aria-label="Hear slow repetition drill"
-      >
-        <Volume2 className="w-4 h-4 text-primary" />
-        <span className="font-nunito text-xs uppercase tracking-wide text-muted-foreground">
-          Slow repetition drill
-        </span>
-      </motion.button>
 
       {/* Voice Recorder — saves per sound so parents' voices can be reused */}
       <VoiceRecorder
