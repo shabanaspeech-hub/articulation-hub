@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Volume2 } from "lucide-react";
 import { type MouthType } from "./MouthDiagram";
 import VoiceRecorder from "./VoiceRecorder";
-import PhonemeAvatar from "./PhonemeAvatar";
 import TherapistVideoModel from "./TherapistVideoModel";
-import { getIsolationSpeechText, getPhoneticRepetitionText, speakPhoneticText } from "@/lib/speech";
+import { getIsolationSpeechText, speakPhoneticText } from "@/lib/speech";
+
 
 
 interface SoundMovementCardProps {
@@ -347,23 +347,8 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
     });
   };
 
-  const speakRepetition = () => {
-    setIsSpeaking(true);
-    speakPhoneticText(getPhoneticRepetitionText(upperSound, data.repetition), {
-      rate: 0.35,
-      pitch: 1,
-      onEnd: () => setIsSpeaking(false),
-    });
-  };
 
-  const speakCue = () => {
-    setIsSpeaking(true);
-    speakPhoneticText(data.cue, {
-      rate: 0.75,
-      pitch: 1.05,
-      onEnd: () => setIsSpeaking(false),
-    });
-  };
+
 
   return (
     <motion.div
