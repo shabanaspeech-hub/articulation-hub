@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Volume2 } from "lucide-react";
 import { type MouthType } from "./MouthDiagram";
 import VoiceRecorder from "./VoiceRecorder";
-import PhonemeAvatar from "./PhonemeAvatar";
 import TherapistVideoModel from "./TherapistVideoModel";
-import { getIsolationSpeechText, getPhoneticRepetitionText, speakPhoneticText } from "@/lib/speech";
+import { getIsolationSpeechText, speakPhoneticText } from "@/lib/speech";
+
 
 
 interface SoundMovementCardProps {
@@ -347,67 +347,32 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
     });
   };
 
-  const speakRepetition = () => {
-    setIsSpeaking(true);
-    speakPhoneticText(getPhoneticRepetitionText(upperSound, data.repetition), {
-      rate: 0.35,
-      pitch: 1,
-      onEnd: () => setIsSpeaking(false),
-    });
-  };
 
-  const speakCue = () => {
-    setIsSpeaking(true);
-    speakPhoneticText(data.cue, {
-      rate: 0.75,
-      pitch: 1.05,
-      onEnd: () => setIsSpeaking(false),
-    });
-  };
 
-  // Avatar auto-introduces the placement cue the first time this sound loads
-  const introducedRef = useRef<string | null>(null);
-  useEffect(() => {
-    if (introducedRef.current === upperSound) return;
-    introducedRef.current = upperSound;
-    const t = setTimeout(() => speakCue(), 350);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [upperSound]);
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
+      initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      className="practice-card flex flex-col items-center gap-5 max-w-sm mx-auto"
+      exit={{ opacity: 0, scale: 0.95 }}
+      className="w-full max-w-sm mx-auto flex flex-col items-center gap-8 py-2"
     >
-      {/* Speaking Avatar Coach — a real face with visible lips/teeth/tongue */}
-      <div className="w-full flex flex-col items-center gap-3">
-        <PhonemeAvatar
-          phoneme={upperSound}
-          mouthType={data.mouthType}
-          voicing={data.voicing}
-          speaking={isSpeaking}
-          onTap={speakSound}
-          size={240}
-        />
+      {/* Big practice square — just the target letter */}
+      <div className="relative [container-type:size] w-[min(20rem,80vw,44vh)] aspect-square rounded-[2rem] bg-secondary/60 border border-border shadow-sm flex items-center justify-center">
+        <span
+          className="font-fredoka font-bold text-primary select-none leading-none"
+          style={{ fontSize: "45cqmin" }}
+        >
+          {upperSound}
+        </span>
 
         <motion.button
-          onClick={speakCue}
-          whileTap={{ scale: 0.97 }}
-          className="w-full bg-background rounded-2xl px-3 py-2 shadow-sm border border-border text-left"
-          aria-label="Hear the coach explain the placement"
+          onClick={speakSound}
+          whileTap={{ scale: 0.92 }}
+          aria-label={`Play the ${upperSound} sound`}
+          className="absolute bottom-4 right-4 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center"
         >
-          <p className="font-fredoka text-sm md:text-base text-foreground leading-snug">
-            {data.cue}
-          </p>
-          <div className="flex items-center gap-1 mt-1 text-primary">
-            <Volume2 className="w-3.5 h-3.5" />
-            <span className="font-nunito text-[10px] uppercase tracking-wide">
-              Tap to hear coach
-            </span>
-          </div>
+          <Volume2 className="w-6 h-6" />
         </motion.button>
       </div>
 
@@ -417,26 +382,6 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
         soundLabel={`/${upperSound.toLowerCase()}/`}
       />
 
-      {/* Mouth placement steps */}
-      <div className="w-full bg-card rounded-2xl border border-border p-4 space-y-2">
-        <p className="font-fredoka text-sm font-semibold text-foreground mb-2">Mouth placement</p>
-        {data.mouthSteps.map((step, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.15 }}
-            className="flex items-start gap-2"
-          >
-            <span className="font-nunito text-sm text-foreground">{step}</span>
-          </motion.div>
-        ))}
-        <p className="font-nunito text-xs text-muted-foreground mt-2 italic">
-          {data.mouthDesc}
-        </p>
-      </div>
-
-
       {/* Voice Recorder — saves per sound so parents' voices can be reused */}
       <VoiceRecorder
         label="Record your voice for this sound"
@@ -445,6 +390,7 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
     </motion.div>
   );
 };
+
 
 export { allSounds as motorSpeechSounds };
 export default SoundMovementCard;
