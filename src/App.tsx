@@ -10,10 +10,18 @@ import SoundDetail from "./pages/SoundDetail";
 import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 import InstallBanner from "@/components/InstallBanner";
+import { useEffect } from "react";
+import { playStartupSound } from "@/lib/startupSound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+  useEffect(() => {
+    playStartupSound();
+  }, []);
+
+  return (
+
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <BrowserRouter>
@@ -33,6 +41,8 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
-);
+  );
+};
+
 
 export default App;
