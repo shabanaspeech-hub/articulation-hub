@@ -144,9 +144,12 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           whileHover={{ scale: 1.05, rotate: [0, -3, 3, 0] }}
           whileTap={{ scale: 0.9 }}
           onClick={speakWord}
-          className="relative cursor-pointer"
+          className="relative cursor-pointer flex flex-col items-center gap-2"
           aria-label={`Tap to hear ${getDisplayText()}`}
         >
+          <span className="font-fredoka text-2xl md:text-3xl font-bold text-foreground text-center px-2 leading-snug">
+            {highlightSound(getDisplayText())}
+          </span>
           <div className={`${cardSizeClass} rounded-3xl bg-card flex items-center justify-center shadow-lg border-4 border-primary/10 overflow-hidden`}>
             {(() => {
               const img = getWordImage(word.word);
@@ -157,6 +160,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
               );
             })()}
           </div>
+
           <div className="absolute -bottom-3 -right-3 w-12 h-12 rounded-full bg-primary/20 blur-xl" />
         </motion.button>
       ) : null}
