@@ -97,17 +97,8 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
       transition={{ duration: 0.3 }}
       className="practice-card flex flex-col items-center gap-3 sm:gap-4"
     >
-      {/* Articulation avatar — shows the mouth shape and plays the pure phoneme */}
-      <PhonemeAvatar
-        phoneme={soundLetter.toUpperCase()}
-        mouthType={articulation.mouthType}
-        voicing={articulation.voicing}
-        speaking={avatarSpeaking}
-        onTap={speakIsolatedSound}
-        size={140}
-      />
-
       {/* Syllable mode: big text bubble instead of image */}
+
 
       {isSyllableLevel && syllable ? (
         <motion.button
