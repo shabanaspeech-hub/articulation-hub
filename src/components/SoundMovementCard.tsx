@@ -358,10 +358,10 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
       className="w-full max-w-sm mx-auto flex flex-col items-center gap-8 py-2"
     >
       {/* Big practice square — just the target letter */}
-      <div className="relative w-[min(20rem,80vw,44vh)] aspect-square rounded-[2rem] bg-secondary/60 border border-border shadow-sm flex items-center justify-center">
+      <div className="relative [container-type:size] w-[min(20rem,80vw,44vh)] aspect-square rounded-[2rem] bg-secondary/60 border border-border shadow-sm flex items-center justify-center">
         <span
           className="font-fredoka font-bold text-primary select-none leading-none"
-          style={{ fontSize: "45%" }}
+          style={{ fontSize: "45cqmin" }}
         >
           {upperSound}
         </span>
