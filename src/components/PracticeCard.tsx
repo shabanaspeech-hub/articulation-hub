@@ -1,11 +1,8 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { WordItem, PracticeLevel, SyllableItem, CVCItem, getSyllablePhonetic } from "@/data/soundsData";
 import VoiceRecorder from "./VoiceRecorder";
-import PhonemeAvatar from "./PhonemeAvatar";
-import { speakPhoneticText, getIsolationSpeechText } from "@/lib/speech";
+import { speakPhoneticText } from "@/lib/speech";
 import { getWordImage } from "@/lib/wordImages";
-import { getPhonemeArticulation } from "@/lib/phonemeArticulation";
 
 
 interface PracticeCardProps {
@@ -21,17 +18,7 @@ interface PracticeCardProps {
 const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter, position }: PracticeCardProps) => {
   const isSyllableLevel = level === "cv" || level === "cvcv" || level === "vc";
   const cardSizeClass = "w-[min(20rem,76vw,42vh)] h-[min(20rem,76vw,42vh)]";
-  const [avatarSpeaking, setAvatarSpeaking] = useState(false);
-  const articulation = getPhonemeArticulation(soundLetter);
 
-  const speakIsolatedSound = () => {
-    setAvatarSpeaking(true);
-    speakPhoneticText(getIsolationSpeechText(soundLetter), {
-      rate: 0.5,
-      pitch: 1,
-      onEnd: () => setAvatarSpeaking(false),
-    });
-  };
 
 
   const getDisplayText = () => {
@@ -97,17 +84,8 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
       transition={{ duration: 0.3 }}
       className="practice-card flex flex-col items-center gap-3 sm:gap-4"
     >
-      {/* Articulation avatar — shows the mouth shape and plays the pure phoneme */}
-      <PhonemeAvatar
-        phoneme={soundLetter.toUpperCase()}
-        mouthType={articulation.mouthType}
-        voicing={articulation.voicing}
-        speaking={avatarSpeaking}
-        onTap={speakIsolatedSound}
-        size={140}
-      />
-
       {/* Syllable mode: big text bubble instead of image */}
+
 
       {isSyllableLevel && syllable ? (
         <motion.button
@@ -153,9 +131,12 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           whileHover={{ scale: 1.05, rotate: [0, -3, 3, 0] }}
           whileTap={{ scale: 0.9 }}
           onClick={speakWord}
-          className="relative cursor-pointer"
+          className="relative cursor-pointer flex flex-col items-center gap-2"
           aria-label={`Tap to hear ${getDisplayText()}`}
         >
+          <span className="font-fredoka text-2xl md:text-3xl font-bold text-foreground text-center px-2 leading-snug">
+            {highlightSound(getDisplayText())}
+          </span>
           <div className={`${cardSizeClass} rounded-3xl bg-card flex items-center justify-center shadow-lg border-4 border-primary/10 overflow-hidden`}>
             {(() => {
               const img = getWordImage(word.word);
@@ -166,6 +147,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
               );
             })()}
           </div>
+
           <div className="absolute -bottom-3 -right-3 w-12 h-12 rounded-full bg-primary/20 blur-xl" />
         </motion.button>
       ) : null}
