@@ -1,11 +1,8 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { WordItem, PracticeLevel, SyllableItem, CVCItem, getSyllablePhonetic } from "@/data/soundsData";
 import VoiceRecorder from "./VoiceRecorder";
-import PhonemeAvatar from "./PhonemeAvatar";
-import { speakPhoneticText, getIsolationSpeechText } from "@/lib/speech";
+import { speakPhoneticText } from "@/lib/speech";
 import { getWordImage } from "@/lib/wordImages";
-import { getPhonemeArticulation } from "@/lib/phonemeArticulation";
 
 
 interface PracticeCardProps {
@@ -21,17 +18,7 @@ interface PracticeCardProps {
 const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter, position }: PracticeCardProps) => {
   const isSyllableLevel = level === "cv" || level === "cvcv" || level === "vc";
   const cardSizeClass = "w-[min(20rem,76vw,42vh)] h-[min(20rem,76vw,42vh)]";
-  const [avatarSpeaking, setAvatarSpeaking] = useState(false);
-  const articulation = getPhonemeArticulation(soundLetter);
 
-  const speakIsolatedSound = () => {
-    setAvatarSpeaking(true);
-    speakPhoneticText(getIsolationSpeechText(soundLetter), {
-      rate: 0.5,
-      pitch: 1,
-      onEnd: () => setAvatarSpeaking(false),
-    });
-  };
 
 
   const getDisplayText = () => {
