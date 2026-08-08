@@ -53,7 +53,7 @@ const playChime = () => {
     });
   });
 
-  const total = 0.24 + 0.55 + 0.2;
+  const total = 0.32 + 0.6 + 0.2;
   window.setTimeout(() => {
     ctx.close().catch(() => undefined);
   }, total * 1000 + 300);
