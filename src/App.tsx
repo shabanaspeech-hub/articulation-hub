@@ -10,6 +10,7 @@ import SoundDetail from "./pages/SoundDetail";
 import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 import InstallBanner from "@/components/InstallBanner";
+import SplashScreen from "@/components/SplashScreen";
 import { useEffect } from "react";
 import { playStartupSound } from "@/lib/startupSound";
 
@@ -27,6 +28,7 @@ const App = () => {
       <BrowserRouter>
         <AuthProvider>
           <AppModeProvider>
+            <SplashScreen />
             <Toaster />
             <Sonner />
             <InstallBanner />

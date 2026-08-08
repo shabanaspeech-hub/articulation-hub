@@ -17,21 +17,22 @@ const playChime = () => {
 
   const master = ctx.createGain();
   master.gain.value = 0.0001;
-  master.gain.setValueAtTime(0.28, now);
+  master.gain.setValueAtTime(0.75, now);
   master.connect(ctx.destination);
 
-  // Gentle low-pass keeps it soft for young ears
   const filter = ctx.createBiquadFilter();
   filter.type = "lowpass";
-  filter.frequency.value = 4200;
+  filter.frequency.value = 6000;
   filter.connect(master);
 
-  // C6 - E6 - G6 rising motif with a soft bell shimmer
+  // Playful C6 - E6 - G6 - C7 sparkle motif
   const notes = [
-    { freq: 1046.5, at: 0, dur: 0.45, gain: 0.5 },
-    { freq: 1318.5, at: 0.12, dur: 0.45, gain: 0.45 },
-    { freq: 1568.0, at: 0.24, dur: 0.55, gain: 0.55 },
+    { freq: 1046.5, at: 0, dur: 0.4, gain: 0.6 },
+    { freq: 1318.5, at: 0.1, dur: 0.4, gain: 0.6 },
+    { freq: 1568.0, at: 0.2, dur: 0.45, gain: 0.65 },
+    { freq: 2093.0, at: 0.32, dur: 0.6, gain: 0.7 },
   ];
+
 
   notes.forEach(({ freq, at, dur, gain }) => {
     [1, 2.01].forEach((mult, i) => {
@@ -53,7 +54,7 @@ const playChime = () => {
     });
   });
 
-  const total = 0.24 + 0.55 + 0.2;
+  const total = 0.32 + 0.6 + 0.2;
   window.setTimeout(() => {
     ctx.close().catch(() => undefined);
   }, total * 1000 + 300);
