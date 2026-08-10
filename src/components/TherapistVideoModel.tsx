@@ -12,10 +12,12 @@ import {
   Volume2,
   VolumeX,
   Repeat,
+  UploadCloud,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { saveVideo, loadVideo, deleteVideo } from "@/lib/videoStore";
-import { getDefaultVideoUrl } from "@/lib/defaultTherapistVideos";
+import { getDefaultVideoUrl, publishDefaultVideo } from "@/lib/defaultTherapistVideos";
+import { getOwnerKey, promptOwnerKey, useOwnerMode } from "@/lib/ownerMode";
 
 interface TherapistVideoModelProps {
   /** Unique key per sound/activity, e.g. "isolated:P" */
@@ -36,6 +38,10 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
   const [muted, setMuted] = useState(false);
   const [waiting, setWaiting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [publishing, setPublishing] = useState(false);
+  const [published, setPublished] = useState<string | null>(null);
+  const ownerMode = useOwnerMode();
+  const tapsRef = useRef(0);
 
   const videoUrl = customUrl ?? defaultUrl;
   const isCustom = Boolean(customUrl);
@@ -181,6 +187,41 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
     replay();
   };
 
+  const publish = async (blob: Blob) => {
+    const key = getOwnerKey();
+    if (!key) return;
+    setError(null);
+    setPublished(null);
+    setPublishing(true);
+    try {
+      await publishDefaultVideo(storageKey, blob, key);
+      const url = await getDefaultVideoUrl(storageKey);
+      setDefaultUrl(url);
+      setPublished("Published to all devices");
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setPublishing(false);
+    }
+  };
+
+  const publishCurrent = async () => {
+    const blob = await loadVideo(storageKey);
+    if (blob) await publish(blob);
+  };
+
+  /** Hidden tap target for phones (5 quick taps on the title). */
+  const handleTitleTap = () => {
+    tapsRef.current += 1;
+    window.setTimeout(() => {
+      tapsRef.current = 0;
+    }, 1500);
+    if (tapsRef.current >= 5) {
+      tapsRef.current = 0;
+      promptOwnerKey();
+    }
+  };
+
   const handleEnded = () => {
     if (!autoPlayRef.current) return;
     setWaiting(true);
@@ -193,7 +234,10 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
   return (
     <div className="w-full bg-card rounded-2xl border border-border p-4 space-y-3">
       <div className="flex items-center justify-between gap-2">
-        <p className="font-fredoka text-sm font-semibold text-foreground flex items-center gap-2">
+        <p
+          onClick={handleTitleTap}
+          className="font-fredoka text-sm font-semibold text-foreground flex items-center gap-2 select-none cursor-default"
+        >
           <Video className="w-4 h-4 text-primary" /> Therapist video model
         </p>
         <div className="flex items-center gap-2">
@@ -340,6 +384,44 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
               </span>
             </label>
           </div>
+        </div>
+      )}
+
+      {ownerMode && (
+        <div className="pt-1 space-y-2 border-t border-border">
+          <p className="font-nunito text-[11px] text-muted-foreground pt-2">
+            Owner mode — publish a clip as the universal default for every device.
+          </p>
+          <div className="flex gap-2">
+            {isCustom && (
+              <Button
+                onClick={publishCurrent}
+                disabled={publishing}
+                size="sm"
+                className="flex-1 rounded-xl"
+              >
+                <UploadCloud className="w-3.5 h-3.5 mr-1.5" />
+                {publishing ? "Publishing…" : "Publish this clip"}
+              </Button>
+            )}
+            <label className="flex-1">
+              <input
+                type="file"
+                accept="video/*"
+                className="hidden"
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) publish(f);
+                }}
+              />
+              <span className="w-full inline-flex items-center justify-center h-9 rounded-xl border border-input bg-background text-sm font-medium cursor-pointer hover:bg-accent/40">
+                <UploadCloud className="w-3.5 h-3.5 mr-1.5" /> Publish a file
+              </span>
+            </label>
+          </div>
+          {published && (
+            <p className="font-nunito text-xs text-primary">{published}</p>
+          )}
         </div>
       )}
 
