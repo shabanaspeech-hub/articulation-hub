@@ -19,6 +19,16 @@ export const clearOwnerKey = () => {
   window.dispatchEvent(new Event("owner-mode-change"));
 };
 
+/** Ask for the key (used by the keyboard shortcut and the hidden tap target). */
+export function promptOwnerKey() {
+  if (getOwnerKey()) {
+    clearOwnerKey();
+    return;
+  }
+  const key = window.prompt("Owner key");
+  if (key) setOwnerKey(key.trim());
+}
+
 /** True while an owner key is present in this tab. */
 export function useOwnerMode() {
   const [active, setActive] = useState(() => Boolean(getOwnerKey()));
@@ -32,12 +42,7 @@ export function useOwnerMode() {
       if (target && /input|textarea|select/i.test(target.tagName)) return;
       if (!e.shiftKey || e.key.toLowerCase() !== "a") return;
       e.preventDefault();
-      if (getOwnerKey()) {
-        clearOwnerKey();
-        return;
-      }
-      const key = window.prompt("Owner key");
-      if (key) setOwnerKey(key.trim());
+      promptOwnerKey();
     };
     window.addEventListener("keydown", onKeyDown);
 
