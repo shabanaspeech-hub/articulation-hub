@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { saveVideo, loadVideo, deleteVideo } from "@/lib/videoStore";
+import { getDefaultVideoUrl } from "@/lib/defaultTherapistVideos";
 
 interface TherapistVideoModelProps {
   /** Unique key per sound/activity, e.g. "isolated:P" */
@@ -26,7 +27,8 @@ interface TherapistVideoModelProps {
 const PAUSE_OPTIONS = [1, 2, 3, 5];
 
 const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProps) => {
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [customUrl, setCustomUrl] = useState<string | null>(null);
+  const [defaultUrl, setDefaultUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [recording, setRecording] = useState(false);
   const [autoPlay, setAutoPlay] = useState(false);
@@ -34,6 +36,9 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
   const [muted, setMuted] = useState(false);
   const [waiting, setWaiting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const videoUrl = customUrl ?? defaultUrl;
+  const isCustom = Boolean(customUrl);
 
   const playerRef = useRef<HTMLVideoElement | null>(null);
   const previewRef = useRef<HTMLVideoElement | null>(null);
@@ -43,26 +48,36 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
   const timerRef = useRef<number | null>(null);
   const autoPlayRef = useRef(false);
 
-  // Load the saved clip for this sound
+  // Load the user's own clip (if any) plus the universal default for this sound
   useEffect(() => {
-    let revoked: string | null = null;
+    let objectUrl: string | null = null;
+    let cancelled = false;
     setLoading(true);
-    loadVideo(storageKey)
-      .then((blob) => {
+    setCustomUrl(null);
+    setDefaultUrl(null);
+
+    Promise.all([
+      loadVideo(storageKey).catch(() => null),
+      getDefaultVideoUrl(storageKey).catch(() => null),
+    ])
+      .then(([blob, remote]) => {
+        if (cancelled) return;
         if (blob) {
-          const url = URL.createObjectURL(blob);
-          revoked = url;
-          setVideoUrl(url);
-        } else {
-          setVideoUrl(null);
+          objectUrl = URL.createObjectURL(blob);
+          setCustomUrl(objectUrl);
         }
+        setDefaultUrl(remote);
       })
-      .catch(() => setVideoUrl(null))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
     return () => {
-      if (revoked) URL.revokeObjectURL(revoked);
+      cancelled = true;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
   }, [storageKey]);
+
 
   // Stop auto play when the clip or screen changes
   useEffect(() => {
@@ -76,10 +91,11 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
   const persist = useCallback(
     async (blob: Blob) => {
       await saveVideo(storageKey, blob);
-      setVideoUrl((prev) => {
+      setCustomUrl((prev) => {
         if (prev) URL.revokeObjectURL(prev);
         return URL.createObjectURL(blob);
       });
+
     },
     [storageKey]
   );
@@ -136,11 +152,13 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
   const handleDelete = async () => {
     stopAutoPlay();
     await deleteVideo(storageKey);
-    setVideoUrl((prev) => {
+    // Only the user's own clip is removed — the universal default comes back.
+    setCustomUrl((prev) => {
       if (prev) URL.revokeObjectURL(prev);
       return null;
     });
   };
+
 
   const replay = () => {
     const el = playerRef.current;
@@ -174,20 +192,28 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
 
   return (
     <div className="w-full bg-card rounded-2xl border border-border p-4 space-y-3">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <p className="font-fredoka text-sm font-semibold text-foreground flex items-center gap-2">
           <Video className="w-4 h-4 text-primary" /> Therapist video model
         </p>
-        {videoUrl && (
-          <button
-            onClick={() => setMuted((m) => !m)}
-            className="text-muted-foreground hover:text-foreground"
-            aria-label={muted ? "Unmute video" : "Mute video"}
-          >
-            {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-          </button>
-        )}
+        <div className="flex items-center gap-2">
+          {videoUrl && !recording && (
+            <span className="font-nunito text-[10px] px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
+              {isCustom ? "Your video" : "Default"}
+            </span>
+          )}
+          {videoUrl && (
+            <button
+              onClick={() => setMuted((m) => !m)}
+              className="text-muted-foreground hover:text-foreground"
+              aria-label={muted ? "Unmute video" : "Mute video"}
+            >
+              {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+            </button>
+          )}
+        </div>
       </div>
+
 
       {recording ? (
         <div className="space-y-3">
@@ -263,7 +289,7 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
 
           <div className="flex gap-2 pt-1">
             <Button onClick={startRecording} variant="outline" size="sm" className="flex-1 rounded-xl">
-              <Circle className="w-3.5 h-3.5 mr-1.5" /> Re-record
+              <Circle className="w-3.5 h-3.5 mr-1.5" /> {isCustom ? "Re-record" : "Record my own"}
             </Button>
             <label className="flex-1">
               <input
@@ -273,13 +299,22 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
                 onChange={(e) => handleUpload(e.target.files?.[0])}
               />
               <span className="w-full inline-flex items-center justify-center h-9 rounded-xl border border-input bg-background text-sm font-medium cursor-pointer hover:bg-accent/40">
-                <Upload className="w-3.5 h-3.5 mr-1.5" /> Replace
+                <Upload className="w-3.5 h-3.5 mr-1.5" /> {isCustom ? "Replace" : "Upload mine"}
               </span>
             </label>
-            <Button onClick={handleDelete} variant="ghost" size="sm" className="rounded-xl text-destructive">
-              <Trash2 className="w-4 h-4" />
-            </Button>
+            {isCustom && (
+              <Button
+                onClick={handleDelete}
+                variant="ghost"
+                size="sm"
+                className="rounded-xl text-destructive"
+                aria-label="Delete my video and restore the default"
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            )}
           </div>
+
         </div>
       ) : (
         <div className="space-y-3">
