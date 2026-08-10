@@ -192,20 +192,28 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
 
   return (
     <div className="w-full bg-card rounded-2xl border border-border p-4 space-y-3">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <p className="font-fredoka text-sm font-semibold text-foreground flex items-center gap-2">
           <Video className="w-4 h-4 text-primary" /> Therapist video model
         </p>
-        {videoUrl && (
-          <button
-            onClick={() => setMuted((m) => !m)}
-            className="text-muted-foreground hover:text-foreground"
-            aria-label={muted ? "Unmute video" : "Mute video"}
-          >
-            {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-          </button>
-        )}
+        <div className="flex items-center gap-2">
+          {videoUrl && !recording && (
+            <span className="font-nunito text-[10px] px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
+              {isCustom ? "Your video" : "Default"}
+            </span>
+          )}
+          {videoUrl && (
+            <button
+              onClick={() => setMuted((m) => !m)}
+              className="text-muted-foreground hover:text-foreground"
+              aria-label={muted ? "Unmute video" : "Mute video"}
+            >
+              {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+            </button>
+          )}
+        </div>
       </div>
+
 
       {recording ? (
         <div className="space-y-3">
