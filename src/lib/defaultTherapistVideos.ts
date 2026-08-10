@@ -51,3 +51,36 @@ export async function getDefaultVideoUrl(storageKey: string): Promise<string | n
     return null;
   }
 }
+
+/** Drop the cached URL so the next load re-resolves the published clip. */
+export const clearDefaultVideoCache = (storageKey?: string) => {
+  if (storageKey) cache.delete(storageKey);
+  else cache.clear();
+};
+
+/**
+ * Owner-only: publish a clip as the universal default for this sound.
+ * The key is verified server-side by the `publish-default-video` function —
+ * regular users can never write to the `defaults/` folder.
+ */
+export async function publishDefaultVideo(
+  storageKey: string,
+  file: Blob,
+  ownerKey: string
+): Promise<void> {
+  const form = new FormData();
+  form.append("storageKey", storageKey);
+  form.append(
+    "file",
+    new File([file], "clip", { type: file.type || "video/webm" })
+  );
+
+  const { data, error } = await supabase.functions.invoke("publish-default-video", {
+    body: form,
+    headers: { "x-admin-key": ownerKey },
+  });
+
+  if (error) throw new Error("Publish failed — check your owner key.");
+  if (data?.error) throw new Error(data.error);
+  clearDefaultVideoCache(storageKey);
+}
