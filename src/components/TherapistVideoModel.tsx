@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { saveVideo, loadVideo, deleteVideo } from "@/lib/videoStore";
+import { getDefaultVideoUrl } from "@/lib/defaultTherapistVideos";
 
 interface TherapistVideoModelProps {
   /** Unique key per sound/activity, e.g. "isolated:P" */
@@ -26,7 +27,8 @@ interface TherapistVideoModelProps {
 const PAUSE_OPTIONS = [1, 2, 3, 5];
 
 const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProps) => {
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [customUrl, setCustomUrl] = useState<string | null>(null);
+  const [defaultUrl, setDefaultUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [recording, setRecording] = useState(false);
   const [autoPlay, setAutoPlay] = useState(false);
@@ -34,6 +36,9 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
   const [muted, setMuted] = useState(false);
   const [waiting, setWaiting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const videoUrl = customUrl ?? defaultUrl;
+  const isCustom = Boolean(customUrl);
 
   const playerRef = useRef<HTMLVideoElement | null>(null);
   const previewRef = useRef<HTMLVideoElement | null>(null);
@@ -43,26 +48,36 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
   const timerRef = useRef<number | null>(null);
   const autoPlayRef = useRef(false);
 
-  // Load the saved clip for this sound
+  // Load the user's own clip (if any) plus the universal default for this sound
   useEffect(() => {
-    let revoked: string | null = null;
+    let objectUrl: string | null = null;
+    let cancelled = false;
     setLoading(true);
-    loadVideo(storageKey)
-      .then((blob) => {
+    setCustomUrl(null);
+    setDefaultUrl(null);
+
+    Promise.all([
+      loadVideo(storageKey).catch(() => null),
+      getDefaultVideoUrl(storageKey).catch(() => null),
+    ])
+      .then(([blob, remote]) => {
+        if (cancelled) return;
         if (blob) {
-          const url = URL.createObjectURL(blob);
-          revoked = url;
-          setVideoUrl(url);
-        } else {
-          setVideoUrl(null);
+          objectUrl = URL.createObjectURL(blob);
+          setCustomUrl(objectUrl);
         }
+        setDefaultUrl(remote);
       })
-      .catch(() => setVideoUrl(null))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
     return () => {
-      if (revoked) URL.revokeObjectURL(revoked);
+      cancelled = true;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
   }, [storageKey]);
+
 
   // Stop auto play when the clip or screen changes
   useEffect(() => {
