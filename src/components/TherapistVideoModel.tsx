@@ -281,7 +281,7 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
 
           <div className="flex gap-2 pt-1">
             <Button onClick={startRecording} variant="outline" size="sm" className="flex-1 rounded-xl">
-              <Circle className="w-3.5 h-3.5 mr-1.5" /> Re-record
+              <Circle className="w-3.5 h-3.5 mr-1.5" /> {isCustom ? "Re-record" : "Record my own"}
             </Button>
             <label className="flex-1">
               <input
@@ -291,13 +291,22 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
                 onChange={(e) => handleUpload(e.target.files?.[0])}
               />
               <span className="w-full inline-flex items-center justify-center h-9 rounded-xl border border-input bg-background text-sm font-medium cursor-pointer hover:bg-accent/40">
-                <Upload className="w-3.5 h-3.5 mr-1.5" /> Replace
+                <Upload className="w-3.5 h-3.5 mr-1.5" /> {isCustom ? "Replace" : "Upload mine"}
               </span>
             </label>
-            <Button onClick={handleDelete} variant="ghost" size="sm" className="rounded-xl text-destructive">
-              <Trash2 className="w-4 h-4" />
-            </Button>
+            {isCustom && (
+              <Button
+                onClick={handleDelete}
+                variant="ghost"
+                size="sm"
+                className="rounded-xl text-destructive"
+                aria-label="Delete my video and restore the default"
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            )}
           </div>
+
         </div>
       ) : (
         <div className="space-y-3">
