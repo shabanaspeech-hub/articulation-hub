@@ -91,10 +91,11 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
   const persist = useCallback(
     async (blob: Blob) => {
       await saveVideo(storageKey, blob);
-      setVideoUrl((prev) => {
+      setCustomUrl((prev) => {
         if (prev) URL.revokeObjectURL(prev);
         return URL.createObjectURL(blob);
       });
+
     },
     [storageKey]
   );
