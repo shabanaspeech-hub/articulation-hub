@@ -152,11 +152,13 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
   const handleDelete = async () => {
     stopAutoPlay();
     await deleteVideo(storageKey);
-    setVideoUrl((prev) => {
+    // Only the user's own clip is removed — the universal default comes back.
+    setCustomUrl((prev) => {
       if (prev) URL.revokeObjectURL(prev);
       return null;
     });
   };
+
 
   const replay = () => {
     const el = playerRef.current;
