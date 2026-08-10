@@ -1,1 +1,4 @@
 project_id = "urojqjexpslxuxepgpef"
+
+[functions.publish-default-video]
+verify_jwt = false
