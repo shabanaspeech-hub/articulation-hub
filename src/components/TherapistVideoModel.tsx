@@ -238,7 +238,7 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
           onClick={handleTitleTap}
           className="font-fredoka text-sm font-semibold text-foreground flex items-center gap-2 select-none cursor-default"
         >
-          <Video className="w-4 h-4 text-primary" /> Therapist video model
+          <Video className="w-4 h-4 text-primary" /> Video model
         </p>
         <div className="flex items-center gap-2">
           {videoUrl && !recording && (
