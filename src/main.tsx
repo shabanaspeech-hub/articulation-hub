@@ -3,7 +3,8 @@ import App from "./App.tsx";
 import "./index.css";
 
 // Dev/preview: never let a stale service worker serve an old build.
-if (import.meta.env.DEV && "serviceWorker" in navigator) {
+const isLovablePreview = window.location.hostname.includes("id-preview--");
+if ((import.meta.env.DEV || isLovablePreview) && "serviceWorker" in navigator) {
   navigator.serviceWorker.getRegistrations().then((regs) => {
     regs.forEach((reg) => reg.unregister());
   });
