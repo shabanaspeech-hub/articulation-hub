@@ -19,14 +19,14 @@ const levels: { key: PracticeLevel; label: string; icon: React.ReactNode }[] = [
 
 const LevelSelector = ({ selectedLevel, onLevelChange }: LevelSelectorProps) => {
   return (
-    <div className="flex gap-2 p-1.5 bg-secondary rounded-2xl">
+    <div className="flex gap-1.5 p-1.5 bg-secondary/90 rounded-2xl overflow-x-auto [scrollbar-width:none]">
       {levels.map((level) => (
         <motion.button
           key={level.key}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => onLevelChange(level.key)}
-          className={`relative flex-1 py-2.5 px-3 rounded-xl font-nunito font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
+          className={`relative flex-1 shrink-0 min-w-[2.75rem] py-2 px-2.5 rounded-xl font-nunito font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
             selectedLevel === level.key
               ? "bg-primary text-primary-foreground shadow-md"
               : "text-secondary-foreground hover:bg-primary/10"

@@ -14,14 +14,14 @@ const positions: { key: Position; label: string; description: string; icon: stri
 
 const PositionSelector = ({ selectedPosition, onPositionChange }: PositionSelectorProps) => {
   return (
-    <div className="flex gap-3 p-2 bg-muted rounded-3xl">
+    <div className="flex gap-2 p-1 bg-muted/80 rounded-2xl">
       {positions.map((pos) => (
         <motion.button
           key={pos.key}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => onPositionChange(pos.key)}
-          className={`relative flex-1 py-3 px-4 rounded-2xl font-fredoka font-semibold text-center transition-all duration-300 ${
+          className={`relative flex-1 py-1.5 px-3 rounded-xl font-fredoka font-semibold text-center transition-all duration-300 ${
             selectedPosition === pos.key
               ? "bg-card text-foreground shadow-md"
               : "text-muted-foreground hover:text-foreground"
@@ -30,15 +30,15 @@ const PositionSelector = ({ selectedPosition, onPositionChange }: PositionSelect
           {selectedPosition === pos.key && (
             <motion.div
               layoutId="positionIndicator"
-              className="absolute inset-0 bg-card rounded-2xl shadow-md"
+              className="absolute inset-0 bg-card rounded-xl shadow-md"
               initial={false}
               transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
             />
           )}
-          <span className="relative z-10 flex flex-col items-center gap-1">
-            <span className="text-lg">{pos.icon}</span>
+          <span className="relative z-10 flex items-center justify-center gap-1.5">
+            <span className="text-sm">{pos.icon}</span>
             <span className="text-sm md:text-base">{pos.label}</span>
-            <span className="text-xs text-muted-foreground hidden md:block">{pos.description}</span>
+            <span className="text-xs text-muted-foreground hidden lg:inline">· {pos.description}</span>
           </span>
         </motion.button>
       ))}

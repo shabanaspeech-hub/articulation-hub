@@ -82,7 +82,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
 
   return (
     <motion.div
-      className="practice-card flex flex-col items-center gap-3 sm:gap-4 [@media(max-height:640px)]:flex-row [@media(max-height:640px)]:gap-6"
+      className="flex flex-col items-center gap-3 sm:gap-4 [@media(max-height:640px)]:flex-row [@media(max-height:640px)]:gap-6"
     >
       {/* Syllable mode: big text bubble instead of image */}
 
@@ -95,11 +95,11 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           className="relative cursor-pointer"
           aria-label={`Tap to hear ${syllable.display}`}
         >
-          <div className={`${cardSizeClass} rounded-3xl bg-gradient-to-br from-primary/20 to-accent/30 flex flex-col items-center justify-center shadow-lg border-4 border-primary/20`}>
+          <div className={`${cardSizeClass} rounded-3xl bg-gradient-to-br from-card to-primary/10 bg-card flex flex-col items-center justify-center shadow-lg border-4 border-primary/20`}>
             {syllable.image && (
               <span className="text-[clamp(2.5rem,8vmin,5rem)] mb-1 sm:mb-2">{syllable.image}</span>
             )}
-            <span className="font-fredoka text-[clamp(2.5rem,9vmin,6rem)] font-bold text-primary">
+            <span className="font-fredoka text-[clamp(3.5rem,14vmin,8rem)] font-bold text-primary">
               {syllable.display}
             </span>
           </div>
@@ -122,7 +122,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
                 <span className="text-[4.5rem] md:text-[5.5rem] leading-none">{cvcItem.image}</span>
               );
             })()}
-            <span className="font-fredoka text-2xl font-bold text-primary mt-1">{cvcItem.display}</span>
+            <span className="font-fredoka text-[clamp(1.5rem,5vmin,2.5rem)] font-bold text-primary mt-1">{cvcItem.display}</span>
           </div>
         </motion.button>
       ) : word ? (
