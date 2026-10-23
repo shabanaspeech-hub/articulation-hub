@@ -29,6 +29,9 @@ export default {
           blue: "hsl(var(--welcome-blue))",
           green: "hsl(var(--welcome-green))",
           coral: "hsl(var(--welcome-coral))",
+          violet: "hsl(var(--welcome-violet))",
+          amber: "hsl(var(--welcome-amber))",
+          rose: "hsl(var(--welcome-rose))",
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",

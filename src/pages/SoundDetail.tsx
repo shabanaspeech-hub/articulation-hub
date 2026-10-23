@@ -31,7 +31,8 @@ const SoundDetail = () => {
   const [showPathway, setShowPathway] = useState(false);
 
   const isMotorMode = mode === "motor-speech";
-  const activeLevel = isMotorMode ? motorLevel : articulationLevel;
+  const isVowel = sound?.kind === "vowel";
+  const activeLevel = isVowel ? "sound-movement" : isMotorMode ? motorLevel : articulationLevel;
 
   const isSyllableLevel = activeLevel === "cv" || activeLevel === "cvcv" || activeLevel === "vc";
   const isSoundMovement = activeLevel === "sound-movement";
@@ -155,7 +156,7 @@ const SoundDetail = () => {
             </div>
 
             <div className="flex items-center gap-2">
-              {isMotorMode && (
+              {isMotorMode && !isVowel && (
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button
                     variant={showPathway ? "default" : "outline"}
@@ -208,13 +209,13 @@ const SoundDetail = () => {
       )}
 
       {/* Level Selector */}
-      <div className="container pb-4 pt-2">
+      {!isVowel && <div className="container pb-4 pt-2">
         {isMotorMode ? (
           <MotorSpeechLevelSelector selectedLevel={motorLevel} onLevelChange={handleMotorLevelChange} />
         ) : (
           <LevelSelector selectedLevel={articulationLevel} onLevelChange={handleArticulationLevelChange} />
         )}
-      </div>
+      </div>}
 
       {/* Main Practice Area */}
       <main className="flex-1 container flex flex-col items-center justify-center py-3 sm:py-6 overflow-hidden">
