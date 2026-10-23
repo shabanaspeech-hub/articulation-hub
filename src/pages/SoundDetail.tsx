@@ -2,7 +2,8 @@ import { useState, useCallback, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Home } from "lucide-react";
-import { getSoundById, Position, PracticeLevel, MotorSpeechLevel, generateCV, generateCVCVTargets, generateVC, getCVCWords, SyllableItem } from "@/data/soundsData";
+import { getSoundById, Position, PracticeLevel, MotorSpeechLevel, generateCV, generateCVCVTargets, generateVC, getCVCWords, SyllableItem, soundRows } from "@/data/soundsData";
+import welcomeGarden from "@/assets/welcome-garden.jpg";
 import { Button } from "@/components/ui/button";
 import PositionSelector from "@/components/PositionSelector";
 import LevelSelector from "@/components/LevelSelector";
@@ -123,20 +124,21 @@ const SoundDetail = () => {
     );
   }
 
-  const colorClasses = {
-    blue: "from-sound-blue to-blue-400",
-    green: "from-sound-green to-emerald-400",
-    orange: "from-sound-orange to-amber-400",
-    pink: "from-sound-pink to-rose-400",
-    yellow: "from-sound-yellow to-yellow-300",
-    teal: "from-sound-teal to-cyan-400",
-  };
+  // Same 3-colour family as the home page rows (ink, ink, coral, coral, green, green).
+  const rowIndex = soundRows.findIndex(ids => ids.includes(sound.id));
+  const toneVar = ["--welcome-ink", "--welcome-ink", "--welcome-coral", "--welcome-coral", "--welcome-green", "--welcome-green"][rowIndex] ?? "--welcome-ink";
+  const toneStyle = {
+    "--primary": `var(${toneVar})`,
+    "--ring": `var(${toneVar})`,
+    "--gradient-primary": `linear-gradient(135deg, hsl(var(${toneVar})), hsl(var(${toneVar}) / 0.8))`,
+  } as React.CSSProperties;
 
   return (
-    <div className="min-h-[100dvh] bg-background flex flex-col overflow-x-hidden">
+    <div style={toneStyle} className="relative isolate h-[100dvh] flex flex-col overflow-hidden">
+      <img src={welcomeGarden} alt="" aria-hidden="true" className="absolute inset-0 -z-10 h-full w-full object-cover" />
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
-        <div className="container py-2 sm:py-4">
+      <header className="z-50 bg-background/70 backdrop-blur-lg border-b border-border shrink-0">
+        <div className="container py-1.5 sm:py-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -146,8 +148,8 @@ const SoundDetail = () => {
               </motion.div>
               
               <div className="flex items-center gap-3 min-w-0">
-                <div className={`w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-2xl bg-gradient-to-br ${colorClasses[sound.color]} flex items-center justify-center shadow-md`}>
-                  <span className="font-fredoka text-lg sm:text-xl font-semibold text-primary-foreground">{sound.displayName}</span>
+                <div className="w-11 h-11 sm:w-12 sm:h-12 shrink-0 rounded-2xl bg-card flex items-center justify-center shadow-md">
+                  <span className="font-fredoka text-2xl font-semibold text-primary">{sound.id.toLowerCase()}</span>
                 </div>
                 <div className="min-w-0">
                   <h1 className="font-fredoka text-lg sm:text-xl font-bold text-foreground truncate">
