@@ -27,16 +27,39 @@ Deno.serve(async (req) => {
     const storageKey = String(form.get("storageKey") ?? "");
     const file = form.get("file");
 
-    if (!storageKey || !(file instanceof File)) {
-      return new Response(JSON.stringify({ error: "Missing storageKey or file" }), {
+    const bad = (msg: string) =>
+      new Response(JSON.stringify({ error: msg }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
+
+    if (!storageKey || storageKey.length > 100 || !(file instanceof File)) {
+      return bad("Missing storageKey or file");
     }
 
-    const base = storageKey.replace(/[^a-zA-Z0-9]+/g, "_");
-    const type = file.type || "video/webm";
-    const ext = type.includes("mp4") ? "mp4" : type.includes("quicktime") ? "mov" : "webm";
+    const MAX_BYTES = 50 * 1024 * 1024; // 50 MB
+    if (file.size === 0 || file.size > MAX_BYTES) {
+      return bad("Video must be smaller than 50 MB");
+    }
+
+    const ALLOWED: Record<string, string> = {
+      "video/webm": "webm",
+      "video/mp4": "mp4",
+      "video/quicktime": "mov",
+    };
+    const type = (file.type || "video/webm").split(";")[0].trim().toLowerCase();
+    const ext = ALLOWED[type];
+    if (!ext) return bad("Only WebM, MP4 or MOV videos are allowed");
+
+    // Verify the file's actual content matches a video container signature
+    const head = new Uint8Array(await file.slice(0, 12).arrayBuffer());
+    const isWebm = head[0] === 0x1a && head[1] === 0x45 && head[2] === 0xdf && head[3] === 0xa3;
+    const isIsoBmff = String.fromCharCode(...head.slice(4, 8)) === "ftyp";
+    if ((ext === "webm" && !isWebm) || (ext !== "webm" && !isIsoBmff)) {
+      return bad("File content is not a valid video");
+    }
+
+    const base = storageKey.replace(/[^a-zA-Z0-9]+/g, "_").slice(0, 80);
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
