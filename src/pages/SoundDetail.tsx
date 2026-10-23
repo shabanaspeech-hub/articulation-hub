@@ -16,6 +16,7 @@ import SpeechMotorPathway from "@/components/SpeechMotorPathway";
 import GamesView from "@/components/games/GamesView";
 import { useAppMode } from "@/contexts/AppModeContext";
 import { generateSequences } from "@/components/MotorSequencingCard";
+import { getIpa } from "@/lib/ipa";
 
 const SoundDetail = () => {
   const { soundId } = useParams<{ soundId: string }>();
@@ -140,16 +141,16 @@ const SoundDetail = () => {
                 </Button>
               </motion.div>
               
-              <div className="flex items-center gap-3">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colorClasses[sound.color]} flex items-center justify-center shadow-md`}>
-                  <span className="text-2xl">{sound.icon}</span>
+              <div className="flex items-center gap-3 min-w-0">
+                <div className={`w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-2xl bg-gradient-to-br ${colorClasses[sound.color]} flex items-center justify-center shadow-md`}>
+                  <span className="font-fredoka text-lg sm:text-xl font-semibold text-primary-foreground">{sound.displayName}</span>
                 </div>
-                <div>
-                  <h1 className="font-fredoka text-xl font-bold text-foreground">
-                    {sound.displayName}
+                <div className="min-w-0">
+                  <h1 className="font-fredoka text-lg sm:text-xl font-bold text-foreground truncate">
+                    {sound.displayName} <span className="font-nunito text-sm font-bold text-muted-foreground">{getIpa(sound.id)}</span>
                   </h1>
-                  <p className="text-sm text-muted-foreground">
-                    {isMotorMode ? "Motor Speech Mode" : `Practice the "${sound.sound}" sound`}
+                  <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                    {isMotorMode ? "Motor Speech" : "Articulation"}
                   </p>
                 </div>
               </div>
