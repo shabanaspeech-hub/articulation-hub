@@ -210,13 +210,13 @@ const SoundDetail = () => {
 
       {/* Position Selector - only for word levels */}
       {isWordLevel && (
-        <div className="container py-4">
+        <div className="container pt-2 shrink-0">
           <PositionSelector selectedPosition={position} onPositionChange={handlePositionChange} />
         </div>
       )}
 
       {/* Level Selector */}
-      {!isVowel && <div className="container pb-4 pt-2">
+      {!isVowel && <div className="container py-2 shrink-0">
         {isMotorMode ? (
           <MotorSpeechLevelSelector selectedLevel={motorLevel} onLevelChange={handleMotorLevelChange} />
         ) : (
@@ -224,12 +224,12 @@ const SoundDetail = () => {
         )}
       </div>}
 
-      {/* Main Practice Area */}
-      <main className="flex-1 container flex flex-col items-center justify-center py-3 sm:py-6 overflow-hidden">
+      {/* Main Practice Area — fills the remaining screen, no page scrolling */}
+      <main className="flex-1 min-h-0 container flex flex-col items-center justify-center py-2 overflow-x-hidden overflow-y-auto">
         {isGames ? (
           <GamesView sound={sound} />
         ) : (
-        <AnimatePresence mode="popLayout" initial={false} custom={direction}>
+        <AnimatePresence mode="popLayout" initial={true} custom={direction}>
         <motion.div
           key={`swipe-${activeLevel}-${position}-${currentIndex}`}
           custom={direction}
@@ -246,14 +246,15 @@ const SoundDetail = () => {
             }
           }}
           variants={{
-            enter: (d: number) => ({ x: d >= 0 ? "100vw" : "-100vw", opacity: 1 }),
-            center: { x: 0, opacity: 1 },
-            exit: (d: number) => ({ x: d >= 0 ? "-100vw" : "100vw", opacity: 1 }),
+            // Flashcard "fly": card swoops in tilted from the side and settles.
+            enter: (d: number) => ({ x: d >= 0 ? "60vw" : "-60vw", y: 30, rotate: d >= 0 ? 14 : -14, scale: 0.7, opacity: 0 }),
+            center: { x: 0, y: 0, rotate: 0, scale: 1, opacity: 1 },
+            exit: (d: number) => ({ x: d >= 0 ? "-60vw" : "60vw", y: -20, rotate: d >= 0 ? -14 : 14, scale: 0.7, opacity: 0 }),
           }}
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{ type: "spring", stiffness: 260, damping: 30 }}
+          transition={{ type: "spring", stiffness: 220, damping: 24 }}
         >
           {isSoundMovement && (
             <SoundMovementCard
@@ -304,9 +305,11 @@ const SoundDetail = () => {
 
       {/* Bottom Controls */}
       {!isSoundMovement && !isGames && totalItems > 0 && (
-        <div className="sticky bottom-0 bg-background/80 backdrop-blur-lg border-t border-border">
-          <div className="container py-4 space-y-4">
-            <ProgressBar current={currentIndex} total={totalItems} />
+        <div className="shrink-0 bg-background/70 backdrop-blur-lg border-t border-border pb-[env(safe-area-inset-bottom)]">
+          <div className="container py-2 flex items-center gap-3 sm:gap-6">
+            <div className="flex-1 min-w-0">
+              <ProgressBar current={currentIndex} total={totalItems} />
+            </div>
             <NavigationControls
               onPrevious={handlePrevious}
               onNext={handleNext}
