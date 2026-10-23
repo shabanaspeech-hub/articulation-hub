@@ -357,10 +357,10 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      className="w-full max-w-sm mx-auto flex flex-col items-center gap-8 py-2"
+      className="w-full max-w-5xl mx-auto flex flex-col landscape:flex-row items-center justify-center gap-4 landscape:gap-8 py-1"
     >
       {/* Big practice square — just the target letter */}
-      <div className="relative [container-type:size] w-[min(20rem,80vw,44vh)] aspect-square rounded-[2rem] bg-secondary/60 border border-border shadow-sm flex items-center justify-center">
+      <div className="relative [container-type:size] shrink-0 w-[min(24rem,70vw,30dvh)] landscape:w-[min(28rem,40vw,calc(100dvh-9rem))] aspect-square rounded-[2rem] bg-card border border-border shadow-sm flex items-center justify-center">
         <span
           className="font-fredoka font-bold text-primary select-none leading-none"
           style={{ fontSize: "45cqmin" }}
@@ -379,6 +379,7 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
         </Button>
       </div>
 
+      <div className="w-full max-w-md landscape:w-[min(28rem,50vw)] flex flex-col gap-3">
       {/* Therapist video model — record or upload a 2–3s clip per sound */}
       <TherapistVideoModel
         storageKey={`isolated:${upperSound}`}
@@ -390,6 +391,7 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
         label="Record your voice for this sound"
         storageKey={`motor-speech:${upperSound}`}
       />
+      </div>
     </motion.div>
   );
 };

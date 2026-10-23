@@ -2,7 +2,8 @@ import { useState, useCallback, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Home } from "lucide-react";
-import { getSoundById, Position, PracticeLevel, MotorSpeechLevel, generateCV, generateCVCVTargets, generateVC, getCVCWords, SyllableItem } from "@/data/soundsData";
+import { getSoundById, Position, PracticeLevel, MotorSpeechLevel, generateCV, generateCVCVTargets, generateVC, getCVCWords, SyllableItem, soundRows } from "@/data/soundsData";
+import welcomeGarden from "@/assets/welcome-garden.jpg";
 import { Button } from "@/components/ui/button";
 import PositionSelector from "@/components/PositionSelector";
 import LevelSelector from "@/components/LevelSelector";
@@ -123,20 +124,21 @@ const SoundDetail = () => {
     );
   }
 
-  const colorClasses = {
-    blue: "from-sound-blue to-blue-400",
-    green: "from-sound-green to-emerald-400",
-    orange: "from-sound-orange to-amber-400",
-    pink: "from-sound-pink to-rose-400",
-    yellow: "from-sound-yellow to-yellow-300",
-    teal: "from-sound-teal to-cyan-400",
-  };
+  // Same 3-colour family as the home page rows (ink, ink, coral, coral, green, green).
+  const rowIndex = soundRows.findIndex(ids => ids.includes(sound.id));
+  const toneVar = ["--welcome-ink", "--welcome-ink", "--welcome-coral", "--welcome-coral", "--welcome-green", "--welcome-green"][rowIndex] ?? "--welcome-ink";
+  const toneStyle = {
+    "--primary": `var(${toneVar})`,
+    "--ring": `var(${toneVar})`,
+    "--gradient-primary": `linear-gradient(135deg, hsl(var(${toneVar})), hsl(var(${toneVar}) / 0.8))`,
+  } as React.CSSProperties;
 
   return (
-    <div className="min-h-[100dvh] bg-background flex flex-col overflow-x-hidden">
+    <div style={toneStyle} className="relative isolate h-[100dvh] flex flex-col overflow-hidden">
+      <img src={welcomeGarden} alt="" aria-hidden="true" className="absolute inset-0 -z-10 h-full w-full object-cover" />
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
-        <div className="container py-2 sm:py-4">
+      <header className="z-50 bg-background/70 backdrop-blur-lg border-b border-border shrink-0">
+        <div className="container py-1.5 sm:py-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -146,8 +148,8 @@ const SoundDetail = () => {
               </motion.div>
               
               <div className="flex items-center gap-3 min-w-0">
-                <div className={`w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-2xl bg-gradient-to-br ${colorClasses[sound.color]} flex items-center justify-center shadow-md`}>
-                  <span className="font-fredoka text-lg sm:text-xl font-semibold text-primary-foreground">{sound.displayName}</span>
+                <div className="w-11 h-11 sm:w-12 sm:h-12 shrink-0 rounded-2xl bg-card flex items-center justify-center shadow-md">
+                  <span className="font-fredoka text-2xl font-semibold text-primary">{sound.id.toLowerCase()}</span>
                 </div>
                 <div className="min-w-0">
                   <h1 className="font-fredoka text-lg sm:text-xl font-bold text-foreground truncate">
@@ -208,13 +210,13 @@ const SoundDetail = () => {
 
       {/* Position Selector - only for word levels */}
       {isWordLevel && (
-        <div className="container py-4">
+        <div className="container pt-2 shrink-0">
           <PositionSelector selectedPosition={position} onPositionChange={handlePositionChange} />
         </div>
       )}
 
       {/* Level Selector */}
-      {!isVowel && <div className="container pb-4 pt-2">
+      {!isVowel && <div className="container py-2 shrink-0">
         {isMotorMode ? (
           <MotorSpeechLevelSelector selectedLevel={motorLevel} onLevelChange={handleMotorLevelChange} />
         ) : (
@@ -222,12 +224,12 @@ const SoundDetail = () => {
         )}
       </div>}
 
-      {/* Main Practice Area */}
-      <main className="flex-1 container flex flex-col items-center justify-center py-3 sm:py-6 overflow-hidden">
+      {/* Main Practice Area — fills the remaining screen, no page scrolling */}
+      <main className="flex-1 min-h-0 container flex flex-col items-center justify-center py-2 overflow-x-hidden overflow-y-auto">
         {isGames ? (
           <GamesView sound={sound} />
         ) : (
-        <AnimatePresence mode="popLayout" initial={false} custom={direction}>
+        <AnimatePresence mode="popLayout" initial={true} custom={direction}>
         <motion.div
           key={`swipe-${activeLevel}-${position}-${currentIndex}`}
           custom={direction}
@@ -244,14 +246,15 @@ const SoundDetail = () => {
             }
           }}
           variants={{
-            enter: (d: number) => ({ x: d >= 0 ? "100vw" : "-100vw", opacity: 1 }),
-            center: { x: 0, opacity: 1 },
-            exit: (d: number) => ({ x: d >= 0 ? "-100vw" : "100vw", opacity: 1 }),
+            // Flashcard "fly": card swoops in tilted from the side and settles.
+            enter: (d: number) => ({ x: d >= 0 ? "60vw" : "-60vw", y: 30, rotate: d >= 0 ? 14 : -14, scale: 0.7, opacity: 0 }),
+            center: { x: 0, y: 0, rotate: 0, scale: 1, opacity: 1 },
+            exit: (d: number) => ({ x: d >= 0 ? "-60vw" : "60vw", y: -20, rotate: d >= 0 ? -14 : 14, scale: 0.7, opacity: 0 }),
           }}
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{ type: "spring", stiffness: 260, damping: 30 }}
+          transition={{ type: "spring", stiffness: 220, damping: 24 }}
         >
           {isSoundMovement && (
             <SoundMovementCard
@@ -302,9 +305,11 @@ const SoundDetail = () => {
 
       {/* Bottom Controls */}
       {!isSoundMovement && !isGames && totalItems > 0 && (
-        <div className="sticky bottom-0 bg-background/80 backdrop-blur-lg border-t border-border">
-          <div className="container py-4 space-y-4">
-            <ProgressBar current={currentIndex} total={totalItems} />
+        <div className="shrink-0 bg-background/70 backdrop-blur-lg border-t border-border pb-[env(safe-area-inset-bottom)]">
+          <div className="container py-2 flex items-center gap-3 sm:gap-6">
+            <div className="flex-1 min-w-0">
+              <ProgressBar current={currentIndex} total={totalItems} />
+            </div>
             <NavigationControls
               onPrevious={handlePrevious}
               onNext={handleNext}
