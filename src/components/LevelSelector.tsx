@@ -26,7 +26,7 @@ const LevelSelector = ({ selectedLevel, onLevelChange }: LevelSelectorProps) => 
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => onLevelChange(level.key)}
-          className={`relative flex-1 shrink-0 min-w-[2.75rem] py-2 px-2.5 rounded-xl font-nunito font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
+          className={`relative flex-1 shrink-0 min-w-[2.75rem] py-2 px-2.5 [&>svg]:shrink-0 rounded-xl font-nunito font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
             selectedLevel === level.key
               ? "bg-primary text-primary-foreground shadow-md"
               : "text-secondary-foreground hover:bg-primary/10"

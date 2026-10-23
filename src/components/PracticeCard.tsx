@@ -21,8 +21,8 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
   // header, tabs, recorder and next/prev so the page never needs scrolling.
   const textAbove = !!word && !isSyllableLevel && !cvcItem;
   const cardSizeClass = textAbove
-    ? "w-[min(28rem,80vw,max(8rem,calc(100dvh-30rem)))] h-[min(28rem,80vw,max(8rem,calc(100dvh-30rem)))] [@media(max-height:640px)]:w-[min(26rem,42vw,max(7rem,calc(100dvh-20rem)))] [@media(max-height:640px)]:h-[min(26rem,42vw,max(7rem,calc(100dvh-20rem)))]"
-    : "w-[min(28rem,80vw,max(9rem,calc(100dvh-25rem)))] h-[min(28rem,80vw,max(9rem,calc(100dvh-25rem)))] [@media(max-height:640px)]:w-[min(26rem,42vw,max(8rem,calc(100dvh-17rem)))] [@media(max-height:640px)]:h-[min(26rem,42vw,max(8rem,calc(100dvh-17rem)))]";
+    ? "w-[min(34rem,80vw,max(8rem,calc(100dvh-30rem)))] h-[min(34rem,80vw,max(8rem,calc(100dvh-30rem)))] [@media(max-height:640px)]:w-[min(26rem,42vw,max(7rem,calc(100dvh-20rem)))] [@media(max-height:640px)]:h-[min(26rem,42vw,max(7rem,calc(100dvh-20rem)))]"
+    : "w-[min(34rem,80vw,max(9rem,calc(100dvh-25rem)))] h-[min(34rem,80vw,max(9rem,calc(100dvh-25rem)))] [@media(max-height:640px)]:w-[min(26rem,42vw,max(8rem,calc(100dvh-17rem)))] [@media(max-height:640px)]:h-[min(26rem,42vw,max(8rem,calc(100dvh-17rem)))]";
 
 
 
