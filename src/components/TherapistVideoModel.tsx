@@ -293,7 +293,7 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
                 handleEnded();
               }}
               onClick={replay}
-              className="block mx-auto w-full h-auto max-h-[max(8rem,min(40dvh,calc(100dvh-22rem)))] object-contain cursor-pointer"
+              className="block mx-auto w-full h-auto max-h-[max(7rem,min(40dvh,calc(100dvh-30rem)))] landscape:max-h-[max(7rem,min(45dvh,calc(100dvh-24rem)))] object-contain cursor-pointer"
             />
             {!isPlaying && !waiting && (
               <button

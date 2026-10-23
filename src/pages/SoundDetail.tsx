@@ -225,7 +225,7 @@ const SoundDetail = () => {
       </div>}
 
       {/* Main Practice Area — fills the remaining screen, no page scrolling */}
-      <main className="flex-1 min-h-0 container flex flex-col items-center justify-center py-2 overflow-x-hidden overflow-y-auto">
+      <main className="flex-1 min-h-0 container flex flex-col items-center justify-start py-2 overflow-x-hidden overflow-y-auto">
         {isGames ? (
           <GamesView sound={sound} />
         ) : (
@@ -233,7 +233,7 @@ const SoundDetail = () => {
         <motion.div
           key={`swipe-${activeLevel}-${position}-${currentIndex}`}
           custom={direction}
-          className="w-full flex flex-col items-center"
+          className="w-full flex flex-col items-center my-auto"
           drag={totalItems > 1 && !isSoundMovement ? "x" : false}
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.6}
