@@ -97,9 +97,9 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
         >
           <div className={`${cardSizeClass} rounded-3xl bg-gradient-to-br from-primary/20 to-accent/30 flex flex-col items-center justify-center shadow-lg border-4 border-primary/20`}>
             {syllable.image && (
-              <span className="text-5xl md:text-6xl mb-1 sm:mb-2">{syllable.image}</span>
+              <span className="text-[clamp(2.5rem,8vmin,5rem)] mb-1 sm:mb-2">{syllable.image}</span>
             )}
-            <span className="font-fredoka text-4xl md:text-5xl font-bold text-primary">
+            <span className="font-fredoka text-[clamp(2.5rem,9vmin,6rem)] font-bold text-primary">
               {syllable.display}
             </span>
           </div>
@@ -153,12 +153,14 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
       ) : null}
 
       {/* Voice Recorder — saves per-target so parents can reuse familiar voices */}
+      <div className="w-[min(20rem,85vw)]">
       <VoiceRecorder
         label="Record your voice"
         storageKey={`practice:${soundLetter}:${level}:${position}:${
           syllable?.display || cvcItem?.word || word?.word || ""
         }`}
       />
+      </div>
     </motion.div>
   );
 };
