@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Public can read default therapist videos" ON storage.objects;
