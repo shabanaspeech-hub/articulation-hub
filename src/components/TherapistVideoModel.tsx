@@ -40,6 +40,7 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
   const [error, setError] = useState<string | null>(null);
   const [publishing, setPublishing] = useState(false);
   const [published, setPublished] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const ownerMode = useOwnerMode();
   const tapsRef = useRef(0);
 
@@ -281,13 +282,28 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
           <motion.div whileTap={{ scale: 0.98 }} className="relative">
             <video
               ref={playerRef}
-              src={videoUrl}
+              src={isCustom ? videoUrl : `${videoUrl}#t=0.1`}
               playsInline
+              preload="auto"
               muted={muted}
-              onEnded={handleEnded}
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+              onEnded={(e) => {
+                setIsPlaying(false);
+                handleEnded();
+              }}
               onClick={replay}
-              className="w-full aspect-video rounded-xl bg-black object-cover cursor-pointer"
+              className="w-full aspect-video rounded-xl bg-muted object-cover cursor-pointer"
             />
+            {!isPlaying && !waiting && (
+              <button
+                onClick={replay}
+                aria-label="Play video"
+                className="absolute inset-0 m-auto w-16 h-16 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center"
+              >
+                <Play className="w-7 h-7 ml-1" />
+              </button>
+            )}
             {waiting && (
               <div className="absolute inset-0 rounded-xl bg-background/70 flex flex-col items-center justify-center">
                 <span className="font-fredoka text-lg text-primary">Your turn!</span>
