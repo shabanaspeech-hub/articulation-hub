@@ -23,6 +23,13 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        welcome: {
+          ink: "hsl(var(--welcome-ink))",
+          tile: "hsl(var(--welcome-tile))",
+          blue: "hsl(var(--welcome-blue))",
+          green: "hsl(var(--welcome-green))",
+          coral: "hsl(var(--welcome-coral))",
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
