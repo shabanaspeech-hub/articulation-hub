@@ -266,7 +266,7 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
             ref={previewRef}
             muted
             playsInline
-            className="w-full aspect-video rounded-xl bg-black object-cover"
+            className="w-full aspect-video max-h-[45dvh] rounded-xl bg-muted object-contain"
           />
           <Button onClick={stopRecording} className="w-full rounded-xl" variant="destructive">
             <Square className="w-4 h-4 mr-2" /> Stop recording
@@ -293,7 +293,7 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
                 handleEnded();
               }}
               onClick={replay}
-              className="w-full aspect-video rounded-xl bg-muted object-cover cursor-pointer"
+              className="w-full aspect-video max-h-[45dvh] rounded-xl bg-muted object-contain cursor-pointer"
             />
             {!isPlaying && !waiting && (
               <button
