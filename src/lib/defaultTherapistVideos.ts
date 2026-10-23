@@ -25,25 +25,11 @@ const cache = new Map<string, string | null>();
 export async function getDefaultVideoUrl(storageKey: string): Promise<string | null> {
   if (cache.has(storageKey)) return cache.get(storageKey) ?? null;
 
-  const base = defaultVideoName(storageKey);
   try {
-    const { data, error } = await supabase.storage.from(BUCKET).list(FOLDER, {
-      limit: 100,
-      search: base,
+    const { data, error } = await supabase.functions.invoke("get-default-video", {
+      body: { storageKey },
     });
-    if (error || !data?.length) {
-      cache.set(storageKey, null);
-      return null;
-    }
-    const match = data.find((f) => f.name.startsWith(`${base}.`)) ?? null;
-    if (!match) {
-      cache.set(storageKey, null);
-      return null;
-    }
-    const { data: signed } = await supabase.storage
-      .from(BUCKET)
-      .createSignedUrl(`${FOLDER}/${match.name}`, 60 * 60 * 24);
-    const url = signed?.signedUrl ?? null;
+    const url: string | null = error ? null : data?.url ?? null;
     cache.set(storageKey, url);
     return url;
   } catch {
