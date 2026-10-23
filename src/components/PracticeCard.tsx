@@ -17,7 +17,12 @@ interface PracticeCardProps {
 
 const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter, position }: PracticeCardProps) => {
   const isSyllableLevel = level === "cv" || level === "cvcv" || level === "vc";
-  const cardSizeClass = "w-[min(20rem,76vw,42vh)] h-[min(20rem,76vw,42vh)]";
+  // Grows with the screen (phone → iPad → desktop) but always leaves room for
+  // header, tabs, recorder and next/prev so the page never needs scrolling.
+  const textAbove = !!word && !isSyllableLevel && !cvcItem;
+  const cardSizeClass = textAbove
+    ? "w-[min(28rem,80vw,max(8rem,calc(100dvh-30rem)))] h-[min(28rem,80vw,max(8rem,calc(100dvh-30rem)))] [@media(max-height:640px)]:w-[min(26rem,42vw,max(7rem,calc(100dvh-20rem)))] [@media(max-height:640px)]:h-[min(26rem,42vw,max(7rem,calc(100dvh-20rem)))]"
+    : "w-[min(28rem,80vw,max(9rem,calc(100dvh-25rem)))] h-[min(28rem,80vw,max(9rem,calc(100dvh-25rem)))] [@media(max-height:640px)]:w-[min(26rem,42vw,max(8rem,calc(100dvh-17rem)))] [@media(max-height:640px)]:h-[min(26rem,42vw,max(8rem,calc(100dvh-17rem)))]";
 
 
 
@@ -77,12 +82,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
 
   return (
     <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ duration: 0.3 }}
-      className="practice-card flex flex-col items-center gap-3 sm:gap-4"
+      className="practice-card flex flex-col items-center gap-3 sm:gap-4 [@media(max-height:640px)]:flex-row [@media(max-height:640px)]:gap-6"
     >
       {/* Syllable mode: big text bubble instead of image */}
 
