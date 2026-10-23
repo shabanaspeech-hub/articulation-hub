@@ -29,6 +29,7 @@ const SoundDetail = () => {
   const [articulationLevel, setArticulationLevel] = useState<PracticeLevel>("cv");
   const [motorLevel, setMotorLevel] = useState<MotorSpeechLevel>("sound-movement");
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
   const [showPathway, setShowPathway] = useState(false);
 
   const isMotorMode = mode === "motor-speech";
@@ -93,18 +94,21 @@ const SoundDetail = () => {
 
   const handleNext = useCallback(() => {
     if (currentIndex < totalItems - 1) {
+      setDirection(1);
       setCurrentIndex(prev => prev + 1);
     }
   }, [currentIndex, totalItems]);
 
   const handlePrevious = useCallback(() => {
     if (currentIndex > 0) {
+      setDirection(-1);
       setCurrentIndex(prev => prev - 1);
     }
   }, [currentIndex]);
 
   const handleShuffle = useCallback(() => {
     const randomIndex = Math.floor(Math.random() * totalItems);
+    setDirection(1);
     setCurrentIndex(randomIndex);
   }, [totalItems]);
 
@@ -223,23 +227,31 @@ const SoundDetail = () => {
         {isGames ? (
           <GamesView sound={sound} />
         ) : (
+        <AnimatePresence mode="popLayout" initial={false} custom={direction}>
         <motion.div
-          key={`swipe-${activeLevel}-${currentIndex}`}
+          key={`swipe-${activeLevel}-${position}-${currentIndex}`}
+          custom={direction}
           className="w-full flex flex-col items-center"
           drag={totalItems > 1 && !isSoundMovement ? "x" : false}
           dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.3}
+          dragElastic={0.6}
           onDragEnd={(_, info) => {
-            if (info.offset.x < -80 && currentIndex < totalItems - 1) {
+            const swipe = info.offset.x + info.velocity.x * 0.2;
+            if (swipe < -80 && currentIndex < totalItems - 1) {
               handleNext();
-            } else if (info.offset.x > 80 && currentIndex > 0) {
+            } else if (swipe > 80 && currentIndex > 0) {
               handlePrevious();
             }
           }}
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -50 }}
-          transition={{ duration: 0.25 }}
+          variants={{
+            enter: (d: number) => ({ x: d >= 0 ? "100vw" : "-100vw", opacity: 1 }),
+            center: { x: 0, opacity: 1 },
+            exit: (d: number) => ({ x: d >= 0 ? "-100vw" : "100vw", opacity: 1 }),
+          }}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ type: "spring", stiffness: 260, damping: 30 }}
         >
           {isSoundMovement && (
             <SoundMovementCard
@@ -284,6 +296,7 @@ const SoundDetail = () => {
             />
           )}
         </motion.div>
+        </AnimatePresence>
         )}
       </main>
 
