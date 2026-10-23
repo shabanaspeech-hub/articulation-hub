@@ -22,6 +22,11 @@ const isolationSpeechMap: Record<string, string> = {
   CH: "chah",
   SH: "shah",
   TH: "thah",
+  A: "ah",
+  E: "eh",
+  I: "ih",
+  O: "oh",
+  U: "uh",
 };
 
 const repetitionSpeechMap: Record<string, string> = {

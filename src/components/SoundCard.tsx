@@ -5,24 +5,18 @@ import { Button } from "@/components/ui/button";
 interface SoundCardProps {
   sound: SoundData;
   index: number;
+  row: number;
 }
 
-const colorClasses: Record<SoundData["color"], string> = {
-  blue: "text-welcome-blue",
-  green: "text-welcome-green",
-  orange: "text-welcome-coral",
-  pink: "text-welcome-coral",
-  yellow: "text-welcome-green",
-  teal: "text-welcome-blue",
-};
+const rowColors = ["text-welcome-violet", "text-welcome-amber", "text-welcome-coral", "text-welcome-rose", "text-welcome-blue", "text-welcome-green"];
 
-const SoundCard = ({ sound }: SoundCardProps) => {
+const SoundCard = ({ sound, row }: SoundCardProps) => {
 
   return (
-    <Button asChild variant="ghost" className={`welcome-sound-tile h-auto aspect-square w-full min-w-0 flex-col gap-2 rounded-2xl p-2 sm:p-4 bg-welcome-tile hover:bg-welcome-tile ${colorClasses[sound.color]}`}>
+    <Button asChild variant="ghost" className={`welcome-sound-tile h-auto aspect-square w-full min-w-0 flex-col gap-1 sm:gap-2 rounded-2xl p-1 sm:p-4 bg-welcome-tile hover:bg-welcome-tile ${rowColors[row] ?? "text-welcome-blue"}`}>
       <Link to={`/sound/${sound.id}`} aria-label={`Practice ${sound.displayName}`}>
-        <span className="font-fredoka text-5xl sm:text-6xl font-medium leading-none lowercase">{sound.sound}</span>
-        <span className="text-xs sm:text-sm font-nunito font-bold text-welcome-ink">{sound.displayName}</span>
+        <span className="font-fredoka text-3xl sm:text-6xl font-medium leading-none lowercase">{sound.sound}</span>
+        <span className="text-xs sm:text-sm font-nunito font-bold">{sound.displayName}</span>
       </Link>
     </Button>
   );

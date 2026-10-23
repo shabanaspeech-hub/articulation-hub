@@ -281,6 +281,7 @@ export interface SoundData {
   displayName: string;
   color: 'blue' | 'green' | 'orange' | 'pink' | 'yellow' | 'teal';
   icon: string;
+  kind?: 'vowel';
   words: {
     initial: WordItem[];
     medial: WordItem[];
@@ -1238,11 +1239,28 @@ const unsortedSoundsData: SoundData[] = [
   },
 ];
 
-export const soundsData = unsortedSoundsData.sort((a, b) => {
+export const vowelSoundIds = ['a', 'e', 'i', 'o', 'u'] as const;
+export const isVowelSound = (sound: string) => vowelSoundIds.some(id => id === sound.toLowerCase());
+
+export const soundRows = [
+  ['p', 'b', 'm', 'h', 'w'],
+  ['y', 'd', 'n', 't'],
+  ['k', 'g', 'f', 'v'],
+  ['ch', 'j', 'l', 'r'],
+  ['s', 'z', 'sh', 'th'],
+  [...vowelSoundIds],
+];
+
+const vowelSounds: SoundData[] = vowelSoundIds.map(id => ({
+  id, sound: id.toUpperCase(), displayName: `/${id}/`, kind: 'vowel',
+  color: 'green', icon: '🗣️', words: { initial: [], medial: [], final: [] },
+}));
+
+export const soundsData = [...unsortedSoundsData].sort((a, b) => {
   const indexA = soundOrder.indexOf(a.id);
   const indexB = soundOrder.indexOf(b.id);
   return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
-});
+}).map(sound => ({ ...sound, displayName: `/${sound.sound.toLowerCase()}/` })).concat(vowelSounds);
 
 export const getSoundById = (id: string): SoundData | undefined => {
   return soundsData.find(sound => sound.id === id);

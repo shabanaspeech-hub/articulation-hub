@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -52,6 +50,9 @@
     --welcome-blue: 191 92% 35%;
     --welcome-green: 94 79% 30%;
     --welcome-coral: 2 82% 52%;
+    --welcome-violet: 260 54% 48%;
+    --welcome-amber: 36 90% 35%;
+    --welcome-rose: 332 71% 43%;
     --shadow-welcome-tile: 0 3px 0 hsl(191 49% 22% / 0.15), 0 6px 16px hsl(191 49% 22% / 0.06);
 
     /* Custom colors for sounds */
@@ -134,7 +135,8 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-fredoka font-semibold tracking-tight;
+    @apply font-fredoka font-semibold;
+    letter-spacing: 0;
   }
 }
 

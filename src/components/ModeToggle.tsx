@@ -3,8 +3,8 @@ import { MessageCircle, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const modes: { key: AppMode; label: string; icon: React.ReactNode; desc: string }[] = [
-  { key: "articulation", label: "Articulation", icon: <MessageCircle className="w-5 h-5" />, desc: "Sound practice" },
   { key: "motor-speech", label: "Motor Speech", icon: <Brain className="w-5 h-5" />, desc: "Apraxia therapy" },
+  { key: "articulation", label: "Articulation", icon: <MessageCircle className="w-5 h-5" />, desc: "Sound practice" },
 ];
 
 const ModeToggle = () => {

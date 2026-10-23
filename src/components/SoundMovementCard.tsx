@@ -5,6 +5,8 @@ import { type MouthType } from "./MouthDiagram";
 import VoiceRecorder from "./VoiceRecorder";
 import TherapistVideoModel from "./TherapistVideoModel";
 import { getIsolationSpeechText, speakPhoneticText } from "@/lib/speech";
+import { isVowelSound } from "@/data/soundsData";
+import { Button } from "@/components/ui/button";
 
 
 
@@ -325,8 +327,9 @@ const allSounds = Object.keys(soundMovementData);
 const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
   const upperSound = sound.toUpperCase();
   const data = soundMovementData[upperSound];
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
-  if (!data) {
+  if (!data && !isVowelSound(sound)) {
     return (
       <div className="practice-card flex flex-col items-center gap-4 p-8">
         <p className="font-nunito text-muted-foreground">
@@ -336,7 +339,6 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
     );
   }
 
-  const [isSpeaking, setIsSpeaking] = useState(false);
 
   const speakSound = () => {
     setIsSpeaking(true);
@@ -366,14 +368,15 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
           {upperSound}
         </span>
 
-        <motion.button
+        <Button
+          size="icon"
           onClick={speakSound}
-          whileTap={{ scale: 0.92 }}
+          disabled={isSpeaking}
           aria-label={`Play the ${upperSound} sound`}
           className="absolute bottom-4 right-4 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center"
         >
           <Volume2 className="w-6 h-6" />
-        </motion.button>
+        </Button>
       </div>
 
       {/* Therapist video model — record or upload a 2–3s clip per sound */}
