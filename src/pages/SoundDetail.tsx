@@ -135,7 +135,7 @@ const SoundDetail = () => {
 
   return (
     <div style={toneStyle} className="relative isolate h-[100dvh] flex flex-col overflow-hidden">
-      <img src={welcomeGarden} alt="" aria-hidden="true" className="absolute inset-0 -z-10 h-full w-full object-cover" />
+      <img src={welcomeGarden} alt="" aria-hidden="true" className="absolute inset-0 -z-10 h-full w-full object-cover object-bottom" />
       {/* Header */}
       <header className="z-50 bg-background/70 backdrop-blur-lg border-b border-border shrink-0">
         <div className="container py-1.5 sm:py-2">
