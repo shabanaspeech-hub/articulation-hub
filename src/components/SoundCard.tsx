@@ -9,7 +9,7 @@ interface SoundCardProps {
   row: number;
 }
 
-const rowColors = ["text-welcome-violet", "text-welcome-amber", "text-welcome-coral", "text-welcome-rose", "text-welcome-blue", "text-welcome-green"];
+const rowColors = ["text-welcome-ink", "text-welcome-ink", "text-welcome-coral", "text-welcome-coral", "text-welcome-green", "text-welcome-green"];
 
 const SoundCard = ({ sound, row }: SoundCardProps) => {
   const ipa = getIpa(sound.id).replace(/^\[|\]$/g, "/");
