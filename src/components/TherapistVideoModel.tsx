@@ -279,7 +279,7 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
         <div className="w-full aspect-video rounded-xl bg-muted animate-pulse" />
       ) : videoUrl ? (
         <div className="space-y-3">
-          <motion.div whileTap={{ scale: 0.98 }} className="relative">
+          <motion.div whileTap={{ scale: 0.98 }} className="relative rounded-xl bg-muted p-2">
             <video
               ref={playerRef}
               src={isCustom ? videoUrl : `${videoUrl}#t=0.1`}
@@ -293,7 +293,7 @@ const TherapistVideoModel = ({ storageKey, soundLabel }: TherapistVideoModelProp
                 handleEnded();
               }}
               onClick={replay}
-              className="w-full aspect-video max-h-[45dvh] rounded-xl bg-muted object-contain cursor-pointer"
+              className="block mx-auto w-full h-auto max-h-[40dvh] object-contain cursor-pointer"
             />
             {!isPlaying && !waiting && (
               <button
