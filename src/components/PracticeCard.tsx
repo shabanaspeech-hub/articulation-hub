@@ -82,7 +82,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
 
   return (
     <motion.div
-      className="flex flex-col items-center gap-3 sm:gap-4 [@media(max-height:640px)]:flex-row [@media(max-height:640px)]:gap-6"
+      className="max-w-full flex flex-col items-center gap-3 sm:gap-4 [@media(max-height:640px)_and_(orientation:landscape)]:flex-row [@media(max-height:640px)_and_(orientation:landscape)]:gap-6"
     >
       {/* Syllable mode: big text bubble instead of image */}
 
