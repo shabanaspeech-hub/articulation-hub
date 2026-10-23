@@ -33,15 +33,20 @@ const Index = () => {
           <h2 className="text-lg sm:text-xl font-fredoka">{mode === "motor-speech" ? "Motor speech sounds" : "Speech sounds"}</h2>
           <span className="text-sm font-semibold">{displayedSounds.length} sounds</span>
         </div>
-        <div className="space-y-3 sm:space-y-4">
-          {soundRows.map((ids, row) => (
-            <div key={ids[0]} className="grid grid-cols-5 gap-2 sm:gap-4">
-              {ids.map((id, index) => {
-                const sound = displayedSounds.find(item => item.id === id);
-                return sound ? <SoundCard key={id} sound={sound} index={index} row={row} /> : null;
-              })}
-            </div>
-          ))}
+        <div className="space-y-3 sm:space-y-5">
+          {soundRows.map((ids, row) => {
+            const rowSounds = ids.map(id => displayedSounds.find(item => item.id === id)).filter(Boolean);
+            if (!rowSounds.length) return null;
+            return (
+              <div key={ids[0]} className="flex justify-center gap-2 sm:gap-4">
+                {rowSounds.map((sound, index) => (
+                  <div key={sound!.id} className="w-[calc((100%-2rem)/5)] sm:w-[calc((100%-4rem)/5)] max-w-36">
+                    <SoundCard sound={sound!} index={index} row={row} />
+                  </div>
+                ))}
+              </div>
+            );
+          })}
         </div>
       </main>
       <footer className="px-4 pt-4 pb-6 text-center text-welcome-ink text-xs font-semibold">
