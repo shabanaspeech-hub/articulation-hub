@@ -20,8 +20,8 @@ export default defineConfig(({ mode }) => ({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "icon-192.png", "icon-512.png"],
       manifest: {
-        name: "Motor Speech Hub - Speech Therapy",
-        short_name: "Motor Speech Hub",
+        name: "Motor Speech Lab - Speech Therapy",
+        short_name: "Motor Speech Lab",
         description: "Practice speech sounds with pictures, words, phrases, and sentences. Made by Speech Language Therapist Shabana Tariq.",
         theme_color: "#4CAF50",
         background_color: "#ffffff",

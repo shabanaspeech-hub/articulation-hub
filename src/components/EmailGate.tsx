@@ -42,13 +42,13 @@ const EmailGate = () => {
         className="w-full max-w-md bg-card rounded-3xl shadow-2xl p-8 border"
       >
         <div className="text-center mb-6">
-          <img src={logo} alt="Motor Speech Hub" className="w-20 h-20 mx-auto mb-3 object-contain" />
+          <img src={logo} alt="Motor Speech Lab" className="w-20 h-20 mx-auto mb-3 object-contain" />
           <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold mb-3 font-nunito">
             <Sparkles className="w-3 h-3" />
             Premium Access
           </div>
           <h1 className="font-fredoka text-3xl font-bold text-foreground">
-            Articulation <span className="text-primary">Hub</span>
+            Motor Speech <span className="text-primary">Lab</span>
           </h1>
           <p className="text-sm text-muted-foreground font-nunito mt-1">
             By Speech Language Therapist Shabana Tariq

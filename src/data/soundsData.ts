@@ -40,24 +40,25 @@ const syllablePhoneticMap: Record<string, string> = {
   'cha': 'chah', 'chi': 'chee', 'choo': 'chooh', 'che': 'cheh', 'cho': 'choh',
   'sha': 'shah', 'shi': 'she', 'shoo': 'shooh', 'she': 'sheh', 'sho': 'shoh',
   'tha': 'thah', 'thi': 'thee', 'thoo': 'thooh', 'the': 'theh', 'tho': 'thoh',
-  // VC phonetics - use clear consonant endings
-  'ap': 'app', 'ab': 'abb', 'am': 'amm', 'op': 'opp', 'ob': 'obb', 'om': 'omm',
-  'ip': 'ipp', 'ib': 'ibb', 'im': 'imm', 'up': 'upp', 'ub': 'ubb', 'um': 'umm',
-  'ep': 'epp', 'eb': 'ebb', 'em': 'emm',
-  'at': 'att', 'ot': 'ott', 'it': 'itt', 'ut': 'utt', 'et': 'ett',
-  'ad': 'add', 'od': 'odd', 'id': 'idd', 'ud': 'udd', 'ed': 'edd',
-  'an': 'ann', 'on': 'onn', 'in': 'inn', 'un': 'unn', 'en': 'enn',
-  'oom': 'oomm', 'oon': 'oonn', 'oop': 'oopp', 'oob': 'oobb', 'oot': 'oott', 'ood': 'oodd',
-  // /j/ codas spelled like edge, bridge, dodge, badge
+  // VC phonetics — spelled as ONE blended syllable. Never double letters
+  // (e.g. "imm", "ihh"): speech engines spell those out letter by letter.
+  'ap': 'app', 'ab': 'ab', 'am': 'am', 'op': 'op', 'ob': 'ob', 'om': 'om',
+  'ip': 'ip', 'ib': 'ib', 'im': 'im', 'up': 'up', 'ub': 'ub', 'um': 'um',
+  'ep': 'ep', 'eb': 'eb', 'em': 'em',
+  'at': 'at', 'ot': 'ot', 'it': 'it', 'ut': 'ut', 'et': 'et',
+  'ad': 'ad', 'od': 'odd', 'id': 'id', 'ud': 'ud', 'ed': 'ed',
+  'an': 'an', 'on': 'on', 'in': 'in', 'un': 'un', 'en': 'en',
+  'oom': 'oom', 'oon': 'oon', 'oop': 'oop', 'oob': 'oob', 'oot': 'oot', 'ood': 'ood',
+  // /j/ codas spelled like edge, badge, fudge
   'aj': 'adge', 'ej': 'edge', 'ij': 'idge', 'oj': 'odge', 'ooj': 'oodge', 'uj': 'udge',
-  // /h/ has no true final form: say the vowel with breath
-  'ah': 'ahh', 'eh': 'ehh', 'ih': 'ihh', 'oh': 'ohh', 'ooh': 'oohh', 'uh': 'uhh',
-  'ak': 'ack', 'ek': 'eck', 'ik': 'ick', 'ok': 'ock', 'ook': 'ookk',
-  'ag': 'agg', 'eg': 'egg', 'ig': 'igg', 'og': 'ogg', 'oog': 'oogg',
-  'af': 'aff', 'ef': 'eff', 'if': 'iff', 'of': 'off', 'oof': 'ooff',
-  'av': 'avv', 'ev': 'evv', 'iv': 'ivv', 'ov': 'ovv', 'oov': 'oovv',
-  'as': 'ass', 'es': 'ess', 'is': 'iss', 'os': 'oss', 'oos': 'ooss',
-  'az': 'azz', 'ez': 'ezz', 'iz': 'izz', 'oz': 'ozz', 'ooz': 'oozz',
+  // /h/ has no true final form: say the open vowel only
+  'ah': 'ah', 'eh': 'eh', 'ih': 'ee', 'oh': 'oh', 'ooh': 'ooh', 'uh': 'uh',
+  'ak': 'ack', 'ek': 'eck', 'ik': 'ick', 'ok': 'ock', 'ook': 'ook',
+  'ag': 'ag', 'eg': 'egg', 'ig': 'ig', 'og': 'og', 'oog': 'oog',
+  'af': 'aff', 'ef': 'eff', 'if': 'if', 'of': 'off', 'oof': 'oof',
+  'av': 'av', 'ev': 'ev', 'iv': 'iv', 'ov': 'ov', 'oov': 'oov',
+  'as': 'ahss', 'es': 'ess', 'is': 'iss', 'os': 'oss', 'oos': 'ooce',
+  'az': 'az', 'ez': 'ez', 'iz': 'iz', 'oz': 'oz', 'ooz': 'ooz',
   'al': 'al', 'el': 'ell', 'il': 'ill', 'ol': 'oll', 'ool': 'ool',
   'ar': 'ar', 'er': 'air', 'ir': 'ear', 'or': 'or', 'oor': 'oor',
   'aw': 'ow', 'ew': 'eh-oo', 'iw': 'ee-oo', 'ow': 'oh-oo', 'oow': 'oo',
