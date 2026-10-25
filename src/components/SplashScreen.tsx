@@ -95,9 +95,6 @@ const SplashScreen = () => {
         <img src={logoAsset.url} alt="Spectra Speech logo" className="spl-logo rounded-2xl" />
         <div className="spl-shadow" />
         <div className="mt-4 text-center">
-          <p className="spl-tag text-2xl sm:text-3xl font-bold text-welcome-ink" style={{ fontFamily: "Fredoka, sans-serif" }}>
-            Every Voice. Every Possibility.
-          </p>
           <p className="spl-title mt-2 text-3xl sm:text-4xl font-bold italic tracking-wide text-welcome-ink" style={{ fontFamily: "Fredoka, sans-serif" }}>
             {"MOTOR SPEECH LAB".split("").map((ch, i) => (
               <span key={i} className="spl-letter" style={{ animationDelay: `${4.9 + i * 0.05}s` }}>{ch === " " ? "\u00A0" : ch}</span>
