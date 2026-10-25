@@ -48,7 +48,7 @@ const EmailGate = () => {
             Premium Access
           </div>
           <h1 className="font-fredoka text-3xl font-bold text-foreground">
-            Articulation <span className="text-primary">Hub</span>
+            Motor Speech <span className="text-primary">Lab</span>
           </h1>
           <p className="text-sm text-muted-foreground font-nunito mt-1">
             By Speech Language Therapist Shabana Tariq
