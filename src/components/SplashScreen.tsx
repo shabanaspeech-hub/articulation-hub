@@ -66,7 +66,7 @@ const SplashScreen = () => {
         @media (prefers-reduced-motion: reduce){
           .spl,.spl *{animation:none!important}
           .spl-cloud,.spl-rain,.spl-bow,.spl-glow,.spl-spark{display:none}
-          .spl-logo,.spl-tag,.spl-shadow{opacity:1}
+          .spl-logo,.spl-tag,.spl-shadow,.spl-letter{opacity:1}
         }
       `}</style>
 
