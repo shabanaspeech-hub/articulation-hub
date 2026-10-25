@@ -34,4 +34,13 @@ describe("speech phonetic mapping", () => {
     expect(getSyllablePhonetic("li")).toBe("lee");
     expect(getSyllablePhonetic("ri")).toBe("ree");
   });
+
+  it("never uses doubled letters for VC targets (engines spell them out)", () => {
+    for (const vc of ["am", "im", "om", "ih", "oh", "eh", "ab", "ib", "iv", "ig", "aj", "ij"]) {
+      expect(getSyllablePhonetic(vc)).not.toMatch(/(.)\1$/);
+    }
+    expect(getSyllablePhonetic("ij")).toBe("idge");
+    expect(getSyllablePhonetic("ih")).toBe("ee");
+    expect(getSyllablePhonetic("im")).toBe("im");
+  });
 });
