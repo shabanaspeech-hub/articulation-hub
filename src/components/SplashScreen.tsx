@@ -37,7 +37,7 @@ const SplashScreen = () => {
       <h1 className="mt-4 text-2xl sm:text-3xl font-bold text-primary" style={{ fontFamily: "Fredoka, sans-serif" }}>
         SpectraSpeech
       </h1>
-      <p className="text-base sm:text-lg text-muted-foreground font-semibold">Articulation Hub</p>
+      <p className="text-base sm:text-lg text-muted-foreground font-semibold">Motor Speech Hub</p>
     </div>
   );
 };

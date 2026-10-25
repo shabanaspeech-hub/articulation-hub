@@ -42,7 +42,7 @@ const EmailGate = () => {
         className="w-full max-w-md bg-card rounded-3xl shadow-2xl p-8 border"
       >
         <div className="text-center mb-6">
-          <img src={logo} alt="Articulation Hub" className="w-20 h-20 mx-auto mb-3 object-contain" />
+          <img src={logo} alt="Motor Speech Hub" className="w-20 h-20 mx-auto mb-3 object-contain" />
           <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold mb-3 font-nunito">
             <Sparkles className="w-3 h-3" />
             Premium Access
