@@ -23,7 +23,7 @@ const Index = () => {
           <div className="min-w-0 text-left">
             <p className="text-[0.65rem] sm:text-xs font-bold text-welcome-ink">By Speech Language Therapist Shabana Tariq</p>
             <h1 className="font-fredoka text-[clamp(1.75rem,6vw,3rem)] font-bold leading-none tracking-tight text-welcome-ink">
-              <span className="italic">Articulation</span> <span className="bg-gradient-to-r from-welcome-coral to-welcome-amber bg-clip-text text-transparent italic pr-1">Hub</span>
+              <span className="italic">Motor Speech</span> <span className="bg-gradient-to-r from-welcome-coral to-welcome-amber bg-clip-text text-transparent italic pr-1">Hub</span>
             </h1>
             <p className="mt-1 text-xs sm:text-sm font-semibold text-welcome-ink/80">Welcome, little communicator!</p>
           </div>

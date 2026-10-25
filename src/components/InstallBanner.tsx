@@ -74,7 +74,7 @@ const InstallBanner = () => {
               <Download className="w-5 h-5" />
             </div>
             <p className="font-nunito text-sm text-foreground flex-1">
-              Install Articulation Hub for quick access
+              Install Motor Speech Hub for quick access
             </p>
             <button
               onClick={handleInstall}
