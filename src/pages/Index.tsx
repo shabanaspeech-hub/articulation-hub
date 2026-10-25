@@ -25,7 +25,6 @@ const Index = () => {
             <h1 className="font-fredoka text-[clamp(1.75rem,6vw,3rem)] font-bold leading-none tracking-tight text-welcome-ink">
               <span className="italic">Motor Speech</span> <span className="bg-gradient-to-r from-welcome-coral to-welcome-amber bg-clip-text text-transparent italic pr-1">Lab</span>
             </h1>
-            <p className="mt-1 text-xs sm:text-sm font-semibold text-welcome-ink/80">Welcome, little communicator!</p>
           </div>
         </div>
         <div className="mt-3"><ModeToggle /></div>
