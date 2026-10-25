@@ -1,5 +1,5 @@
 /**
- * Articulation Hub signature startup sound.
+ * Motor Speech Lab signature startup sound.
  * A short (~0.8s) warm, bell-like ascending three-note motif.
  * Synthesized with the Web Audio API so it adds zero network/load cost.
  * Plays once per app launch. No toggle by design.

@@ -5,3 +5,6 @@
 - [x] Verify welcome layout at 360, 602, 768, and 1280 widths; verify vowel isolation and shared video panel in both modes; 11 regression tests pass.
 - [ ] Confirm published video playback visually: blocked by unsupported H.264/AAC playback in the sandbox browser; both modes retrieve the original valid 3-second clip successfully. No video data or storage changes made.
 - [x] Practice page fits one screen (no scrolling), bigger cards, home-page colours, flying card animation
+- [ ] Rename app to Motor Speech Lab
+- [ ] Fix VC syllable pronunciation (no letter spelling)
+- [ ] Rain-to-rainbow animated splash logo
