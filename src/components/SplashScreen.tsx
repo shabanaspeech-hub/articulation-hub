@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import logo from "@/assets/spectraspeech-logo.png";
+import logoAsset from "@/assets/spectraspeech-user-logo.png.asset.json";
 
 /**
  * SpectraSpeech launch splash: "From Rain to Rainbow".
@@ -19,7 +19,7 @@ const SplashScreen = () => {
     if (!visible) return;
     try { sessionStorage.setItem(SESSION_KEY, "1"); } catch { /* ignore */ }
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    const total = reduce ? 1800 : 5600;
+    const total = reduce ? 1800 : 7200;
     const fade = window.setTimeout(() => setFading(true), total - 500);
     const hide = window.setTimeout(() => setVisible(false), total);
     return () => { window.clearTimeout(fade); window.clearTimeout(hide); };
@@ -59,8 +59,10 @@ const SplashScreen = () => {
         @keyframes logo{0%,64%{opacity:0;transform:scale(.2) rotate(-90deg)}72%{opacity:1;transform:scale(1) rotate(0)}76%{transform:translateY(0) scale(1)}81%{transform:translateY(-14%) scale(.96,1.05)}86%{transform:translateY(0) scale(1.08,.92)}89%{transform:translateY(-3%) scale(.98,1.02)}92%,100%{opacity:1;transform:none}}
         .spl-shadow{width:min(30vw,150px);height:12px;margin-top:6px;border-radius:50%;background:rgba(30,60,80,.18);opacity:0;animation:shadow 5.6s forwards}
         @keyframes shadow{0%,72%{opacity:0}81%{opacity:.35;transform:scaleX(.7)}86%{opacity:.8;transform:scaleX(1.05)}100%{opacity:.6;transform:none}}
-        .spl-tag{opacity:0;animation:tag 5.6s ease forwards}
-        @keyframes tag{0%,86%{opacity:0;transform:translateY(8px)}94%,100%{opacity:1;transform:none}}
+        .spl-tag{opacity:0;animation:tag 7.2s ease forwards}
+        @keyframes tag{0%,62%{opacity:0;transform:translateY(8px)}70%,100%{opacity:1;transform:none}}
+        .spl-letter{display:inline-block;opacity:0;animation:letter .6s cubic-bezier(.3,1.6,.5,1) forwards}
+        @keyframes letter{0%{opacity:0;transform:translateY(30px) scale(.4) rotate(-15deg)}100%{opacity:1;transform:none}}
         @media (prefers-reduced-motion: reduce){
           .spl,.spl *{animation:none!important}
           .spl-cloud,.spl-rain,.spl-bow,.spl-glow,.spl-spark{display:none}
@@ -90,13 +92,17 @@ const SplashScreen = () => {
       ))}
 
       <div className="relative flex flex-col items-center">
-        <img src={logo} alt="SpectraSpeech logo" width={816} height={816} className="spl-logo" />
+        <img src={logoAsset.url} alt="Spectra Speech logo" className="spl-logo rounded-2xl" />
         <div className="spl-shadow" />
-        <div className="spl-tag mt-4 text-center">
-          <p className="text-2xl sm:text-3xl font-bold text-welcome-ink" style={{ fontFamily: "Fredoka, sans-serif" }}>
-            Every Voice Matters.
+        <div className="mt-4 text-center">
+          <p className="spl-tag text-2xl sm:text-3xl font-bold text-welcome-ink" style={{ fontFamily: "Fredoka, sans-serif" }}>
+            Every Voice. Every Possibility.
           </p>
-          <p className="text-sm sm:text-base text-muted-foreground font-semibold mt-1">Motor Speech Lab</p>
+          <p className="spl-title mt-2 text-3xl sm:text-4xl font-bold italic tracking-wide text-welcome-ink" style={{ fontFamily: "Fredoka, sans-serif" }}>
+            {"MOTOR SPEECH LAB".split("").map((ch, i) => (
+              <span key={i} className="spl-letter" style={{ animationDelay: `${4.9 + i * 0.05}s` }}>{ch === " " ? "\u00A0" : ch}</span>
+            ))}
+          </p>
         </div>
       </div>
     </div>
