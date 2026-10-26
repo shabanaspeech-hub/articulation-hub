@@ -6,5 +6,5 @@
 - [ ] Confirm published video playback visually: blocked by unsupported H.264/AAC playback in the sandbox browser; both modes retrieve the original valid 3-second clip successfully. No video data or storage changes made.
 - [x] Practice page fits one screen (no scrolling), bigger cards, home-page colours, flying card animation
 - [x] Rename app to Motor Speech Lab
-- [x] Fix VC syllable pronunciation (no letter spelling)
+- [x] Correct VC consonant lists and use 105 fixed phoneme-synthesized syllable clips; 41 tests pass and live playback checked. Clinical listening review remains with the therapist.
 - [x] Rain-to-rainbow animated splash logo
