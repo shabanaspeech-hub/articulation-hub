@@ -10,7 +10,7 @@ interface AppModeContextType {
 const AppModeContext = createContext<AppModeContextType | undefined>(undefined);
 
 export const AppModeProvider = ({ children }: { children: ReactNode }) => {
-  const [mode, setMode] = useState<AppMode>("articulation");
+  const [mode, setMode] = useState<AppMode>("motor-speech");
 
   return (
     <AppModeContext.Provider value={{ mode, setMode }}>

@@ -25,36 +25,14 @@ const playChime = () => {
   filter.frequency.value = 6000;
   filter.connect(master);
 
-  // Playful C6 - E6 - G6 - C7 sparkle motif
-  const notes = [
-    { freq: 1046.5, at: 0, dur: 0.4, gain: 0.6 },
-    { freq: 1318.5, at: 0.1, dur: 0.4, gain: 0.6 },
-    { freq: 1568.0, at: 0.2, dur: 0.45, gain: 0.65 },
-    { freq: 2093.0, at: 0.32, dur: 0.6, gain: 0.7 },
-  ];
-
-
-  notes.forEach(({ freq, at, dur, gain }) => {
-    [1, 2.01].forEach((mult, i) => {
-      const osc = ctx.createOscillator();
-      osc.type = i === 0 ? "sine" : "triangle";
-      osc.frequency.value = freq * mult;
-
-      const env = ctx.createGain();
-      const level = i === 0 ? gain : gain * 0.18;
-      const start = now + at;
-      env.gain.setValueAtTime(0.0001, start);
-      env.gain.exponentialRampToValueAtTime(level, start + 0.02);
-      env.gain.exponentialRampToValueAtTime(0.0001, start + dur);
-
-      osc.connect(env);
-      env.connect(filter);
-      osc.start(start);
-      osc.stop(start + dur + 0.05);
-    });
-  });
-
-  const total = 0.32 + 0.6 + 0.2;
+  // Brand jingle synced to the splash: harp glissando (rainbow), bell chime (logo), plinks (title). No marimba.
+  const C = [523.25, 587.33, 659.25, 783.99, 880.0];
+  const notes: { freq: number; at: number; dur: number; gain: number }[] = [];
+  for (let i = 0; i < 14; i++) notes.push({ freq: C[i % 5] * 2 ** Math.floor(i / 5), at: 1.9 + i * 0.09, dur: 1.4, gain: 0.32 });
+  [1046.5, 1318.5, 1568.0, 2093.0].forEach((f, i) => notes.push({ freq: f, at: 4.5 + i * 0.12, dur: 1.6, gain: 0.5 }));
+  for (let i = 0; i < 6; i++) notes.push({ freq: [1568, 1760, 2093, 2349, 2637, 3136][i], at: 6.4 + i * 0.15, dur: 0.5, gain: 0.28 });
+  [523.25, 659.25, 783.99, 1046.5].forEach((f) => notes.push({ freq: f, at: 7.3, dur: 2.2, gain: 0.3 }));
+  const total = 9.8;
   window.setTimeout(() => {
     ctx.close().catch(() => undefined);
   }, total * 1000 + 300);

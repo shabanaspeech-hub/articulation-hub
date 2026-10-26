@@ -2,7 +2,7 @@ import { soundsData, earlyMotorSounds, soundRows } from "@/data/soundsData";
 import SoundCard from "@/components/SoundCard";
 import ModeToggle from "@/components/ModeToggle";
 import { useAppMode } from "@/contexts/AppModeContext";
-import logoAsset from "@/assets/spectraspeech-original.png.asset.json";
+import brandLogo from "@/assets/spectraspeech-brand.png";
 import welcomeGarden from "@/assets/welcome-garden.jpg";
 import { Link } from "react-router-dom";
 
@@ -19,10 +19,10 @@ const Index = () => {
         className="absolute inset-0 -z-10 h-full w-full object-cover object-bottom" />
       <header className="mx-auto w-full max-w-6xl px-4 pt-3 pb-3 sm:px-8 sm:pt-4">
         <div className="flex items-center justify-center gap-3 sm:gap-5">
-          <img src={logoAsset.url} alt="Spectra Speech" width={240} height={280} className="h-16 w-14 shrink-0 object-contain sm:h-20 sm:w-[4.5rem]" />
+          <img id="app-logo" src={brandLogo} alt="Spectra Speech" width={240} height={280} className="h-16 w-14 shrink-0 object-contain sm:h-20 sm:w-[4.5rem]" />
           <div className="min-w-0 text-left">
             <p className="text-[0.65rem] sm:text-xs font-bold text-welcome-ink">By Speech Language Therapist Shabana Tariq</p>
-            <h1 className="font-fredoka text-[clamp(1.75rem,6vw,3rem)] font-bold leading-none tracking-tight text-welcome-ink">
+            <h1 id="app-title" className="font-fredoka text-[clamp(1.5rem,5.2vw,2.75rem)] font-bold uppercase leading-none tracking-tight text-welcome-ink">
               <span className="italic">Motor Speech</span> <span className="bg-gradient-to-r from-welcome-coral to-welcome-amber bg-clip-text text-transparent italic pr-1">Lab</span>
             </h1>
             <p className="mt-1 text-xs sm:text-sm font-bold italic text-welcome-ink/80" style={{ fontFamily: "Fredoka, sans-serif" }}>Every Voice. Every Possibility.</p>
