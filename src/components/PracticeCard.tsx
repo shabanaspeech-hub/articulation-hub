@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import { WordItem, PracticeLevel, SyllableItem, CVCItem, getSyllablePhonetic } from "@/data/soundsData";
 import VoiceRecorder from "./VoiceRecorder";
 import { speakPhoneticText } from "@/lib/speech";
 import { getWordImage } from "@/lib/wordImages";
+import { speakVCSyllable, stopVCSyllable } from "@/lib/vcSpeech";
+import { toast } from "@/hooks/use-toast";
 
 
 interface PracticeCardProps {
@@ -17,6 +20,7 @@ interface PracticeCardProps {
 
 const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter, position }: PracticeCardProps) => {
   const isSyllableLevel = level === "cv" || level === "cvcv" || level === "vc";
+  useEffect(() => () => stopVCSyllable(), [syllable?.syllable, level]);
   // Grows with the screen (phone → iPad → desktop) but always leaves room for
   // header, tabs, recorder and next/prev so the page never needs scrolling.
   const textAbove = !!word && !isSyllableLevel && !cvcItem;
@@ -60,6 +64,12 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
 
 
   const speakWord = () => {
+    if (level === "vc" && syllable) {
+      void speakVCSyllable(syllable.syllable).catch(() => {
+        toast({ title: "Audio could not play", description: "Please check your connection and tap the card again.", variant: "destructive" });
+      });
+      return;
+    }
     const text = getDisplayText();
     let speakText = text;
     

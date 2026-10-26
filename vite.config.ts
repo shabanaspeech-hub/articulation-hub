@@ -59,6 +59,16 @@ export default defineConfig(({ mode }) => ({
 
         runtimeCaching: [
           {
+            urlPattern: ({ url }) => url.pathname.startsWith('/__l5e/assets-v1/') && /\/vc-[a-z]+\.mp3$/.test(url.pathname),
+            handler: "CacheFirst",
+            options: {
+              cacheName: "vc-syllable-audio",
+              expiration: { maxEntries: 150, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] },
+              rangeRequests: true,
+            },
+          },
+          {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: "CacheFirst",
             options: {
