@@ -127,7 +127,7 @@ const SplashScreen = () => {
           style={{ left: logoRect.left, top: logoRect.top, width: logoRect.width, height: logoRect.height }} />
       )}
 
-      {(phase === "title" || phase === "out") && (
+      {phase === "title" && (
         <div className="spl-title" style={titleT
           ? { left: titleT.left, top: titleT.top, height: titleT.height, fontSize: titleT.height * 0.9 }
           : { left: 0, right: 0, justifyContent: "center", top: centre.top + centre.height + 16, fontSize: 36 }}>
