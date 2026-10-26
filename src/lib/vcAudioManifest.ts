@@ -35,7 +35,7 @@ import ud from "@/assets/vc/ud.mp3.asset.json";
 import ed from "@/assets/vc/ed.mp3.asset.json";
 import an from "@/assets/vc/an.mp3.asset.json";
 import on from "@/assets/vc/on.mp3.asset.json";
-import in from "@/assets/vc/in.mp3.asset.json";
+import inClip from "@/assets/vc/in.mp3.asset.json";
 import un from "@/assets/vc/un.mp3.asset.json";
 import en from "@/assets/vc/en.mp3.asset.json";
 import at from "@/assets/vc/at.mp3.asset.json";
@@ -54,7 +54,7 @@ import oog from "@/assets/vc/oog.mp3.asset.json";
 import eg from "@/assets/vc/eg.mp3.asset.json";
 import og from "@/assets/vc/og.mp3.asset.json";
 import af from "@/assets/vc/af.mp3.asset.json";
-import if from "@/assets/vc/if.mp3.asset.json";
+import ifClip from "@/assets/vc/if.mp3.asset.json";
 import oof from "@/assets/vc/oof.mp3.asset.json";
 import ef from "@/assets/vc/ef.mp3.asset.json";
 import of from "@/assets/vc/of.mp3.asset.json";
@@ -142,7 +142,7 @@ export const vcAudioSources: Record<string, string> = {
   ed: ed.url,
   an: an.url,
   on: on.url,
-  in: in.url,
+  in: inClip.url,
   un: un.url,
   en: en.url,
   at: at.url,
@@ -161,7 +161,7 @@ export const vcAudioSources: Record<string, string> = {
   eg: eg.url,
   og: og.url,
   af: af.url,
-  if: if.url,
+  if: ifClip.url,
   oof: oof.url,
   ef: ef.url,
   of: of.url,
