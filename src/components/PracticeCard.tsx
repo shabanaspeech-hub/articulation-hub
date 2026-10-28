@@ -5,6 +5,7 @@ import VoiceRecorder from "./VoiceRecorder";
 import { speakPhoneticText } from "@/lib/speech";
 import { getWordImage } from "@/lib/wordImages";
 import { speakVCSyllable, stopVCSyllable } from "@/lib/vcSpeech";
+import { cvcvAudioSources, playClip } from "@/lib/cvcvAudio";
 import { toast } from "@/hooks/use-toast";
 
 
@@ -66,6 +67,12 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
   const speakWord = () => {
     if (level === "vc" && syllable) {
       void speakVCSyllable(syllable.syllable).catch(() => {
+        toast({ title: "Audio could not play", description: "Please check your connection and tap the card again.", variant: "destructive" });
+      });
+      return;
+    }
+    if (level === "cvcv" && syllable && cvcvAudioSources[syllable.syllable.toLowerCase()]) {
+      void playClip(syllable.syllable).catch(() => {
         toast({ title: "Audio could not play", description: "Please check your connection and tap the card again.", variant: "destructive" });
       });
       return;

@@ -25,7 +25,7 @@ const Index = () => {
             <h1 id="app-title" className="font-fredoka text-[clamp(1.5rem,5.2vw,2.75rem)] font-bold uppercase leading-none tracking-tight text-welcome-ink">
               <span className="italic">Motor Speech</span> <span className="bg-gradient-to-r from-welcome-coral to-welcome-amber bg-clip-text text-transparent italic pr-1">Lab</span>
             </h1>
-            <p className="mt-1 text-xs sm:text-sm font-bold italic text-welcome-ink/80" style={{ fontFamily: "Fredoka, sans-serif" }}>Every Voice. Every Possibility.</p>
+            <p className="mt-1 text-xs sm:text-sm font-bold italic text-welcome-ink/80" style={{ fontFamily: "Fredoka, sans-serif" }}>Research and evidence based app</p>
           </div>
         </div>
         <div className="mt-3"><ModeToggle /></div>
