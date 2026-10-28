@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { cvcvAudioSources } from "@/lib/cvcvAudio";
+import { cvcvAudioSources, cvcvClipKey } from "@/lib/cvcvAudio";
 import { generateCVCVTargets, soundsData } from "@/data/soundsData";
 import { getMinimalPairs, minimalPairSets } from "@/data/minimalPairs";
 
 describe("CVCV fixed clips", () => {
   it("every consonant's CVCV target has a long-vowel clip", () => {
     for (const s of soundsData.filter(s => s.kind !== "vowel")) {
-      for (const t of generateCVCVTargets(s.sound)) expect(cvcvAudioSources[t.syllable], t.syllable).toBeTruthy();
+      for (const t of generateCVCVTargets(s.sound)) expect(cvcvAudioSources[cvcvClipKey(t.syllable)], t.syllable).toBeTruthy();
     }
   });
   it("each vowel has a standard isolated clip", () => {

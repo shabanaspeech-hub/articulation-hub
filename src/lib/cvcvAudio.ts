@@ -6,6 +6,12 @@ export const cvcvAudioSources: Record<string, string> = Object.fromEntries(
   Object.entries(modules).map(([path, asset]) => [path.split("/").pop()!.replace(".mp3.asset.json", ""), asset.url]),
 );
 
+// Clinical lists spell /u/ as "u" (pupu); clips are keyed with "oo" (poopoo).
+export const cvcvClipKey = (target: string) => {
+  const t = target.toLowerCase();
+  return cvcvAudioSources[t] ? t : t.replace(/(?<!o)u/g, "oo");
+};
+
 let active: HTMLAudioElement | undefined;
 
 export function stopClip() {
@@ -15,7 +21,7 @@ export function stopClip() {
 }
 
 export async function playClip(key: string, onEnd?: () => void): Promise<boolean> {
-  const src = cvcvAudioSources[key.toLowerCase()];
+  const src = cvcvAudioSources[cvcvClipKey(key)];
   if (!src) return false;
   stopClip();
   window.speechSynthesis?.cancel();
