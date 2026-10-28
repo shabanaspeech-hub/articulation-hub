@@ -18,6 +18,7 @@ const pathwaySteps: { key: MotorSpeechLevel; label: string; emoji: string }[] = 
   { key: "words", label: "Words", emoji: "📖" },
   { key: "phrases", label: "Phrases", emoji: "💬" },
   { key: "sentences", label: "Sentences", emoji: "📚" },
+  { key: "minimal-pairs", label: "Minimal Pairs", emoji: "⚖️" },
 ];
 
 const SpeechMotorPathway = ({ currentLevel, onLevelChange, completedLevels = [] }: SpeechMotorPathwayProps) => {

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { MotorSpeechLevel } from "@/data/soundsData";
-import { Vibrate, Music, ArrowDownUp, Music2, FileText, Zap, MessageCircle, BookOpen } from "lucide-react";
+import { Vibrate, Music, ArrowDownUp, Music2, FileText, Zap, MessageCircle, BookOpen, Scale } from "lucide-react";
 
 interface MotorSpeechLevelSelectorProps {
   selectedLevel: MotorSpeechLevel;
@@ -17,6 +17,7 @@ const levels: { key: MotorSpeechLevel; label: string; shortLabel: string; icon: 
   { key: "words", label: "Words", shortLabel: "📖", icon: <FileText className="w-4 h-4" /> },
   { key: "phrases", label: "Phrases", shortLabel: "💬", icon: <MessageCircle className="w-4 h-4" /> },
   { key: "sentences", label: "Sentences", shortLabel: "📚", icon: <BookOpen className="w-4 h-4" /> },
+  { key: "minimal-pairs", label: "Pairs", shortLabel: "⚖️", icon: <Scale className="w-4 h-4" /> },
 ];
 
 const MotorSpeechLevelSelector = ({ selectedLevel, onLevelChange }: MotorSpeechLevelSelectorProps) => {

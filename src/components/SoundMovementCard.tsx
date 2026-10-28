@@ -6,6 +6,7 @@ import VoiceRecorder from "./VoiceRecorder";
 import TherapistVideoModel from "./TherapistVideoModel";
 import { getIsolationSpeechText, speakPhoneticText } from "@/lib/speech";
 import { isVowelSound } from "@/data/soundsData";
+import { cvcvAudioSources, playClip } from "@/lib/cvcvAudio";
 import { Button } from "@/components/ui/button";
 
 
@@ -342,6 +343,10 @@ const SoundMovementCard = ({ sound, currentIndex }: SoundMovementCardProps) => {
 
   const speakSound = () => {
     setIsSpeaking(true);
+    if (isVowelSound(sound) && cvcvAudioSources[`vowel-${sound.toLowerCase()}`]) {
+      void playClip(`vowel-${sound.toLowerCase()}`, () => setIsSpeaking(false)).catch(() => setIsSpeaking(false));
+      return;
+    }
     speakPhoneticText(getIsolationSpeechText(upperSound), {
       rate: 0.4,
       pitch: 1,

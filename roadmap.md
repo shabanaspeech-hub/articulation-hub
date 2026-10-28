@@ -8,3 +8,8 @@
 - [x] Rename app to Motor Speech Lab
 - [x] Correct VC consonant lists and use 105 fixed phoneme-synthesized syllable clips; 41 tests pass and live playback checked. Clinical listening review remains with the therapist.
 - [x] Rain-to-rainbow animated splash logo
+- [x] CVCV: long open vowels (paa-paa) for all sounds
+- [x] Tagline → "Research and evidence based app"
+- [x] Minimal pairs level after Sentences (p/b, m/n, l/r, r/v, k/t, g/d, sh/s)
+- [x] Vowel /a/ standard phonetic pronunciation
+- [x] Publish so rainbow opening reaches other devices

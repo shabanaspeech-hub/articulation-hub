@@ -18,6 +18,8 @@ import GamesView from "@/components/games/GamesView";
 import { useAppMode } from "@/contexts/AppModeContext";
 import { generateSequences } from "@/components/MotorSequencingCard";
 import { getIpa } from "@/lib/ipa";
+import MinimalPairCard from "@/components/MinimalPairCard";
+import { getMinimalPairs } from "@/data/minimalPairs";
 
 const SoundDetail = () => {
   const { soundId } = useParams<{ soundId: string }>();
@@ -43,6 +45,8 @@ const SoundDetail = () => {
   const isCVC = activeLevel === "cvc";
   const isWordLevel = activeLevel === "words" || activeLevel === "phrases" || activeLevel === "sentences";
   const isGames = activeLevel === "games";
+  const isPairs = activeLevel === "minimal-pairs";
+  const pairs = useMemo(() => (sound && isPairs ? getMinimalPairs(sound.id) : []), [sound, isPairs]);
 
   const syllables = useMemo(() => {
     if (!sound) return [];
@@ -72,8 +76,9 @@ const SoundDetail = () => {
     if (isSyllableLevel) return syllables.length;
     if (isCVC) return cvcItems.length;
     if (isMotorSequencing) return sequenceCount;
+    if (isPairs) return pairs.length;
     return words.length;
-  }, [isSoundMovement, isSyllableLevel, isCVC, isMotorSequencing, syllables, cvcItems, sequenceCount, words]);
+  }, [isSoundMovement, isSyllableLevel, isCVC, isMotorSequencing, isPairs, pairs, syllables, cvcItems, sequenceCount, words]);
 
   const currentWord = isWordLevel ? words[currentIndex] : null;
   const currentSyllable = isSyllableLevel ? syllables[currentIndex] : null;
@@ -288,6 +293,12 @@ const SoundDetail = () => {
               sound={sound.sound}
               currentIndex={currentIndex}
             />
+          )}
+          {isPairs && pairs[currentIndex] && (
+            <MinimalPairCard key={`pair-${currentIndex}`} pair={pairs[currentIndex]} id={`pair-${sound.id}-${currentIndex}`} />
+          )}
+          {isPairs && pairs.length === 0 && (
+            <p className="font-nunito text-muted-foreground text-center p-8">No minimal pairs for this sound yet. Pairs: p/b, m/n, l/r, r/v, k/t, g/d, sh/s.</p>
           )}
           {isWordLevel && currentWord && (
             <PracticeCard
