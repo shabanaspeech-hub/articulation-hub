@@ -1,6 +1,6 @@
 export type Position = 'initial' | 'medial' | 'final';
-export type PracticeLevel = 'sound-movement' | 'cv' | 'vc' | 'cvcv' | 'words' | 'phrases' | 'sentences' | 'games';
-export type MotorSpeechLevel = 'sound-movement' | 'cv' | 'vc' | 'cvcv' | 'cvc' | 'motor-sequencing' | 'words' | 'phrases' | 'sentences';
+export type PracticeLevel = 'sound-movement' | 'cv' | 'vc' | 'cvcv' | 'words' | 'phrases' | 'sentences' | 'minimal-pairs' | 'games';
+export type MotorSpeechLevel = 'sound-movement' | 'cv' | 'vc' | 'cvcv' | 'cvc' | 'motor-sequencing' | 'words' | 'phrases' | 'sentences' | 'minimal-pairs';
 
 export interface SyllableItem {
   syllable: string;

@@ -28,7 +28,7 @@ const MinimalPairCard = ({ pair, id }: Props) => {
           </motion.button>
         ))}
       </div>
-      <VoiceRecorder itemId={id} />
+      <VoiceRecorder storageKey={id} />
     </div>
   );
 };
