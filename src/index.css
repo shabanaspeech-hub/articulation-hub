@@ -147,8 +147,16 @@
     transition: transform 180ms ease, box-shadow 180ms ease;
   }
 
-  .welcome-sound-letter { font-size: min(4.5rem, 62cqh, 55cqw); }
-  .welcome-sound-ipa { font-size: min(1.1rem, 20cqh, 24cqw); }
+  .welcome-sound-letter { font-size: min(5rem, 76cqh, 62cqw); }
+  .welcome-sound-ipa { font-size: min(1.1rem, 19cqh, 24cqw); }
+
+  @media (max-height: 600px) {
+    .welcome-page header { padding-top: 4px; padding-bottom: 4px; }
+    .welcome-page #app-logo { height: 48px; }
+    .welcome-page footer { padding-bottom: 4px; }
+    .welcome-sound-grid { gap: 6px 12px; }
+    .welcome-sound-tile { padding: 2px; gap: 0; }
+  }
 
   .welcome-sound-tile:hover {
     transform: translateY(-3px);

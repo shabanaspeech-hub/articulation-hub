@@ -32,7 +32,7 @@ const Index = () => {
             <p id="app-tagline" className="mt-1 text-xs sm:text-sm font-fredoka font-bold italic text-welcome-ink/80">Research and evidence based app</p>
           </div>
         </div>
-        <div className="mt-2 sm:mt-[1dvh]"><ModeToggle /></div>
+        <div className="mt-2"><ModeToggle compact /></div>
       </header>
       <main className="mx-auto w-full max-w-6xl flex-1 min-h-0 px-3 pb-2 sm:px-6 flex flex-col">
         <div className="mb-2 sm:mb-[1dvh] flex items-center justify-between gap-3 text-welcome-ink">
