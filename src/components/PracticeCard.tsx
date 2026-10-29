@@ -6,7 +6,6 @@ import { speakPhoneticText } from "@/lib/speech";
 import { getWordImage } from "@/lib/wordImages";
 import { speakVCSyllable, stopVCSyllable } from "@/lib/vcSpeech";
 import { cvcvAudioSources, cvcvClipKey, playClip } from "@/lib/cvcvAudio";
-import { toast } from "@/hooks/use-toast";
 
 
 interface PracticeCardProps {
