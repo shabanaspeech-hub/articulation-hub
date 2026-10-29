@@ -157,6 +157,7 @@
   }
   .welcome-sound-cell { container-type: size; padding: 5%; }
   .welcome-brand-cell { container-type: size; }
+  @media (max-width: 900px) { .welcome-brand-cell > div:last-child { zoom: 0.78; } }
   .welcome-brand-credit { font-size: 4.2cqw; }
   .welcome-brand-title { font-size: 9.5cqw; }
   .welcome-brand-tagline { font-size: 5cqw; margin-top: 1cqh; }

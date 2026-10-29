@@ -74,7 +74,7 @@ const Index = () => {
               <div className="w-full"><ModeToggle compact /></div>
             </div>}
             {orderedSounds.map((sound, index) => (
-              <div key={sound.id} className="welcome-sound-cell min-h-0 min-w-0 flex items-center justify-center">
+              <div key={sound.id} className={`welcome-sound-cell min-h-0 min-w-0 flex items-center justify-center ${!wide && index === n - 1 && n % 5 === 1 ? "col-start-3" : ""}`}>
                 <SoundCard sound={sound} index={index} row={Math.floor(index / 5)} />
               </div>
             ))}
