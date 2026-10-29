@@ -9,9 +9,9 @@ import { useEffect, useState } from "react";
 
 const Index = () => {
   const { mode } = useAppMode();
-  const [wide, setWide] = useState(() => typeof window !== "undefined" && window.matchMedia("(min-width: 640px)").matches);
+  const [wide, setWide] = useState(() => typeof window !== "undefined" && window.matchMedia("(min-width: 500px) and (orientation: landscape)").matches);
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 640px)");
+    const mq = window.matchMedia("(min-width: 500px) and (orientation: landscape)");
     const on = () => setWide(mq.matches);
     mq.addEventListener("change", on);
     return () => mq.removeEventListener("change", on);

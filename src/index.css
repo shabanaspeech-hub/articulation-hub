@@ -152,10 +152,10 @@
     gap: 0;
     flex-shrink: 0;
   }
-  @media (min-width: 640px) {
+  @media (min-width: 500px) and (orientation: landscape) {
     .welcome-sound-grid { --cols: 6; --rows: var(--rows-wide); }
   }
-  .welcome-sound-cell { container-type: size; padding: clamp(3px, 4cqmin, 12px); }
+  .welcome-sound-cell { container-type: size; padding: 5%; }
   .welcome-brand-cell { container-type: size; }
   .welcome-brand-credit { font-size: 4.2cqw; }
   .welcome-brand-title { font-size: 9.5cqw; }
