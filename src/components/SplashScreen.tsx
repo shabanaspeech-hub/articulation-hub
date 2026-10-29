@@ -7,7 +7,7 @@ import brandLogo from "@/assets/rainbow-logo.png";
  * letter by letter on top of the real header title → backdrop dissolves.
  * Targets the header via #app-logo / #app-title; falls back to centre when absent.
  */
-const SESSION_KEY = "motor-lab-rainbow-opening-v2";
+const SESSION_KEY = "motor-lab-rainbow-opening-v3";
 const ARCS = ["#e5322d", "#f28a1e", "#f6c81a", "#4cb24a", "#17a7a0", "#2d7fd3", "#7a4fc4"];
 const TITLE = "MOTOR SPEECH LAB";
 
@@ -45,11 +45,11 @@ const SplashScreen = () => {
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const steps: [Phase, number][] = reduce
       ? [["fly", 0], ["title", 200], ["out", 1400]]
-      : [["bow", 700], ["logo", 1800], ["fly", 2500], ["title", 2600], ["out", 4200]];
+      : [["bow", 450], ["logo", 1400], ["fly", 1900], ["title", 2050], ["out", 3600]];
     const ids = steps.map(([p, t]) => window.setTimeout(() => {
       setLogoT(rectOf("app-logo")); setTitleT(rectOf("app-title")); setTagT(rectOf("app-tagline")); setPhase(p);
     }, t));
-    ids.push(window.setTimeout(() => setVisible(false), reduce ? 1900 : 4800));
+    ids.push(window.setTimeout(() => setVisible(false), reduce ? 1900 : 4200));
     return () => ids.forEach(window.clearTimeout);
   }, [visible]);
 
@@ -81,18 +81,18 @@ const SplashScreen = () => {
         .spl-sun{position:absolute;left:50%;top:70%;width:140vmax;height:140vmax;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,236,170,.9),rgba(255,236,170,0) 45%);opacity:0;transition:opacity 1.4s}
         .spl-bow{position:absolute;left:50%;bottom:-2%;width:max(130vw,130vh);transform:translateX(-50%);transform-origin:50% 100%;transition:transform 1.3s cubic-bezier(.7,0,.3,1),opacity 1.1s ease,left 1.3s cubic-bezier(.7,0,.3,1),bottom 1.3s cubic-bezier(.7,0,.3,1)}
         .spl-bow path{fill:none;stroke-width:13;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
-        .spl-bow.paint path{animation:paint 1.8s cubic-bezier(.4,0,.2,1) forwards}
+        .spl-bow.paint path{animation:paint .7s cubic-bezier(.4,0,.2,1) forwards}
         .spl-bow.gather{transform:translateX(-50%) scale(.04) rotate(540deg);opacity:0;bottom:45%}
         @keyframes paint{to{stroke-dashoffset:0}}
         .spl-spark{position:absolute;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 12px 4px #ffe58a;animation:twinkle 1.2s ease-in-out infinite}
         @keyframes twinkle{0%,100%{opacity:0;transform:scale(.3)}50%{opacity:1;transform:scale(1.2)}}
         .spl-logo{position:fixed;object-fit:contain;transition:left 1s cubic-bezier(.6,-.05,.3,1.1),top 1s cubic-bezier(.6,-.05,.3,1.1),width 1s cubic-bezier(.6,-.05,.3,1.1),height 1s cubic-bezier(.6,-.05,.3,1.1);filter:drop-shadow(0 12px 20px rgba(0,0,0,.15))}
-        .spl-logo.in{animation:bounce 1.3s cubic-bezier(.3,1.5,.5,1) both}
+        .spl-logo.in{animation:bounce .5s cubic-bezier(.3,1.5,.5,1) both}
         @keyframes bounce{0%{opacity:0;transform:scale(.1) rotate(-200deg)}45%{opacity:1;transform:scale(1.12) rotate(8deg)}62%{transform:scale(.92,1.06) translateY(-6%)}78%{transform:scale(1.05,.95)}100%{opacity:1;transform:none}}
         .spl-title{position:fixed;display:flex;align-items:center;white-space:nowrap;font-family:Fredoka,sans-serif;font-weight:700;font-style:italic;color:hsl(var(--welcome-ink, 190 60% 22%));line-height:1}
         .spl-letter{display:inline-block;opacity:0;animation:letter .55s cubic-bezier(.3,1.7,.5,1) forwards}
         @keyframes letter{0%{opacity:0;transform:translateY(-60px) scale(.3) rotate(-25deg)}100%{opacity:1;transform:none}}
-        .spl-tag{position:fixed;font-family:Fredoka,sans-serif;font-weight:700;font-style:italic;line-height:1.25;color:hsl(var(--welcome-ink, 190 60% 22%));opacity:0;animation:tag .8s ease-out 1.5s forwards}
+        .spl-tag{position:fixed;font-family:Fredoka,sans-serif;font-weight:700;font-style:italic;line-height:1.25;color:hsl(var(--welcome-ink, 190 60% 22%));opacity:0;animation:tag .45s ease-out .45s forwards}
         @keyframes tag{0%{opacity:0;transform:translateY(18px) scale(.9)}100%{opacity:.85;transform:none}}
         @media (prefers-reduced-motion: reduce){.spl *{animation:none!important;transition:none!important}.spl-letter,.spl-tag{opacity:1}}
       `}</style>
@@ -135,7 +135,7 @@ const SplashScreen = () => {
           ? { left: titleT.left, top: titleT.top, width: titleT.width, height: titleT.height, fontSize: document.getElementById("app-title") ? getComputedStyle(document.getElementById("app-title") as HTMLElement).fontSize : 32 }
           : { left: 0, right: 0, justifyContent: "center", top: centre.top + centre.height + 16, fontSize: 36 }}>
           {TITLE.split("").map((ch, i) => (
-            <span key={i} className="spl-letter" style={{ animationDelay: `${i * 0.06}s` }}>{ch === " " ? "\u00A0" : ch}</span>
+            <span key={i} className="spl-letter" style={{ animationDelay: `${i * 0.025}s` }}>{ch === " " ? "\u00A0" : ch}</span>
           ))}
         </div>
       )}

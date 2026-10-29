@@ -172,6 +172,35 @@
   .welcome-sound-letter { font-size: 56cqh; }
   .welcome-sound-ipa { font-size: 15cqh; }
 
+  /* Phone reference layout only; approved tablet and desktop geometry is unchanged. */
+  @media (max-width: 499px) {
+    .welcome-page header { padding: 12px 12px 4px; }
+    .welcome-page header > div:first-child { gap: 8px; }
+    .welcome-page #app-logo { width: 42px; height: 48px; }
+    .welcome-page header h1 { font-size: 24px; }
+    .welcome-page header p:first-child { font-size: 10px; }
+    .welcome-page #app-tagline { font-size: 12px; }
+    .welcome-page main { padding: 10px 12px; }
+    .welcome-mobile-heading { margin-bottom: 18px; }
+    .welcome-mobile-board {
+      --phone-cell: min(calc((100vw - 56px) / 5), calc((100dvh - 220px) / 5.5));
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+    .welcome-mobile-row { display: flex; justify-content: center; gap: 8px; }
+    .welcome-mobile-cell { width: var(--phone-cell); height: var(--phone-cell); padding: 0; flex: none; }
+    .welcome-mobile-cell .welcome-sound-letter { font-size: 62cqh; }
+    .welcome-mobile-cell .welcome-sound-ipa { font-size: 16cqh; }
+    .welcome-page footer { padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+  }
+  @media (max-width: 359px) {
+    .welcome-page header h1 { font-size: 20px; }
+    .welcome-page header p:first-child { font-size: 9px; }
+    .welcome-page #app-tagline { font-size: 10px; }
+  }
+
   @media (max-height: 600px) {
     .welcome-page header { padding-top: 4px; padding-bottom: 4px; }
     .welcome-page #app-logo { height: 48px; }
