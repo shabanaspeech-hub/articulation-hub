@@ -45,11 +45,11 @@ const SplashScreen = () => {
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const steps: [Phase, number][] = reduce
       ? [["fly", 0], ["title", 200], ["out", 1400]]
-      : [["bow", 450], ["logo", 1400], ["fly", 1900], ["title", 2050], ["out", 3600]];
+      : [["bow", 450], ["logo", 1400], ["fly", 1900], ["title", 2050], ["out", 4300]];
     const ids = steps.map(([p, t]) => window.setTimeout(() => {
       setLogoT(rectOf("app-logo")); setTitleT(rectOf("app-title")); setTagT(rectOf("app-tagline")); setPhase(p);
     }, t));
-    ids.push(window.setTimeout(() => setVisible(false), reduce ? 1900 : 4200));
+    ids.push(window.setTimeout(() => setVisible(false), reduce ? 1900 : 4900));
     return () => ids.forEach(window.clearTimeout);
   }, [visible]);
 
@@ -92,8 +92,8 @@ const SplashScreen = () => {
         .spl-title{position:fixed;display:flex;align-items:center;white-space:nowrap;font-family:Fredoka,sans-serif;font-weight:700;font-style:italic;color:hsl(var(--welcome-ink, 190 60% 22%));line-height:1}
         .spl-letter{display:inline-block;opacity:0;animation:letter .55s cubic-bezier(.3,1.7,.5,1) forwards}
         @keyframes letter{0%{opacity:0;transform:translateY(-60px) scale(.3) rotate(-25deg)}100%{opacity:1;transform:none}}
-        .spl-tag{position:fixed;font-family:Fredoka,sans-serif;font-weight:700;font-style:italic;line-height:1.25;color:hsl(var(--welcome-ink, 190 60% 22%));opacity:0;animation:tag .45s ease-out .45s forwards}
-        @keyframes tag{0%{opacity:0;transform:translateY(18px) scale(.9)}100%{opacity:.85;transform:none}}
+        .spl-tag{position:fixed;font-family:Fredoka,sans-serif;font-weight:700;font-style:italic;line-height:1.25;color:hsl(var(--welcome-ink, 190 60% 22%));opacity:0;animation:tag .45s ease-out .35s forwards;white-space:nowrap}
+        @keyframes tag{0%{opacity:0;transform:translateY(18px) scale(.9)}100%{opacity:1;transform:none}}
         @media (prefers-reduced-motion: reduce){.spl *{animation:none!important;transition:none!important}.spl-letter,.spl-tag{opacity:1}}
       `}</style>
 
@@ -141,7 +141,7 @@ const SplashScreen = () => {
       )}
       {(phase === "title" || phase === "out") && (
         <div className="spl-tag" style={tagT
-          ? { left: tagT.left, top: tagT.top, width: tagT.width, fontSize: document.getElementById("app-tagline") ? getComputedStyle(document.getElementById("app-tagline") as HTMLElement).fontSize : 14 }
+          ? { left: tagT.left, top: tagT.top, fontSize: document.getElementById("app-tagline") ? getComputedStyle(document.getElementById("app-tagline") as HTMLElement).fontSize : 14 }
           : { left: 0, right: 0, textAlign: "center", top: centre.top + centre.height + 64, fontSize: 18 }}>
           Research and evidence based app
         </div>
