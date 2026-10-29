@@ -147,8 +147,8 @@
     transition: transform 180ms ease, box-shadow 180ms ease;
   }
 
-  .welcome-sound-letter { font-size: min(5rem, 76cqh, 62cqw); }
-  .welcome-sound-ipa { font-size: min(1.1rem, 19cqh, 24cqw); }
+  .welcome-sound-letter { font-size: min(7rem, 72cqh, 70cqw); }
+  .welcome-sound-ipa { font-size: min(1.4rem, 20cqh, 26cqw); }
 
   @media (max-height: 600px) {
     .welcome-page header { padding-top: 4px; padding-bottom: 4px; }
