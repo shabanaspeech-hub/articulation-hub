@@ -150,7 +150,7 @@
     transition: transform 180ms ease, box-shadow 180ms ease;
   }
 
-  .welcome-sound-letter { font-size: 62cqh; }
+  .welcome-sound-letter { font-size: 54cqh; }
   .welcome-sound-ipa { font-size: 17cqh; }
 
   @media (max-height: 600px) {
