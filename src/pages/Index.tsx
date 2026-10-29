@@ -9,9 +9,9 @@ import { Link } from "react-router-dom";
 const Index = () => {
   const { mode } = useAppMode();
 
-  const displayedSounds = mode === "motor-speech"
-    ? soundsData.filter(s => earlyMotorSounds.includes(s.id) || s.kind === "vowel")
-    : soundsData;
+  const displayedSounds = (mode === "motor-speech"
+    ? soundsData.filter(s => earlyMotorSounds.includes(s.id))
+    : soundsData).filter(s => s.kind !== "vowel");
   const orderedSounds = soundRows.flat().flatMap(id => {
     const sound = displayedSounds.find(item => item.id === id);
     return sound ? [sound] : [];
