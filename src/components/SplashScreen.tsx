@@ -1,13 +1,13 @@
 import { useEffect, useLayoutEffect, useState } from "react";
-import brandLogo from "@/assets/spectraspeech-brand.png";
+import brandLogo from "@/assets/rainbow-logo.png";
 
 /**
- * SpectraSpeech cinematic opening: rain → full-screen rainbow → rainbow shrinks into the
+ * Motor Speech Lab cinematic opening: rain → full-screen rainbow → rainbow shrinks into the
  * logo → logo bounces, then flies to its header spot → "MOTOR SPEECH LAB" pops in
  * letter by letter on top of the real header title → backdrop dissolves.
  * Targets the header via #app-logo / #app-title; falls back to centre when absent.
  */
-const SESSION_KEY = "spectra-splash-played";
+const SESSION_KEY = "motor-lab-rainbow-opening-v2";
 const ARCS = ["#e5322d", "#f28a1e", "#f6c81a", "#4cb24a", "#17a7a0", "#2d7fd3", "#7a4fc4"];
 const TITLE = "MOTOR SPEECH LAB";
 
@@ -45,11 +45,11 @@ const SplashScreen = () => {
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const steps: [Phase, number][] = reduce
       ? [["fly", 0], ["title", 200], ["out", 1400]]
-      : [["bow", 1900], ["logo", 4100], ["fly", 5500], ["title", 6400], ["out", 8900]];
+      : [["bow", 1900], ["logo", 4100], ["fly", 5500], ["title", 6600], ["out", 10500]];
     const ids = steps.map(([p, t]) => window.setTimeout(() => {
       setLogoT(rectOf("app-logo")); setTitleT(rectOf("app-title")); setTagT(rectOf("app-tagline")); setPhase(p);
     }, t));
-    ids.push(window.setTimeout(() => setVisible(false), reduce ? 1900 : 9600));
+    ids.push(window.setTimeout(() => setVisible(false), reduce ? 1900 : 11200));
     return () => ids.forEach(window.clearTimeout);
   }, [visible]);
 
@@ -57,7 +57,7 @@ const SplashScreen = () => {
 
   const vw = window.innerWidth, vh = window.innerHeight;
   const big = Math.min(vw * 0.55, vh * 0.5, 300);
-  const centre: Rect = { left: (vw - big) / 2, top: (vh - big * 1.2) / 2, width: big, height: big * 1.2 };
+  const centre: Rect = { left: (vw - big) / 2, top: (vh - big) / 2, width: big, height: big };
   const flown = phase === "fly" || phase === "title" || phase === "out";
   const logoRect = flown && logoT ? logoT : centre;
   const showLogo = phase !== "rain" && phase !== "bow";
@@ -92,7 +92,7 @@ const SplashScreen = () => {
         .spl-title{position:fixed;display:flex;align-items:center;white-space:nowrap;font-family:Fredoka,sans-serif;font-weight:700;font-style:italic;color:hsl(var(--welcome-ink, 190 60% 22%));line-height:1}
         .spl-letter{display:inline-block;opacity:0;animation:letter .55s cubic-bezier(.3,1.7,.5,1) forwards}
         @keyframes letter{0%{opacity:0;transform:translateY(-60px) scale(.3) rotate(-25deg)}100%{opacity:1;transform:none}}
-        .spl-tag{position:fixed;white-space:nowrap;font-family:Fredoka,sans-serif;font-weight:700;font-style:italic;color:hsl(var(--welcome-ink, 190 60% 22%));opacity:0;animation:tag .8s ease-out 1.1s forwards}
+        .spl-tag{position:fixed;font-family:Fredoka,sans-serif;font-weight:700;font-style:italic;line-height:1.25;color:hsl(var(--welcome-ink, 190 60% 22%));opacity:0;animation:tag .8s ease-out 1.5s forwards}
         @keyframes tag{0%{opacity:0;transform:translateY(18px) scale(.9)}100%{opacity:.85;transform:none}}
         @media (prefers-reduced-motion: reduce){.spl *{animation:none!important;transition:none!important}.spl-letter,.spl-tag{opacity:1}}
       `}</style>
@@ -130,18 +130,18 @@ const SplashScreen = () => {
           style={{ left: logoRect.left, top: logoRect.top, width: logoRect.width, height: logoRect.height }} />
       )}
 
-      {phase === "title" && (
+      {(phase === "title" || phase === "out") && (
         <div className="spl-title" style={titleT
-          ? { left: titleT.left, top: titleT.top, height: titleT.height, fontSize: titleT.height * 0.9 }
+          ? { left: titleT.left, top: titleT.top, width: titleT.width, height: titleT.height, fontSize: document.getElementById("app-title") ? getComputedStyle(document.getElementById("app-title") as HTMLElement).fontSize : 32 }
           : { left: 0, right: 0, justifyContent: "center", top: centre.top + centre.height + 16, fontSize: 36 }}>
           {TITLE.split("").map((ch, i) => (
             <span key={i} className="spl-letter" style={{ animationDelay: `${i * 0.06}s` }}>{ch === " " ? "\u00A0" : ch}</span>
           ))}
         </div>
       )}
-      {phase === "title" && (
+      {(phase === "title" || phase === "out") && (
         <div className="spl-tag" style={tagT
-          ? { left: tagT.left, top: tagT.top, fontSize: tagT.height * 0.8 }
+          ? { left: tagT.left, top: tagT.top, width: tagT.width, fontSize: document.getElementById("app-tagline") ? getComputedStyle(document.getElementById("app-tagline") as HTMLElement).fontSize : 14 }
           : { left: 0, right: 0, textAlign: "center", top: centre.top + centre.height + 64, fontSize: 18 }}>
           Research and evidence based app
         </div>
