@@ -1,7 +1,7 @@
 # Current refinements
 
-- [ ] Match the phone-only cover to the supplied grouped-row reference; preserve approved iPad/desktop layouts.
-- [ ] Show the opening title and research tagline clearly before the quick animation ends.
+- [x] Match the phone-only cover to the supplied grouped-row reference; checked at 393×678 and 360×640 without scrolling, with sound navigation working. Approved iPad/desktop cover geometry preserved.
+- [x] Show the opening title and research tagline clearly before the quick animation ends; confirmed both beside the small rainbow at 3.1 seconds.
 
 - [x] Enlarge cover letters in five-card rows; verified no scrolling at 679×495, 390×844, 820×1180, 1180×820 and 1280×800.
 - [x] Replace visible SpectraSpeech branding with rainbow-only logo and device icons; opening tagline fades below the title and remains in the header. Device installation refresh awaits publication.
