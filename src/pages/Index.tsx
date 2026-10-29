@@ -9,12 +9,16 @@ import { useEffect, useState } from "react";
 
 const Index = () => {
   const { mode } = useAppMode();
+  const [phone, setPhone] = useState(() => typeof window !== "undefined" && window.matchMedia("(max-width: 499px)").matches);
   const [wide, setWide] = useState(() => typeof window !== "undefined" && window.matchMedia("(min-width: 500px) and (orientation: landscape)").matches);
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 500px) and (orientation: landscape)");
+    const mobileMq = window.matchMedia("(max-width: 499px)");
     const on = () => setWide(mq.matches);
+    const onMobile = () => setPhone(mobileMq.matches);
     mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
+    mobileMq.addEventListener("change", onMobile);
+    return () => { mq.removeEventListener("change", on); mobileMq.removeEventListener("change", onMobile); };
   }, []);
 
   const displayedSounds = (mode === "motor-speech"
@@ -51,11 +55,27 @@ const Index = () => {
             <p id="app-tagline" className="mt-0.5 text-xs font-fredoka font-bold italic text-welcome-ink/80">Research and evidence based app</p>
           </div>
         </div>
-        <div className="mt-2"><ModeToggle compact /></div>
+        <div className="mt-2"><ModeToggle compact={!phone} /></div>
       </header>}
 
       <main className="w-full flex-1 min-h-0 px-2 py-2 sm:px-4 sm:py-3 flex flex-col">
-        <div className="welcome-sound-board flex-1 min-h-0 flex items-center justify-center">
+        {phone && <div className="welcome-mobile-heading flex items-center justify-between text-welcome-ink">
+          <h2 className="text-base font-bold">{mode === "motor-speech" ? "Motor speech sounds" : "Speech sounds"}</h2>
+          <span className="text-sm">{n} sounds</span>
+        </div>}
+        {phone ? <div className="welcome-mobile-board">
+          {soundRows.map((ids, row) => {
+            const sounds = ids.flatMap(id => {
+              const sound = displayedSounds.find(item => item.id === id);
+              return sound ? [sound] : [];
+            });
+            return sounds.length ? <div className="welcome-mobile-row" key={row}>
+              {sounds.map((sound, index) => <div className="welcome-sound-cell welcome-mobile-cell" key={sound.id}>
+                <SoundCard sound={sound} index={index} row={row} />
+              </div>)}
+            </div> : null;
+          })}
+        </div> : <div className="welcome-sound-board flex-1 min-h-0 flex items-center justify-center">
           <div
             className="welcome-sound-grid grid"
             style={{ ["--rows-wide" as string]: wideRows, ["--rows-phone" as string]: phoneRows }}
@@ -79,7 +99,7 @@ const Index = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div>}
       </main>
       <footer className="shrink-0 px-4 pb-1 text-center text-welcome-ink text-xs font-semibold">
         <Link to="/privacy" className="underline underline-offset-4">Privacy Policy</Link>
