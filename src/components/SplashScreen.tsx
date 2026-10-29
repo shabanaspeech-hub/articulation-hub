@@ -28,10 +28,11 @@ const SplashScreen = () => {
   const [phase, setPhase] = useState<Phase>("rain");
   const [logoT, setLogoT] = useState<Rect | null>(null);
   const [titleT, setTitleT] = useState<Rect | null>(null);
+  const [tagT, setTagT] = useState<Rect | null>(null);
 
   useLayoutEffect(() => {
     if (!visible) return;
-    const measure = () => { setLogoT(rectOf("app-logo")); setTitleT(rectOf("app-title")); };
+    const measure = () => { setLogoT(rectOf("app-logo")); setTitleT(rectOf("app-title")); setTagT(rectOf("app-tagline")); };
     measure();
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
@@ -44,11 +45,11 @@ const SplashScreen = () => {
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const steps: [Phase, number][] = reduce
       ? [["fly", 0], ["title", 200], ["out", 1400]]
-      : [["bow", 1900], ["logo", 4100], ["fly", 5500], ["title", 6400], ["out", 7900]];
+      : [["bow", 1900], ["logo", 4100], ["fly", 5500], ["title", 6400], ["out", 8900]];
     const ids = steps.map(([p, t]) => window.setTimeout(() => {
-      setLogoT(rectOf("app-logo")); setTitleT(rectOf("app-title")); setPhase(p);
+      setLogoT(rectOf("app-logo")); setTitleT(rectOf("app-title")); setTagT(rectOf("app-tagline")); setPhase(p);
     }, t));
-    ids.push(window.setTimeout(() => setVisible(false), reduce ? 1900 : 8600));
+    ids.push(window.setTimeout(() => setVisible(false), reduce ? 1900 : 9600));
     return () => ids.forEach(window.clearTimeout);
   }, [visible]);
 
@@ -91,7 +92,9 @@ const SplashScreen = () => {
         .spl-title{position:fixed;display:flex;align-items:center;white-space:nowrap;font-family:Fredoka,sans-serif;font-weight:700;font-style:italic;color:hsl(var(--welcome-ink, 190 60% 22%));line-height:1}
         .spl-letter{display:inline-block;opacity:0;animation:letter .55s cubic-bezier(.3,1.7,.5,1) forwards}
         @keyframes letter{0%{opacity:0;transform:translateY(-60px) scale(.3) rotate(-25deg)}100%{opacity:1;transform:none}}
-        @media (prefers-reduced-motion: reduce){.spl *{animation:none!important;transition:none!important}.spl-letter{opacity:1}}
+        .spl-tag{position:fixed;white-space:nowrap;font-family:Fredoka,sans-serif;font-weight:700;font-style:italic;color:hsl(var(--welcome-ink, 190 60% 22%));opacity:0;animation:tag .8s ease-out 1.1s forwards}
+        @keyframes tag{0%{opacity:0;transform:translateY(18px) scale(.9)}100%{opacity:.85;transform:none}}
+        @media (prefers-reduced-motion: reduce){.spl *{animation:none!important;transition:none!important}.spl-letter,.spl-tag{opacity:1}}
       `}</style>
 
       <div className={`spl-bg ${phase !== "rain" ? "sun" : ""}`} style={{ opacity: phase === "out" ? 0 : 1 }} />
@@ -134,6 +137,13 @@ const SplashScreen = () => {
           {TITLE.split("").map((ch, i) => (
             <span key={i} className="spl-letter" style={{ animationDelay: `${i * 0.06}s` }}>{ch === " " ? "\u00A0" : ch}</span>
           ))}
+        </div>
+      )}
+      {phase === "title" && (
+        <div className="spl-tag" style={tagT
+          ? { left: tagT.left, top: tagT.top, fontSize: tagT.height * 0.8 }
+          : { left: 0, right: 0, textAlign: "center", top: centre.top + centre.height + 64, fontSize: 18 }}>
+          Research and evidence based app
         </div>
       )}
     </div>
