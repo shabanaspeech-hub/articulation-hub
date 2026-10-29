@@ -1,29 +1,13 @@
 import { vcAudioSources } from './vcAudioManifest';
-
-let activeAudio: HTMLAudioElement | undefined;
+import { playRobustClip, stopActiveClip } from './clipPlayer';
 
 export function stopVCSyllable() {
-  if (!activeAudio) return;
-  activeAudio.pause();
-  activeAudio.currentTime = 0;
-  activeAudio = undefined;
+  stopActiveClip();
 }
 
-export async function speakVCSyllable(target: string): Promise<void> {
-  stopVCSyllable();
-  window.speechSynthesis?.cancel();
+/** Resolves true when the fixed clip played, false when the caller should fall back. */
+export async function speakVCSyllable(target: string): Promise<boolean> {
   const src = vcAudioSources[target.toLowerCase()];
-  if (!src) throw new Error('VC model audio is unavailable');
-  const audio = new Audio(src);
-  activeAudio = audio;
-  audio.onended = () => {
-    if (activeAudio === audio) activeAudio = undefined;
-  };
-  try {
-    await audio.play();
-  } catch (error) {
-    if (activeAudio === audio) activeAudio = undefined;
-    if (error instanceof DOMException && error.name === 'AbortError') return;
-    throw error;
-  }
+  if (!src) return false;
+  return playRobustClip(src);
 }
