@@ -45,11 +45,11 @@ const SplashScreen = () => {
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const steps: [Phase, number][] = reduce
       ? [["fly", 0], ["title", 200], ["out", 1400]]
-      : [["bow", 1900], ["logo", 4100], ["fly", 5500], ["title", 6600], ["out", 10500]];
+      : [["bow", 700], ["logo", 1800], ["fly", 2500], ["title", 2600], ["out", 4200]];
     const ids = steps.map(([p, t]) => window.setTimeout(() => {
       setLogoT(rectOf("app-logo")); setTitleT(rectOf("app-title")); setTagT(rectOf("app-tagline")); setPhase(p);
     }, t));
-    ids.push(window.setTimeout(() => setVisible(false), reduce ? 1900 : 11200));
+    ids.push(window.setTimeout(() => setVisible(false), reduce ? 1900 : 4800));
     return () => ids.forEach(window.clearTimeout);
   }, [visible]);
 
