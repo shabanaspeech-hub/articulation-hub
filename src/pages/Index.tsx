@@ -35,14 +35,14 @@ const Index = () => {
           <h2 className="text-lg sm:text-xl font-fredoka">{mode === "motor-speech" ? "Motor speech sounds" : "Speech sounds"}</h2>
           <span className="text-sm font-semibold">{displayedSounds.length} sounds</span>
         </div>
-        <div className="flex flex-col gap-3 sm:gap-[1dvh] sm:flex-1 sm:min-h-0 sm:justify-center">
+        <div className="flex flex-col gap-3 sm:gap-[1dvh] sm:flex-1 sm:min-h-0 sm:justify-start">
           {soundRows.map((ids, row) => {
             const rowSounds = ids.map(id => displayedSounds.find(item => item.id === id)).filter(Boolean);
             if (!rowSounds.length) return null;
             return (
               <div key={ids[0]} className="flex justify-center gap-2 sm:gap-4">
                 {rowSounds.map((sound, index) => (
-                  <div key={sound!.id} className="w-[calc((100%-2rem)/5)] sm:w-[min(calc((100%-4rem)/5),9.5dvh)] max-w-36">
+                  <div key={sound!.id} className="w-[calc((100%-2rem)/5)] sm:w-[min(calc((100%-4rem)/5),10dvh)] max-w-36">
                     <SoundCard sound={sound!} index={index} row={row} />
                   </div>
                 ))}
