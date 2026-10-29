@@ -142,9 +142,13 @@
 
 @layer components {
   .welcome-sound-tile {
+    container-type: size;
     box-shadow: var(--shadow-welcome-tile);
     transition: transform 180ms ease, box-shadow 180ms ease;
   }
+
+  .welcome-sound-letter { font-size: min(4.5rem, 62cqh, 55cqw); }
+  .welcome-sound-ipa { font-size: min(1.1rem, 20cqh, 24cqw); }
 
   .welcome-sound-tile:hover {
     transform: translateY(-3px);
