@@ -5,9 +5,17 @@ import { useAppMode } from "@/contexts/AppModeContext";
 import brandLogo from "@/assets/rainbow-logo.png";
 import welcomeGarden from "@/assets/welcome-garden.jpg";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const Index = () => {
   const { mode } = useAppMode();
+  const [wide, setWide] = useState(() => typeof window !== "undefined" && window.matchMedia("(min-width: 640px)").matches);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 640px)");
+    const on = () => setWide(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
 
   const displayedSounds = (mode === "motor-speech"
     ? soundsData.filter(s => earlyMotorSounds.includes(s.id))
@@ -34,7 +42,7 @@ const Index = () => {
         className="absolute inset-0 -z-10 h-full w-full object-cover object-bottom" />
 
       {/* Phone header (branding sits inside the grid on larger screens) */}
-      <header className="sm:hidden mx-auto w-full shrink-0 px-3 pt-2 pb-1">
+      {!wide && <header className="mx-auto w-full shrink-0 px-3 pt-2 pb-1">
         <div className="flex items-center justify-center gap-3">
           <img id="app-logo" src={brandLogo} alt="Motor Speech Lab rainbow logo" width={1024} height={1024} className="h-12 w-14 shrink-0 object-contain" />
           <div className="min-w-0 text-left">
@@ -44,7 +52,7 @@ const Index = () => {
           </div>
         </div>
         <div className="mt-2"><ModeToggle compact /></div>
-      </header>
+      </header>}
 
       <main className="w-full flex-1 min-h-0 px-2 py-2 sm:px-4 sm:py-3 flex flex-col">
         <div className="welcome-sound-board flex-1 min-h-0 flex items-center justify-center">
@@ -52,19 +60,19 @@ const Index = () => {
             className="welcome-sound-grid grid"
             style={{ ["--rows-wide" as string]: wideRows, ["--rows-phone" as string]: phoneRows }}
           >
-            <div className="welcome-brand-cell hidden sm:flex col-span-2 flex-col items-center justify-center gap-[3cqh] px-[2cqw]">
+            {wide && <div className="welcome-brand-cell flex col-span-2 flex-col items-center justify-center gap-[3cqh] px-[2cqw]">
               <div className="flex items-center gap-[3cqw] w-full justify-center">
-                <img src={brandLogo} alt="Motor Speech Lab rainbow logo" width={1024} height={1024} className="hidden sm:block w-[22cqw] shrink-0 object-contain" />
+                <img id="app-logo" src={brandLogo} alt="Motor Speech Lab rainbow logo" width={1024} height={1024} className="w-[22cqw] shrink-0 object-contain" />
                 <div className="min-w-0 text-left">
                   <p className="welcome-brand-credit font-bold text-welcome-ink">{credit}</p>
-                  <h1 className="welcome-brand-title font-fredoka font-bold uppercase leading-none text-welcome-ink">
+                  <h1 id="app-title" className="welcome-brand-title font-fredoka font-bold uppercase leading-none text-welcome-ink">
                     <span className="italic">Motor Speech</span> <span className="bg-gradient-to-r from-welcome-coral to-welcome-amber bg-clip-text text-transparent italic pr-1">Lab</span>
                   </h1>
-                  <p className="welcome-brand-tagline font-fredoka font-bold italic text-welcome-ink/80">Research and evidence based app</p>
+                  <p id="app-tagline" className="welcome-brand-tagline font-fredoka font-bold italic text-welcome-ink/80">Research and evidence based app</p>
                 </div>
               </div>
               <div className="w-full"><ModeToggle compact /></div>
-            </div>
+            </div>}
             {orderedSounds.map((sound, index) => (
               <div key={sound.id} className="welcome-sound-cell min-h-0 min-w-0 flex items-center justify-center">
                 <SoundCard sound={sound} index={index} row={Math.floor(index / 5)} />

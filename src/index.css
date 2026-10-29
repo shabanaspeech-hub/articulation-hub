@@ -144,13 +144,22 @@
   .welcome-sound-board { container-type: size; }
   .welcome-sound-grid {
     /* Both axes share the same budget: no empty space between square tiles. */
-    --sound-grid-size: min(100cqw, 100cqh);
-    width: var(--sound-grid-size);
-    height: var(--sound-grid-size);
-    gap: clamp(6px, 1.8cqmin, 16px);
+    --cols: 5;
+    --rows: var(--rows-phone);
+    --cell: min(100cqw / var(--cols), 100cqh / var(--rows));
+    grid-template-columns: repeat(var(--cols), var(--cell));
+    grid-template-rows: repeat(var(--rows), var(--cell));
+    gap: 0;
     flex-shrink: 0;
   }
-  .welcome-sound-cell { container-type: size; }
+  @media (min-width: 640px) {
+    .welcome-sound-grid { --cols: 6; --rows: var(--rows-wide); }
+  }
+  .welcome-sound-cell { container-type: size; padding: clamp(3px, 4cqmin, 12px); }
+  .welcome-brand-cell { container-type: size; }
+  .welcome-brand-credit { font-size: 4.2cqw; }
+  .welcome-brand-title { font-size: 9.5cqw; }
+  .welcome-brand-tagline { font-size: 5cqw; margin-top: 1cqh; }
   .welcome-sound-tile {
     container-type: size;
     width: min(100cqw, 100cqh) !important;
