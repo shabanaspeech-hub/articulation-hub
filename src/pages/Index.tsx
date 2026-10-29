@@ -39,9 +39,9 @@ const Index = () => {
           <h2 className="text-lg sm:text-xl font-fredoka">{mode === "motor-speech" ? "Motor speech sounds" : "Speech sounds"}</h2>
           <span className="text-sm font-semibold">{displayedSounds.length} sounds</span>
         </div>
-        <div className="welcome-sound-grid grid grid-cols-5 auto-rows-fr gap-2 sm:gap-3 flex-1 min-h-0">
+        <div className="welcome-sound-grid grid grid-cols-5 auto-rows-fr gap-1.5 sm:gap-2 flex-1 min-h-0">
           {orderedSounds.map((sound, index) => (
-            <div key={sound.id} className={`min-h-0 min-w-0 ${index === orderedSounds.length - 1 && orderedSounds.length % 5 === 1 ? "col-start-3" : ""}`}>
+            <div key={sound.id} className={`welcome-sound-cell min-h-0 min-w-0 flex items-center justify-center ${index === orderedSounds.length - 1 && orderedSounds.length % 5 === 1 ? "col-start-3" : ""}`}>
               <SoundCard sound={sound} index={index} row={Math.floor(index / 5)} />
             </div>
           ))}
