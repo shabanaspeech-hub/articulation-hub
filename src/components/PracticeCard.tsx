@@ -64,18 +64,14 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
   };
 
 
-  const speakWord = () => {
+  const speakWord = async () => {
     if (level === "vc" && syllable) {
-      void speakVCSyllable(syllable.syllable).catch(() => {
-        toast({ title: "Audio could not play", description: "Please check your connection and tap the card again.", variant: "destructive" });
-      });
+      if (await speakVCSyllable(syllable.syllable)) return;
+      speakPhoneticText(getSyllablePhonetic(syllable.display.toLowerCase()), { rate: 0.55, pitch: 1.1, volume: 1 });
       return;
     }
     if (level === "cvcv" && syllable && cvcvAudioSources[cvcvClipKey(syllable.syllable)]) {
-      void playClip(syllable.syllable).catch(() => {
-        toast({ title: "Audio could not play", description: "Please check your connection and tap the card again.", variant: "destructive" });
-      });
-      return;
+      if (await playClip(syllable.syllable)) return;
     }
     const text = getDisplayText();
     let speakText = text;
