@@ -153,7 +153,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
             {(() => {
               const img = getWordImage(word.word);
               return img ? (
-                <img src={img} alt={word.word} className="w-[88%] h-[88%] object-contain" loading="lazy" />
+                <img src={img} alt={word.word} className="w-[88%] h-[88%] object-contain mix-blend-multiply" loading="lazy" />
               ) : (
                 <span className="text-[length:70cqmin] leading-none drop-shadow-md">{word.image}</span>
               );
