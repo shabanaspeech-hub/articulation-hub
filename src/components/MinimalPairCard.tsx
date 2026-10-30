@@ -23,7 +23,7 @@ const MinimalPairCard = ({ pair, id }: Props) => {
             className="relative aspect-square [container-type:size] rounded-[2rem] bg-card border border-border shadow-sm flex flex-col items-center justify-center gap-2 p-3"
           >
             {getWordImage(it.word) ? (
-              <img src={getWordImage(it.word)!} alt={it.word} className="h-[55cqh] w-[80%] object-contain drop-shadow-md" loading="lazy" />
+              <img src={getWordImage(it.word)!} alt={it.word} className="h-[55cqh] w-[80%] object-contain" loading="lazy" />
             ) : (
               <span className="text-[length:48cqmin] leading-none drop-shadow-md">{it.image}</span>
             )}

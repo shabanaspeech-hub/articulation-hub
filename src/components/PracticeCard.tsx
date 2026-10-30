@@ -129,7 +129,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
             {(() => {
               const img = getWordImage(cvcItem.word);
               return img ? (
-                <img src={img} alt={cvcItem.display} className="w-[78%] h-[70%] object-contain drop-shadow-md" loading="lazy" />
+                <img src={img} alt={cvcItem.display} className="w-[78%] h-[70%] object-contain" loading="lazy" />
               ) : (
                 <span className="text-[length:58cqmin] leading-none drop-shadow-md">{cvcItem.image}</span>
               );
@@ -153,7 +153,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
             {(() => {
               const img = getWordImage(word.word);
               return img ? (
-                <img src={img} alt={word.word} className="w-[88%] h-[88%] object-contain drop-shadow-md" loading="lazy" />
+                <img src={img} alt={word.word} className="w-[88%] h-[88%] object-contain" loading="lazy" />
               ) : (
                 <span className="text-[length:70cqmin] leading-none drop-shadow-md">{word.image}</span>
               );
