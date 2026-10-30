@@ -3,6 +3,7 @@ import { Volume2 } from "lucide-react";
 import VoiceRecorder from "./VoiceRecorder";
 import { speakPhoneticText } from "@/lib/speech";
 import type { MinimalPair } from "@/data/minimalPairs";
+import { getWordImage } from "@/lib/wordImages";
 
 interface Props { pair: MinimalPair & { sounds: [string, string] }; id: string }
 
@@ -19,9 +20,13 @@ const MinimalPairCard = ({ pair, id }: Props) => {
             whileTap={{ scale: 0.96 }}
             onClick={() => say(it.word)}
             aria-label={`Hear ${it.word}`}
-            className="relative aspect-square rounded-[2rem] bg-card border border-border shadow-sm flex flex-col items-center justify-center gap-2 p-3"
+            className="relative aspect-square [container-type:size] rounded-[2rem] bg-card border border-border shadow-sm flex flex-col items-center justify-center gap-2 p-3"
           >
-            <span className="text-[clamp(3rem,14vw,6rem)] leading-none">{it.image}</span>
+            {getWordImage(it.word) ? (
+              <img src={getWordImage(it.word)!} alt={it.word} className="h-[55cqh] w-[80%] object-contain drop-shadow-md" loading="lazy" />
+            ) : (
+              <span className="text-[length:48cqmin] leading-none drop-shadow-md">{it.image}</span>
+            )}
             <span className="font-fredoka font-bold text-[clamp(1.4rem,5vw,2.4rem)] text-foreground">{it.word}</span>
             <span className="font-nunito text-sm text-muted-foreground">/{it.sound}/</span>
             <Volume2 className="absolute top-3 right-3 w-5 h-5 text-primary" />

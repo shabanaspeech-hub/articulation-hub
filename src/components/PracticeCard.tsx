@@ -125,13 +125,13 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           className="relative cursor-pointer"
           aria-label={`Tap to hear ${cvcItem.display}`}
         >
-          <div className={`${cardSizeClass} rounded-3xl bg-card flex flex-col items-center justify-center shadow-lg border-4 border-primary/20 overflow-hidden`}>
+          <div className={`${cardSizeClass} [container-type:size] rounded-3xl bg-card flex flex-col items-center justify-center shadow-lg border-4 border-primary/20 overflow-hidden`}>
             {(() => {
               const img = getWordImage(cvcItem.word);
               return img ? (
-                <img src={img} alt={cvcItem.display} className="w-full h-[70%] object-contain" loading="lazy" />
+                <img src={img} alt={cvcItem.display} className="w-[78%] h-[70%] object-contain drop-shadow-md" loading="lazy" />
               ) : (
-                <span className="text-[4.5rem] md:text-[5.5rem] leading-none">{cvcItem.image}</span>
+                <span className="text-[length:58cqmin] leading-none drop-shadow-md">{cvcItem.image}</span>
               );
             })()}
             <span className="font-fredoka text-[clamp(1.5rem,5vmin,2.5rem)] font-bold text-primary mt-1">{cvcItem.display}</span>
@@ -149,13 +149,13 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           <span className="font-fredoka text-2xl md:text-3xl font-bold text-foreground text-center px-2 leading-snug">
             {highlightSound(getDisplayText())}
           </span>
-          <div className={`${cardSizeClass} rounded-3xl bg-card flex items-center justify-center shadow-lg border-4 border-primary/10 overflow-hidden`}>
+          <div className={`${cardSizeClass} [container-type:size] rounded-3xl bg-card flex items-center justify-center shadow-lg border-4 border-primary/10 overflow-hidden`}>
             {(() => {
               const img = getWordImage(word.word);
               return img ? (
-                <img src={img} alt={word.word} className="w-full h-full object-contain p-3" loading="lazy" />
+                <img src={img} alt={word.word} className="w-[88%] h-[88%] object-contain drop-shadow-md" loading="lazy" />
               ) : (
-                <span className="text-[5rem] md:text-[7rem] leading-none">{word.image}</span>
+                <span className="text-[length:70cqmin] leading-none drop-shadow-md">{word.image}</span>
               );
             })()}
           </div>
