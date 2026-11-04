@@ -258,23 +258,48 @@ const SoundDetail = () => {
         )}
       </main>
 
-      {/* Bottom Controls */}
-      {!isSoundMovement && !isGames && totalItems > 0 && (
-        <div className="shrink-0 bg-background/70 backdrop-blur-lg border-t border-border pb-[env(safe-area-inset-bottom)]">
-          <div className="container py-2 flex items-center gap-3 sm:gap-6">
-            <div className="flex-1 min-w-0">
-              <ProgressBar current={currentIndex} total={totalItems} />
-            </div>
-            <NavigationControls
-              onPrevious={handlePrevious}
-              onNext={handleNext}
-              onShuffle={handleShuffle}
-              hasPrevious={currentIndex > 0}
-              hasNext={currentIndex < totalItems - 1}
-            />
-          </div>
+      {/* Right side rail — sound, positions, levels, next/prev (Articulation Station style) */}
+      <aside className="shrink-0 w-[6.5rem] sm:w-36 lg:w-44 h-full flex flex-col items-stretch gap-1.5 sm:gap-2 py-2 sm:py-4 pr-2 sm:pr-4 overflow-y-auto [scrollbar-width:none]">
+        <div className="flex items-baseline justify-center gap-1.5 py-1">
+          <span className="font-fredoka font-bold text-primary text-3xl sm:text-5xl leading-none">{sound.id.toLowerCase()}</span>
+          <span className="font-nunito font-bold text-primary/80 text-sm sm:text-xl">{getIpa(sound.id)}</span>
         </div>
-      )}
+
+        {isWordLevel && (["initial", "medial", "final"] as Position[]).map((p) => (
+          <button key={p} onClick={() => handlePositionChange(p)} className={pill(position === p)}>{p}</button>
+        ))}
+
+        {!isVowel && (
+          <div className="mt-1 flex flex-col gap-1 sm:gap-1.5 rounded-2xl bg-primary/10 p-1 sm:p-1.5">
+            {railLevels.map((l) => (
+              <button
+                key={l.key}
+                onClick={() => isMotorMode ? handleMotorLevelChange(l.key as MotorSpeechLevel) : handleArticulationLevelChange(l.key as PracticeLevel)}
+                className={`w-full rounded-full px-1 py-1 font-fredoka font-semibold text-[0.7rem] sm:text-sm lg:text-base leading-tight transition-all ${
+                  activeLevel === l.key ? "bg-primary text-primary-foreground shadow-md" : "text-primary hover:bg-card/70"
+                }`}
+              >
+                {l.label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {isMotorMode && !isVowel && (
+          <button onClick={() => setShowPathway(!showPathway)} className={pill(showPathway)} title="Speech Motor Pathway">🗺️ path</button>
+        )}
+
+        {!isSoundMovement && !isGames && totalItems > 0 && (
+          <div className="mt-auto flex flex-col items-center gap-1.5 pt-2">
+            <span className="font-fredoka font-semibold text-primary text-sm sm:text-base">{currentIndex + 1}/{totalItems}</span>
+            <div className="flex gap-1 sm:gap-2">
+              <button aria-label="Previous" disabled={currentIndex === 0} onClick={handlePrevious} className="w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-card text-primary font-bold text-lg shadow-md disabled:opacity-40">‹</button>
+              <button aria-label="Next" disabled={currentIndex >= totalItems - 1} onClick={handleNext} className="w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-primary text-primary-foreground font-bold text-lg shadow-md disabled:opacity-40">›</button>
+            </div>
+            <button onClick={handleShuffle} className="text-xs sm:text-sm font-nunito font-semibold text-primary/80 underline">shuffle</button>
+          </div>
+        )}
+      </aside>
     </div>
   );
 };
