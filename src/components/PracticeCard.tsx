@@ -25,8 +25,8 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
   // header, tabs, recorder and next/prev so the page never needs scrolling.
   const textAbove = !!word && !isSyllableLevel && !cvcItem;
   const cardSizeClass = textAbove
-    ? "w-[min(34rem,80vw,max(8rem,calc(100dvh-30rem)))] h-[min(34rem,80vw,max(8rem,calc(100dvh-30rem)))] [@media(max-height:640px)]:w-[min(26rem,42vw,max(7rem,calc(100dvh-20rem)))] [@media(max-height:640px)]:h-[min(26rem,42vw,max(7rem,calc(100dvh-20rem)))]"
-    : "w-[min(34rem,80vw,max(9rem,calc(100dvh-25rem)))] h-[min(34rem,80vw,max(9rem,calc(100dvh-25rem)))] [@media(max-height:640px)]:w-[min(26rem,42vw,max(8rem,calc(100dvh-17rem)))] [@media(max-height:640px)]:h-[min(26rem,42vw,max(8rem,calc(100dvh-17rem)))]";
+    ? "w-[min(46rem,88vw,max(10rem,calc(100dvh-22rem)))] h-[min(46rem,88vw,max(10rem,calc(100dvh-22rem)))] [@media(max-height:640px)]:w-[min(34rem,52vw,max(8rem,calc(100dvh-15rem)))] [@media(max-height:640px)]:h-[min(34rem,52vw,max(8rem,calc(100dvh-15rem)))]"
+    : "w-[min(46rem,88vw,max(10rem,calc(100dvh-19rem)))] h-[min(46rem,88vw,max(10rem,calc(100dvh-19rem)))] [@media(max-height:640px)]:w-[min(34rem,52vw,max(9rem,calc(100dvh-12rem)))] [@media(max-height:640px)]:h-[min(34rem,52vw,max(9rem,calc(100dvh-12rem)))]";
 
 
 
@@ -109,9 +109,9 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
         >
           <div className={`${cardSizeClass} rounded-3xl bg-gradient-to-br from-card to-primary/10 bg-card flex flex-col items-center justify-center shadow-lg border-4 border-primary/20`}>
             {syllable.image && (
-              <span className="text-[clamp(2.5rem,8vmin,5rem)] mb-1 sm:mb-2">{syllable.image}</span>
+              <span className="text-[length:26cqmin] leading-none mb-1 sm:mb-2">{syllable.image}</span>
             )}
-            <span className="font-fredoka text-[clamp(3.5rem,14vmin,8rem)] font-bold text-primary">
+            <span className="font-fredoka text-[clamp(3.5rem,20vmin,11rem)] font-bold text-primary">
               {syllable.display}
             </span>
           </div>
@@ -129,9 +129,9 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
             {(() => {
               const img = getWordImage(cvcItem.word);
               return img ? (
-                <img src={img} alt={cvcItem.display} className="w-[78%] h-[70%] object-contain" loading="lazy" />
+                <img src={img} alt={cvcItem.display} className="w-[92%] h-[78%] object-contain" loading="lazy" />
               ) : (
-                <span className="text-[length:58cqmin] leading-none drop-shadow-md">{cvcItem.image}</span>
+                <span className="text-[length:78cqmin] leading-none drop-shadow-md">{cvcItem.image}</span>
               );
             })()}
             <span className="font-fredoka text-[clamp(1.5rem,5vmin,2.5rem)] font-bold text-primary mt-1">{cvcItem.display}</span>
@@ -153,9 +153,9 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
             {(() => {
               const img = getWordImage(word.word);
               return img ? (
-                <img src={img} alt={word.word} className="w-[88%] h-[88%] object-contain mix-blend-multiply" loading="lazy" />
+                <img src={img} alt={word.word} className="w-[96%] h-[96%] object-contain mix-blend-multiply" loading="lazy" />
               ) : (
-                <span className="text-[length:70cqmin] leading-none drop-shadow-md">{word.image}</span>
+                <span className="text-[length:85cqmin] leading-none drop-shadow-md">{word.image}</span>
               );
             })()}
           </div>
