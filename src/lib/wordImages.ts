@@ -4,7 +4,7 @@ const AVAILABLE = new Set<string>([
   "apple","ball","balloon","banana","bat","bear","bed","bee","bird","boat",
   "book","bus","butterfly","cake","car","cat","cow","dog","duck","egg",
   "key","kite","leaf","lion","milk","moon","mouse","pig","pizza","rabbit",
-  "star","sun","tree","turtle","umbrella",
+  "star","sun","tree","turtle","umbrella","whale",
 ]);
 
 export const getWordImage = (word: string): string | null => {
