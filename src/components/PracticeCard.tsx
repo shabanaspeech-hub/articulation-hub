@@ -24,9 +24,10 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
   // Grows with the screen (phone → iPad → desktop) but always leaves room for
   // header, tabs, recorder and next/prev so the page never needs scrolling.
   const textAbove = !!word && !isSyllableLevel && !cvcItem;
+  // Articulation Station-style flashcard: wide and tall, filling most of the stage.
   const cardSizeClass = textAbove
-    ? "w-[min(46rem,88vw,max(10rem,calc(100dvh-22rem)))] h-[min(46rem,88vw,max(10rem,calc(100dvh-22rem)))] [@media(max-height:640px)]:w-[min(34rem,52vw,max(8rem,calc(100dvh-15rem)))] [@media(max-height:640px)]:h-[min(34rem,52vw,max(8rem,calc(100dvh-15rem)))]"
-    : "w-[min(46rem,88vw,max(10rem,calc(100dvh-19rem)))] h-[min(46rem,88vw,max(10rem,calc(100dvh-19rem)))] [@media(max-height:640px)]:w-[min(34rem,52vw,max(9rem,calc(100dvh-12rem)))] [@media(max-height:640px)]:h-[min(34rem,52vw,max(9rem,calc(100dvh-12rem)))]";
+    ? "w-[min(64rem,92vw,max(12rem,calc((100dvh-19rem)*1.35)))] h-[max(12rem,calc(100dvh-19rem))] [@media(max-height:640px)]:w-[min(40rem,60vw)] [@media(max-height:640px)]:h-[max(9rem,calc(100dvh-13rem))]"
+    : "w-[min(64rem,92vw,max(12rem,calc((100dvh-17rem)*1.35)))] h-[max(12rem,calc(100dvh-17rem))] [@media(max-height:640px)]:w-[min(40rem,60vw)] [@media(max-height:640px)]:h-[max(9rem,calc(100dvh-11rem))]";
 
 
 
