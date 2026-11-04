@@ -26,8 +26,8 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
   const textAbove = !!word && !isSyllableLevel && !cvcItem;
   // Articulation Station-style flashcard: wide and tall, filling most of the stage.
   const cardSizeClass = textAbove
-    ? "w-[min(64rem,92vw,max(12rem,calc((100dvh-19rem)*1.35)))] h-[max(12rem,calc(100dvh-19rem))] [@media(max-height:640px)]:w-[min(40rem,60vw)] [@media(max-height:640px)]:h-[max(9rem,calc(100dvh-13rem))]"
-    : "w-[min(64rem,92vw,max(12rem,calc((100dvh-17rem)*1.35)))] h-[max(12rem,calc(100dvh-17rem))] [@media(max-height:640px)]:w-[min(40rem,60vw)] [@media(max-height:640px)]:h-[max(9rem,calc(100dvh-11rem))]";
+    ? "w-[min(64rem,92vw,max(12rem,calc((100dvh-24rem)*1.35)))] h-[max(12rem,calc(100dvh-24rem))] [@media(max-height:640px)]:w-[min(40rem,60vw)] [@media(max-height:640px)]:h-[max(9rem,calc(100dvh-13rem))]"
+    : "w-[min(64rem,92vw,max(12rem,calc((100dvh-22rem)*1.35)))] h-[max(12rem,calc(100dvh-22rem))] [@media(max-height:640px)]:w-[min(40rem,60vw)] [@media(max-height:640px)]:h-[max(9rem,calc(100dvh-11rem))]";
 
 
 
