@@ -156,7 +156,50 @@ const SoundDetail = () => {
     }`;
 
   return (
-    <div style={toneStyle} className="relative isolate h-[100dvh] flex flex-row overflow-hidden [--stage-w:calc(100vw-7.5rem)] sm:[--stage-w:calc(100vw-13rem)] lg:[--stage-w:calc(100vw-16rem)]">
+    <div style={toneStyle} className="relative isolate h-[100dvh] flex flex-row overflow-hidden [--stage-w:calc(100vw-7.5rem)] max-[499px]:[--stage-w:100vw] sm:[--stage-w:calc(100vw-13rem)] lg:[--stage-w:calc(100vw-16rem)]">
+      {/* Phone only: compact level menu pill + popup sheet (rail hidden on phones) */}
+      <button
+        onClick={() => setPhoneMenu(true)}
+        className="hidden max-[499px]:flex absolute right-2 top-2 z-50 items-center gap-1 rounded-full bg-card text-primary font-fredoka font-semibold text-sm px-3 py-1.5 shadow-lg"
+      >
+        <span className="text-lg font-bold leading-none">{sound.id.toLowerCase()}</span>
+        <span>· {isWordLevel ? `${position} · ` : ""}{railLevels.find(l => l.key === activeLevel)?.label ?? "levels"} ▾</span>
+      </button>
+      {phoneMenu && (
+        <div className="fixed inset-0 z-[60] flex items-end bg-foreground/40" onClick={() => setPhoneMenu(false)}>
+          <div className="w-full rounded-t-3xl bg-card p-4 pb-6 shadow-2xl max-h-[85dvh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-baseline justify-center gap-2 mb-3">
+              <span className="font-fredoka font-bold text-primary text-4xl leading-none">{sound.id.toLowerCase()}</span>
+              <span className="font-nunito font-bold text-primary/80 text-lg">{getIpa(sound.id)}</span>
+            </div>
+            {isWordLevel && (
+              <div className="grid grid-cols-3 gap-2 mb-3">
+                {(["initial", "medial", "final"] as Position[]).map((p) => (
+                  <button key={p} onClick={() => { handlePositionChange(p); setPhoneMenu(false); }}
+                    className={`rounded-full py-2 font-fredoka font-semibold ${position === p ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary"}`}>{p}</button>
+                ))}
+              </div>
+            )}
+            {!isVowel && (
+              <div className="grid grid-cols-2 gap-2">
+                {railLevels.map((l) => (
+                  <button key={l.key}
+                    onClick={() => { isMotorMode ? handleMotorLevelChange(l.key as MotorSpeechLevel) : handleArticulationLevelChange(l.key as PracticeLevel); setPhoneMenu(false); }}
+                    className={`rounded-full py-2.5 font-fredoka font-semibold ${activeLevel === l.key ? "bg-primary text-primary-foreground shadow-md" : "bg-primary/10 text-primary"}`}>{l.label}</button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      {!isSoundMovement && !isGames && totalItems > 0 && (
+        <div className="hidden max-[499px]:flex absolute bottom-2 left-1/2 -translate-x-1/2 z-40 items-center gap-3 rounded-full bg-card/90 px-3 py-1 shadow-lg">
+          <button aria-label="Previous" disabled={currentIndex === 0} onClick={handlePrevious} className="w-9 h-9 rounded-full bg-card text-primary font-bold text-lg shadow disabled:opacity-40">‹</button>
+          <span className="font-fredoka font-semibold text-primary text-sm">{currentIndex + 1}/{totalItems}</span>
+          <button aria-label="Next" disabled={currentIndex >= totalItems - 1} onClick={handleNext} className="w-9 h-9 rounded-full bg-primary text-primary-foreground font-bold text-lg shadow disabled:opacity-40">›</button>
+          <button onClick={handleShuffle} className="text-xs font-nunito font-semibold text-primary/80 underline">shuffle</button>
+        </div>
+      )}
       <img src={welcomeGarden} alt="" aria-hidden="true" className="absolute inset-0 -z-10 h-full w-full object-cover object-bottom" />
 
       {/* Done button — top-left, like Articulation Station */}
@@ -169,7 +212,7 @@ const SoundDetail = () => {
       </motion.button>
 
       {/* Main Practice Area — giant flashcard */}
-      <main className="flex-1 min-w-0 min-h-0 flex flex-col items-center justify-center py-2 pl-2 sm:pl-24 lg:pl-28 overflow-x-hidden overflow-y-auto">
+      <main className="flex-1 min-w-0 min-h-0 flex flex-col items-center justify-center py-2 pl-2 max-[499px]:px-2 max-[499px]:pt-12 max-[499px]:pb-14 sm:pl-24 lg:pl-28 overflow-x-hidden overflow-y-auto">
         {showPathway && isMotorMode && (
           <div className="w-full max-w-3xl mb-2 rounded-2xl bg-card p-2 shadow-lg">
             <SpeechMotorPathway currentLevel={motorLevel} onLevelChange={(level) => { handleMotorLevelChange(level); setShowPathway(false); }} />
@@ -259,7 +302,7 @@ const SoundDetail = () => {
       </main>
 
       {/* Right side rail — sound, positions, levels, next/prev (Articulation Station style) */}
-      <aside className="shrink-0 w-[6.5rem] sm:w-36 lg:w-44 h-full flex flex-col items-stretch gap-1.5 sm:gap-2 py-2 sm:py-4 pr-2 sm:pr-4 overflow-y-auto [scrollbar-width:none]">
+      <aside className="max-[499px]:hidden shrink-0 w-[6.5rem] sm:w-36 lg:w-44 h-full flex flex-col items-stretch gap-1.5 sm:gap-2 py-2 sm:py-4 pr-2 sm:pr-4 overflow-y-auto [scrollbar-width:none]">
         <div className="flex items-baseline justify-center gap-1.5 py-1">
           <span className="font-fredoka font-bold text-primary text-3xl sm:text-5xl leading-none">{sound.id.toLowerCase()}</span>
           <span className="font-nunito font-bold text-primary/80 text-sm sm:text-xl">{getIpa(sound.id)}</span>
