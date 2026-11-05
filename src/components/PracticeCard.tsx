@@ -28,8 +28,8 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
   // for the word label and recorder) on every device.
   const textAbove = !!word && !isSyllableLevel && !cvcItem;
   const cardSizeClass = textAbove
-    ? "aspect-square w-[min(64rem,calc(var(--stage-w,100vw)-1rem),max(12rem,calc(100dvh-13rem)))] [@media(max-height:640px)]:w-[min(40rem,calc(var(--stage-w,100vw)-1rem),max(8rem,calc(100dvh-9rem)))]"
-    : "aspect-square w-[min(64rem,calc(var(--stage-w,100vw)-1rem),max(12rem,calc(100dvh-10rem)))] [@media(max-height:640px)]:w-[min(40rem,calc(var(--stage-w,100vw)-1rem),max(8rem,calc(100dvh-7rem)))]";
+    ? "aspect-square w-[min(64rem,calc(var(--stage-w,100vw)-1rem),max(12rem,calc(100dvh-13rem)))] min-[500px]:w-[min(64rem,calc(var(--stage-w,100vw)-1rem),max(12rem,calc(100dvh-6rem)))]"
+    : "aspect-square w-[min(64rem,calc(var(--stage-w,100vw)-1rem),max(12rem,calc(100dvh-10rem)))] min-[500px]:w-[min(64rem,calc(var(--stage-w,100vw)-1rem),max(12rem,calc(100dvh-2rem)))]";
 
 
 
@@ -97,7 +97,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
 
   return (
     <motion.div
-      className="max-w-full flex flex-col items-center gap-3 sm:gap-4 [@media(max-height:640px)_and_(orientation:landscape)]:flex-row [@media(max-height:640px)_and_(orientation:landscape)]:gap-6"
+      className="max-w-full flex flex-col items-center gap-3 sm:gap-4"
     >
       {/* Syllable mode: big text bubble instead of image */}
 
@@ -168,7 +168,8 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
       ) : null}
 
       {/* Voice Recorder — saves per-target so parents can reuse familiar voices */}
-      <div className="w-[min(20rem,85vw)]">
+      {/* Phones: recorder below card. iPad/desktop: pinned bottom-left, clear of the card. */}
+      <div className="w-[min(20rem,85vw)] min-[500px]:fixed min-[500px]:left-3 min-[500px]:bottom-4 min-[500px]:w-20 min-[500px]:z-40">
       <VoiceRecorder
         label="Record your voice"
         storageKey={`practice:${soundLetter}:${level}:${position}:${
