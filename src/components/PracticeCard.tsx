@@ -23,11 +23,13 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
   useEffect(() => () => stopVCSyllable(), [syllable?.syllable, level]);
   // Grows with the screen (phone → iPad → desktop) but always leaves room for
   // header, tabs, recorder and next/prev so the page never needs scrolling.
+  // Articulation Station-style flashcard: a true SQUARE that fills the practice
+  // stage (width respects the right-side rail via --stage-w, height leaves room
+  // for the word label and recorder) on every device.
   const textAbove = !!word && !isSyllableLevel && !cvcItem;
-  // Articulation Station-style flashcard: wide and tall, filling most of the stage.
   const cardSizeClass = textAbove
-    ? "w-[min(64rem,92vw,max(12rem,calc((100dvh-24rem)*1.35)))] h-[max(12rem,calc(100dvh-24rem))] [@media(max-height:640px)]:w-[min(40rem,60vw)] [@media(max-height:640px)]:h-[max(9rem,calc(100dvh-13rem))]"
-    : "w-[min(64rem,92vw,max(12rem,calc((100dvh-22rem)*1.35)))] h-[max(12rem,calc(100dvh-22rem))] [@media(max-height:640px)]:w-[min(40rem,60vw)] [@media(max-height:640px)]:h-[max(9rem,calc(100dvh-11rem))]";
+    ? "aspect-square w-[min(64rem,calc(var(--stage-w,100vw)-1rem),max(12rem,calc(100dvh-13rem)))] [@media(max-height:640px)]:w-[min(40rem,calc(var(--stage-w,100vw)-1rem),max(8rem,calc(100dvh-9rem)))]"
+    : "aspect-square w-[min(64rem,calc(var(--stage-w,100vw)-1rem),max(12rem,calc(100dvh-10rem)))] [@media(max-height:640px)]:w-[min(40rem,calc(var(--stage-w,100vw)-1rem),max(8rem,calc(100dvh-7rem)))]";
 
 
 
