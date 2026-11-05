@@ -29,6 +29,7 @@ const SoundDetail = () => {
   const sound = getSoundById(soundId || "");
   
   const [position, setPosition] = useState<Position>("initial");
+  const [phoneMenu, setPhoneMenu] = useState(false);
   const [articulationLevel, setArticulationLevel] = useState<PracticeLevel>("cv");
   const [motorLevel, setMotorLevel] = useState<MotorSpeechLevel>("sound-movement");
   const [currentIndex, setCurrentIndex] = useState(0);
