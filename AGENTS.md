@@ -8,3 +8,4 @@
 - Use the same rainbow-logo asset for the header, measured splash landing and generated browser/device icons to keep branding consistent.
 - Route CVCV and isolated-vowel playback through fixed phoneme-synthesized clips (cvcvAudio, assets/cvcv), falling back to browser speech only when no clip exists; browser speech shortens vowels.
 - Keep minimal-pair contrast sets in minimalPairs data, shown as a level after Sentences in both modes.
+- Capacitor wraps the web build (webDir dist) for native Android/iOS; native folders are generated locally by the owner, not committed from the sandbox.
