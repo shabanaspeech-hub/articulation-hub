@@ -10,3 +10,4 @@
 - Keep minimal-pair contrast sets in minimalPairs data, shown as a level after Sentences in both modes.
 - Capacitor wraps the web build (webDir dist) for native Android/iOS; native folders are generated locally by the owner, not committed from the sandbox.
 - Keep the syllable-shape word inventory in syllableInventory (classified by spoken structure, not spelling) and show it via the Motor 'shapes' level, so it stays independent of per-sound levels and audio.
+- Word-card photos come from the get-word-photo function (Pixabay, refined search terms for ambiguous words) via WordPicture/wordPhotos with a per-day device cache, because Pixabay links expire daily; local illustrations/emoji are offline fallback only.

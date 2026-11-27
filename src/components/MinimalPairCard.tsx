@@ -3,7 +3,7 @@ import { Volume2 } from "lucide-react";
 import VoiceRecorder from "./VoiceRecorder";
 import { speakPhoneticText } from "@/lib/speech";
 import type { MinimalPair } from "@/data/minimalPairs";
-import { getWordImage } from "@/lib/wordImages";
+import WordPicture from "./WordPicture";
 
 interface Props { pair: MinimalPair & { sounds: [string, string] }; id: string }
 
@@ -22,11 +22,7 @@ const MinimalPairCard = ({ pair, id }: Props) => {
             aria-label={`Hear ${it.word}`}
             className="relative aspect-square [container-type:size] rounded-[2rem] bg-card border border-border shadow-sm flex flex-col items-center justify-center gap-2 p-3"
           >
-            {getWordImage(it.word) ? (
-              <img src={getWordImage(it.word)!} alt={it.word} className="h-[68cqh] w-[92%] object-contain" loading="lazy" />
-            ) : (
-              <span className="text-[length:62cqmin] leading-none drop-shadow-md">{it.image}</span>
-            )}
+            <WordPicture word={it.word} emoji={it.image} className="h-[68cqh] w-[92%]" emojiClass="text-[length:62cqmin]" />
             <span className="font-fredoka font-bold text-[clamp(1.4rem,5vw,2.4rem)] text-foreground">{it.word}</span>
             <span className="font-nunito text-sm text-muted-foreground">/{it.sound}/</span>
             <Volume2 className="absolute top-3 right-3 w-5 h-5 text-primary" />

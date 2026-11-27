@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { WordItem, PracticeLevel, SyllableItem, CVCItem, getSyllablePhonetic } from "@/data/soundsData";
 import VoiceRecorder from "./VoiceRecorder";
 import { speakPhoneticText } from "@/lib/speech";
-import { getWordImage } from "@/lib/wordImages";
+import WordPicture from "./WordPicture";
 import { speakVCSyllable, stopVCSyllable } from "@/lib/vcSpeech";
 import { cvcvAudioSources, cvcvClipKey, playClip } from "@/lib/cvcvAudio";
 
@@ -129,14 +129,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           aria-label={`Tap to hear ${cvcItem.display}`}
         >
           <div className={`${cardSizeClass} [container-type:size] rounded-3xl bg-card flex flex-col items-center justify-center shadow-lg border-4 border-primary/20 overflow-hidden`}>
-            {(() => {
-              const img = getWordImage(cvcItem.word);
-              return img ? (
-                <img src={img} alt={cvcItem.display} className="w-[92%] h-[78%] object-contain" loading="lazy" />
-              ) : (
-                <span className="text-[length:78cqmin] leading-none drop-shadow-md">{cvcItem.image}</span>
-              );
-            })()}
+            <WordPicture word={cvcItem.word} emoji={cvcItem.image} className="w-[92%] h-[78%]" emojiClass="text-[length:78cqmin]" />
             <span className="font-fredoka text-[clamp(1.5rem,5vmin,2.5rem)] font-bold text-primary mt-1">{cvcItem.display}</span>
           </div>
         </motion.button>
@@ -153,14 +146,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
             {highlightSound(getDisplayText())}
           </span>
           <div className={`${cardSizeClass} [container-type:size] rounded-3xl bg-card flex items-center justify-center shadow-lg border-4 border-primary/10 overflow-hidden`}>
-            {(() => {
-              const img = getWordImage(word.word);
-              return img ? (
-                <img src={img} alt={word.word} className="w-[96%] h-[96%] object-contain mix-blend-multiply" loading="lazy" />
-              ) : (
-                <span className="text-[length:85cqmin] leading-none drop-shadow-md">{word.image}</span>
-              );
-            })()}
+            <WordPicture word={word.word} emoji={word.image} className="w-[94%] h-[94%]" emojiClass="text-[length:85cqmin]" />
           </div>
 
           <div className="absolute -bottom-3 -right-3 w-12 h-12 rounded-full bg-primary/20 blur-xl" />

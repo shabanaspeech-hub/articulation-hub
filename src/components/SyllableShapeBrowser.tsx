@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Search, Volume2 } from "lucide-react";
 import { SHAPES, SHAPE_WORDS, filterShapeWords, shapeInfo, SyllableShape, WordCategory, ShapeWord } from "@/data/syllableInventory";
 import { speakPhoneticText } from "@/lib/speech";
+import WordPicture from "./WordPicture";
 
 const CATEGORIES: WordCategory[] = ["animals", "food", "toys", "home", "family", "actions", "body", "everyday"];
 const speak = (word: string) => speakPhoneticText(word.replace(/-/g, " "), { rate: 0.6 });
@@ -15,7 +16,7 @@ const SyllableShapeBrowser = ({ soundId }: { soundId?: string } = {}) => {
   const [shape, setShape] = useState<SyllableShape | null>(null);
   const [category, setCategory] = useState<WordCategory | null>(null);
   const [selected, setSelected] = useState<string[]>([]);
-  const [deck, setDeck] = useState<ShapeWord[] | null>(null);
+  const [deck, setDeck] = useState<ShapeWord[] | null>(() => { const r = filterShapeWords({ soundId, query: "", level: null, shape: null, category: null }); return r.length ? r : null; });
   const [i, setI] = useState(0);
 
   const results = useMemo(() => filterShapeWords({ soundId, query, level, shape, category }), [soundId, query, level, shape, category]);
@@ -37,7 +38,7 @@ const SyllableShapeBrowser = ({ soundId }: { soundId?: string } = {}) => {
         >
           <span className="absolute top-3 left-3 rounded-full bg-primary text-primary-foreground px-3 py-1 font-fredoka font-bold text-base sm:text-lg">{info.notation}</span>
           <span className="absolute top-3 right-3 rounded-full bg-primary/10 text-primary px-3 py-1 font-nunito font-bold text-sm capitalize">{cur.category}</span>
-          <span className="text-[min(14rem,30vw,28dvh)] leading-none">{cur.emoji}</span>
+          <WordPicture word={cur.word} emoji={cur.emoji} className="w-[78%] h-[62%]" emojiClass="text-[min(14rem,30vw,28dvh)]" />
           <span className="font-fredoka font-bold text-primary text-4xl sm:text-6xl">{cur.word}</span>
           <span className="flex items-center gap-1 font-nunito text-muted-foreground text-sm"><Volume2 className="w-4 h-4" /> Level {info.level} · {info.name}</span>
           {cur.dialect && <span className="font-nunito text-xs text-muted-foreground">{cur.dialect}</span>}
@@ -84,7 +85,7 @@ const SyllableShapeBrowser = ({ soundId }: { soundId?: string } = {}) => {
                 <input type="checkbox" checked={on} onChange={() => toggle(x)} aria-label={`Select ${x.word}`} className="w-5 h-5 accent-[hsl(var(--primary))]" />
               </div>
               <button onClick={() => speak(x.word)} className="flex items-center gap-2 text-left">
-                <span className="text-3xl">{x.emoji}</span>
+                <WordPicture word={x.word} emoji={x.emoji} className="w-12 h-12 shrink-0" emojiClass="text-3xl" />
                 <span className="font-fredoka font-bold text-primary text-lg leading-tight">{x.word}</span>
               </button>
               <span className="font-nunito text-xs text-muted-foreground capitalize">{x.category}{x.dialect ? " · dialect note" : ""}</span>
