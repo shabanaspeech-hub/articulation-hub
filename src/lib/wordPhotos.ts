@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import localPhotos from "@/data/localWordPhotos.json";
+
+const bundledPhotos: Record<string, { src: string }> = localPhotos;
+const localPhoto = (raw: string) => bundledPhotos[raw.trim().toLowerCase()]?.src;
 
 // Real photos for word cards, fetched once per word via the backend and cached on the device.
 // Pixabay image links expire after about a day, so the cache is keyed per day.
@@ -32,10 +36,13 @@ const flush = async () => {
 export const normWord = (w: string) => w.trim().toLowerCase().replace(/[^a-z' -]/g, "").replace(/-/g, " ").trim();
 
 export const fetchWordPhoto = (raw: string): Promise<string | null> => {
+  const bundled = localPhoto(raw);
+  if (bundled) return Promise.resolve(bundled);
   const w = normWord(raw);
   if (!w) return Promise.resolve(null);
   if (w in cache) return Promise.resolve(cache[w]);
-  if (pending.has(w)) return pending.get(w)!;
+  const existing = pending.get(w);
+  if (existing) return existing;
   const p = new Promise<string | null>((res) => resolvers.set(w, res));
   pending.set(w, p); queue.push(w);
   if (!timer) timer = setTimeout(flush, 30);
@@ -44,12 +51,14 @@ export const fetchWordPhoto = (raw: string): Promise<string | null> => {
 
 export const useWordPhoto = (word?: string) => {
   const w = word ? normWord(word) : "";
+  const bundled = word ? localPhoto(word) : undefined;
   const [url, setUrl] = useState<string | null | undefined>(w && w in cache ? cache[w] : undefined);
   useEffect(() => {
+    if (bundled) { setUrl(bundled); return; }
     if (!w) return;
     let live = true;
     if (w in cache) setUrl(cache[w]); else { setUrl(undefined); fetchWordPhoto(w).then((u) => live && setUrl(u)); }
     return () => { live = false; };
-  }, [w]);
-  return url; // undefined = loading, null = none found
+  }, [w, bundled]);
+  return bundled ?? url; // undefined = loading, null = none found
 };

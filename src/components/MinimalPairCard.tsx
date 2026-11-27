@@ -22,7 +22,7 @@ const MinimalPairCard = ({ pair, id }: Props) => {
             aria-label={`Hear ${it.word}`}
             className="relative aspect-square [container-type:size] rounded-[2rem] bg-card border border-border shadow-sm flex flex-col items-center justify-center gap-2 p-3"
           >
-            <WordPicture word={it.word} emoji={it.image} className="h-[68cqh] w-[92%]" emojiClass="text-[length:62cqmin]" />
+            <WordPicture word={it.word} emoji={it.image} className="h-[72cqh] w-[96%]" emojiClass="text-[length:62cqmin]" />
             <span className="font-fredoka font-bold text-[clamp(1.4rem,5vw,2.4rem)] text-foreground">{it.word}</span>
             <span className="font-nunito text-sm text-muted-foreground">/{it.sound}/</span>
             <Volume2 className="absolute top-3 right-3 w-5 h-5 text-primary" />

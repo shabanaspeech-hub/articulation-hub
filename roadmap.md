@@ -19,3 +19,6 @@
 - [x] Minimal pairs level after Sentences (p/b, m/n, l/r, r/v, k/t, g/d, sh/s)
 - [x] Vowel /a/ standard phonetic pronunciation
 - [ ] Publish so rainbow opening reaches other devices
+
+- [x] Bundle 86 visually screened white-background photos, use large uncropped images, preserve card geometry, verify local pie without online photo service, and include source/review records; no upgrade recommended.
+- [ ] Complete remaining 573 photo targets: blocked by unavailable or unsuitable white-background photographs; requires suitable images and therapist selection.

@@ -129,7 +129,7 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
           aria-label={`Tap to hear ${cvcItem.display}`}
         >
           <div className={`${cardSizeClass} [container-type:size] rounded-3xl bg-card flex flex-col items-center justify-center shadow-lg border-4 border-primary/20 overflow-hidden`}>
-            <WordPicture word={cvcItem.word} emoji={cvcItem.image} className="w-[92%] h-[78%]" emojiClass="text-[length:78cqmin]" />
+            <WordPicture word={cvcItem.word} emoji={cvcItem.image} className="w-[96%] h-[85%]" emojiClass="text-[length:78cqmin]" />
             <span className="font-fredoka text-[clamp(1.5rem,5vmin,2.5rem)] font-bold text-primary mt-1">{cvcItem.display}</span>
           </div>
         </motion.button>
@@ -146,10 +146,9 @@ const PracticeCard = ({ word, syllable, cvcItem, level, activeLevel, soundLetter
             {highlightSound(getDisplayText())}
           </span>
           <div className={`${cardSizeClass} [container-type:size] rounded-3xl bg-card flex items-center justify-center shadow-lg border-4 border-primary/10 overflow-hidden`}>
-            <WordPicture word={word.word} emoji={word.image} className="w-[94%] h-[94%]" emojiClass="text-[length:85cqmin]" />
+            <WordPicture word={word.word} emoji={word.image} className="w-[96%] h-[96%]" emojiClass="text-[length:85cqmin]" />
           </div>
 
-          <div className="absolute -bottom-3 -right-3 w-12 h-12 rounded-full bg-primary/20 blur-xl" />
         </motion.button>
       ) : null}
 

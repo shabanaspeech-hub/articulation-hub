@@ -54,7 +54,7 @@ export default defineConfig(({ mode }) => ({
         cleanupOutdatedCaches: true,
         skipWaiting: true,
         clientsClaim: true,
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2}"],
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2}", "photos/*.webp"],
         navigateFallbackDenylist: [/^\/~oauth/],
 
         runtimeCaching: [

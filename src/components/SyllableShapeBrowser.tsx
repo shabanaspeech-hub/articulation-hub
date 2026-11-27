@@ -38,7 +38,7 @@ const SyllableShapeBrowser = ({ soundId }: { soundId?: string } = {}) => {
         >
           <span className="absolute top-3 left-3 rounded-full bg-primary text-primary-foreground px-3 py-1 font-fredoka font-bold text-base sm:text-lg">{info.notation}</span>
           <span className="absolute top-3 right-3 rounded-full bg-primary/10 text-primary px-3 py-1 font-nunito font-bold text-sm capitalize">{cur.category}</span>
-          <WordPicture word={cur.word} emoji={cur.emoji} className="w-[78%] h-[62%]" emojiClass="text-[min(14rem,30vw,28dvh)]" />
+          <WordPicture word={cur.word} emoji={cur.emoji} className="w-[96%] h-[72%]" emojiClass="text-[min(14rem,30vw,28dvh)]" />
           <span className="font-fredoka font-bold text-primary text-4xl sm:text-6xl">{cur.word}</span>
           <span className="flex items-center gap-1 font-nunito text-muted-foreground text-sm"><Volume2 className="w-4 h-4" /> Level {info.level} · {info.name}</span>
           {cur.dialect && <span className="font-nunito text-xs text-muted-foreground">{cur.dialect}</span>}
