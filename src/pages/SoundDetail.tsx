@@ -20,6 +20,7 @@ import { generateSequences } from "@/components/MotorSequencingCard";
 import { getIpa } from "@/lib/ipa";
 import MinimalPairCard from "@/components/MinimalPairCard";
 import { getMinimalPairs } from "@/data/minimalPairs";
+import SyllableShapeBrowser from "@/components/SyllableShapeBrowser";
 
 const SoundDetail = () => {
   const { soundId } = useParams<{ soundId: string }>();
@@ -47,6 +48,7 @@ const SoundDetail = () => {
   const isWordLevel = activeLevel === "words" || activeLevel === "phrases" || activeLevel === "sentences";
   const isGames = activeLevel === "games";
   const isPairs = activeLevel === "minimal-pairs";
+  const isShapes = activeLevel === "shapes";
   const pairs = useMemo(() => (sound && isPairs ? getMinimalPairs(sound.id) : []), [sound, isPairs]);
 
   const syllables = useMemo(() => {
@@ -78,8 +80,9 @@ const SoundDetail = () => {
     if (isCVC) return cvcItems.length;
     if (isMotorSequencing) return sequenceCount;
     if (isPairs) return pairs.length;
+    if (isShapes) return 0;
     return words.length;
-  }, [isSoundMovement, isSyllableLevel, isCVC, isMotorSequencing, isPairs, pairs, syllables, cvcItems, sequenceCount, words]);
+  }, [isSoundMovement, isSyllableLevel, isCVC, isMotorSequencing, isPairs, isShapes, pairs, syllables, cvcItems, sequenceCount, words]);
 
   const currentWord = isWordLevel ? words[currentIndex] : null;
   const currentSyllable = isSyllableLevel ? syllables[currentIndex] : null;
@@ -142,7 +145,7 @@ const SoundDetail = () => {
   const railLevels: { key: string; label: string }[] = isMotorMode
     ? [
         { key: "sound-movement", label: "movement" }, { key: "cv", label: "cv" }, { key: "vc", label: "vc" },
-        { key: "cvcv", label: "cvcv" }, { key: "cvc", label: "cvc" }, { key: "motor-sequencing", label: "sequencing" },
+        { key: "cvcv", label: "cvcv" }, { key: "cvc", label: "cvc" }, { key: "shapes", label: "shapes" }, { key: "motor-sequencing", label: "sequencing" },
         { key: "words", label: "words" }, { key: "phrases", label: "phrases" }, { key: "sentences", label: "sentences" },
         { key: "minimal-pairs", label: "pairs" },
       ]
@@ -221,6 +224,8 @@ const SoundDetail = () => {
         )}
         {isGames ? (
           <GamesView sound={sound} />
+        ) : isShapes ? (
+          <SyllableShapeBrowser />
         ) : (
         <AnimatePresence mode="popLayout" initial={true} custom={direction}>
         <motion.div
