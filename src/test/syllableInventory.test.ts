@@ -30,3 +30,14 @@ describe("syllable shape inventory", () => {
     expect(filterShapeWords({ shape: "VC" }).every((w) => w.shape === "VC")).toBe(true);
   });
 });
+
+import { filterShapeWords as fsw, wordHasSound } from "@/data/syllableInventory";
+describe("sound-specific shapes", () => {
+  it("shows only words containing the target sound", () => {
+    const p = fsw({ soundId: "p" });
+    expect(p.length).toBeGreaterThan(0);
+    expect(p.every((x) => wordHasSound(x.word, "p"))).toBe(true);
+    expect(p.some((x) => x.word === "teddy")).toBe(false);
+    expect(wordHasSound("phone", "p")).toBe(false);
+  });
+});

@@ -14,7 +14,6 @@ const pathwaySteps: { key: MotorSpeechLevel; label: string; emoji: string }[] = 
   { key: "vc", label: "VC Syllables", emoji: "🔠" },
   { key: "cvcv", label: "CVCV", emoji: "🗣️" },
   { key: "cvc", label: "CVC Words", emoji: "📝" },
-  { key: "motor-sequencing", label: "Motor Sequencing", emoji: "⚡" },
   { key: "words", label: "Words", emoji: "📖" },
   { key: "phrases", label: "Phrases", emoji: "💬" },
   { key: "sentences", label: "Sentences", emoji: "📚" },

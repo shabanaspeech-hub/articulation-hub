@@ -9,7 +9,7 @@ const speak = (word: string) => speakPhoneticText(word.replace(/-/g, " "), { rat
 const chip = (on: boolean) =>
   `rounded-full px-3 py-1 font-fredoka font-semibold text-sm whitespace-nowrap transition-all ${on ? "bg-primary text-primary-foreground shadow" : "bg-card/80 text-primary hover:bg-card"}`;
 
-const SyllableShapeBrowser = () => {
+const SyllableShapeBrowser = ({ soundId }: { soundId?: string } = {}) => {
   const [query, setQuery] = useState("");
   const [level, setLevel] = useState<number | null>(null);
   const [shape, setShape] = useState<SyllableShape | null>(null);
@@ -18,7 +18,7 @@ const SyllableShapeBrowser = () => {
   const [deck, setDeck] = useState<ShapeWord[] | null>(null);
   const [i, setI] = useState(0);
 
-  const results = useMemo(() => filterShapeWords({ query, level, shape, category }), [query, level, shape, category]);
+  const results = useMemo(() => filterShapeWords({ soundId, query, level, shape, category }), [soundId, query, level, shape, category]);
   const keyOf = (x: ShapeWord) => `${x.shape}:${x.word}`;
   const toggle = (x: ShapeWord) => setSelected((s) => (s.includes(keyOf(x)) ? s.filter((k) => k !== keyOf(x)) : [...s, keyOf(x)]));
   const start = () => {

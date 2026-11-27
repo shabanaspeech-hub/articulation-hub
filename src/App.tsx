@@ -2,6 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import SyllableShapes from "./pages/SyllableShapes";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppModeProvider } from "@/contexts/AppModeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
@@ -35,6 +36,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/sound/:soundId" element={<SoundDetail />} />
+              <Route path="/shapes" element={<SyllableShapes />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -13,7 +13,6 @@ const levels: { key: MotorSpeechLevel; label: string; shortLabel: string; icon: 
   { key: "vc", label: "VC", shortLabel: "VC", icon: <ArrowDownUp className="w-4 h-4" /> },
   { key: "cvcv", label: "CVCV", shortLabel: "CVCV", icon: <Music2 className="w-4 h-4" /> },
   { key: "cvc", label: "CVC", shortLabel: "CVC", icon: <FileText className="w-4 h-4" /> },
-  { key: "motor-sequencing", label: "Sequencing", shortLabel: "⚡", icon: <Zap className="w-4 h-4" /> },
   { key: "words", label: "Words", shortLabel: "📖", icon: <FileText className="w-4 h-4" /> },
   { key: "phrases", label: "Phrases", shortLabel: "💬", icon: <MessageCircle className="w-4 h-4" /> },
   { key: "sentences", label: "Sentences", shortLabel: "📚", icon: <BookOpen className="w-4 h-4" /> },

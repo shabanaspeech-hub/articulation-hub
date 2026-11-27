@@ -145,7 +145,7 @@ const SoundDetail = () => {
   const railLevels: { key: string; label: string }[] = isMotorMode
     ? [
         { key: "sound-movement", label: "movement" }, { key: "cv", label: "cv" }, { key: "vc", label: "vc" },
-        { key: "cvcv", label: "cvcv" }, { key: "cvc", label: "cvc" }, { key: "shapes", label: "shapes" }, { key: "motor-sequencing", label: "sequencing" },
+        { key: "cvcv", label: "cvcv" }, { key: "cvc", label: "cvc" }, { key: "shapes", label: "shapes" },
         { key: "words", label: "words" }, { key: "phrases", label: "phrases" }, { key: "sentences", label: "sentences" },
         { key: "minimal-pairs", label: "pairs" },
       ]
@@ -225,7 +225,7 @@ const SoundDetail = () => {
         {isGames ? (
           <GamesView sound={sound} />
         ) : isShapes ? (
-          <SyllableShapeBrowser />
+          <SyllableShapeBrowser soundId={sound.id} />
         ) : (
         <AnimatePresence mode="popLayout" initial={true} custom={direction}>
         <motion.div

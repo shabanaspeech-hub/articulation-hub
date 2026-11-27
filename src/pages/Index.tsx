@@ -101,7 +101,8 @@ const Index = () => {
           </div>
         </div>}
       </main>
-      <footer className="shrink-0 px-4 pb-1 text-center text-welcome-ink text-xs font-semibold">
+      <footer className="shrink-0 px-4 pb-1 flex items-center justify-center gap-4 text-welcome-ink text-xs font-semibold">
+        {mode === "motor-speech" && <Link to="/shapes" className="rounded-full bg-primary px-3 py-1 font-fredoka text-sm font-bold text-primary-foreground shadow">Syllable Shapes</Link>}
         <Link to="/privacy" className="underline underline-offset-4">Privacy Policy</Link>
       </footer>
     </div>

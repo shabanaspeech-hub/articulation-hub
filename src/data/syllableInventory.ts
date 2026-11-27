@@ -104,9 +104,21 @@ export const SHAPE_WORDS: ShapeWord[] = [
   ]),
 ];
 
-export const filterShapeWords = (opts: { query?: string; level?: number | null; shape?: SyllableShape | null; category?: WordCategory | null }) => {
+// Spelling patterns that signal a target sound in these child words (approximate; silent letters excluded).
+const SOUND_PATTERNS: Record<string, RegExp> = {
+  p: /p(?!h)/, b: /b/, m: /m/, n: /n(?!g\b)/, t: /t(?!h)/, d: /d/, k: /k(?!n)|c(?![eiyh])|ck|q/, g: /g(?![eiy])|gg/,
+  f: /f|ph/, v: /v/, s: /s(?!h)|c[eiy]/, z: /z|s\b/, h: /^h|-h/, w: /^w(?!r)|-w/, y: /^y|-y/, l: /l/, r: /r/,
+  sh: /sh/, ch: /ch/, j: /j|g[eiy]/, th: /th/, ng: /ng\b/,
+};
+export const wordHasSound = (word: string, soundId: string) => {
+  const re = SOUND_PATTERNS[soundId.toLowerCase()];
+  return re ? re.test(word.toLowerCase()) : word.toLowerCase().includes(soundId.toLowerCase());
+};
+
+export const filterShapeWords = (opts: { soundId?: string; query?: string; level?: number | null; shape?: SyllableShape | null; category?: WordCategory | null }) => {
   const q = (opts.query ?? "").trim().toLowerCase();
   return SHAPE_WORDS.filter((x) =>
+    (!opts.soundId || wordHasSound(x.word, opts.soundId)) &&
     (!q || x.word.toLowerCase().includes(q)) &&
     (!opts.level || shapeInfo(x.shape).level === opts.level) &&
     (!opts.shape || x.shape === opts.shape) &&
