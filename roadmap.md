@@ -21,4 +21,5 @@
 - [ ] Publish so rainbow opening reaches other devices
 
 - [x] Bundle 86 visually screened white-background photos, use large uncropped images, preserve card geometry, verify local pie without online photo service, and include source/review records; no upgrade recommended.
-- [ ] Complete remaining 573 photo targets: blocked by unavailable or unsuitable white-background photographs; requires suitable images and therapist selection.
+- [ ] Complete the every-word offline photo pack: 573 targets lack suitable white-background photographs; waiting for word-matched images and therapist selection, with no arbitrary substitutes.
+- [x] Configure native apps to start from their bundled web files rather than a remote website; verify every existing manifest photo is a valid local file.

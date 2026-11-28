@@ -8,6 +8,6 @@
 - Use the same rainbow-logo asset for the header, measured splash landing and generated browser/device icons to keep branding consistent.
 - Route CVCV and isolated-vowel playback through fixed phoneme-synthesized clips (cvcvAudio, assets/cvcv), falling back to browser speech only when no clip exists; browser speech shortens vowels.
 - Keep minimal-pair contrast sets in minimalPairs data, shown as a level after Sentences in both modes.
-- Capacitor wraps the web build (webDir dist) for native Android/iOS; native folders are generated locally by the owner, not committed from the sandbox.
+- Capacitor loads the bundled web build (webDir dist) without a remote server URL so native apps can start offline; native folders are generated locally by the owner, not committed from the sandbox.
 - Keep the syllable-shape word inventory in syllableInventory (classified by spoken structure, not spelling) and show it via the Motor 'shapes' level, so it stays independent of per-sound levels and audio.
 - WordPicture/wordPhotos prefer the bundled localWordPhotos manifest and precached public/photos WebP files, retaining Pixabay lookups only for missing targets; render uncropped subjects and no emoji substitutes so offline photos remain stable and missing images are explicit.
